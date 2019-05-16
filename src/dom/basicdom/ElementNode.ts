@@ -29,6 +29,15 @@ export default class ElementNode extends ViewNode {
         this.setAttribute('id', value)
     }
 
+    // className is used, e.g. with slots
+    get className() {
+      return this.getAttribute('class')
+    }
+
+    set className(value: string) {
+      this.setAttribute('class', value)
+    }
+
     get classList() {
         if (!this._classList) {
             const getClasses = () => (this.getAttribute('class') || "").split(/\s+/).filter((k: string) => k != "")
