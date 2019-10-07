@@ -39,7 +39,7 @@
 		<span class="learn-more">learn more</span>
 	</a>
 
-	<a href="tutorial" slot="three">
+	<a href="/tutorial" slot="three">
 		<h2>Fully Featured</h2>
 		<p>Use the full power of Svelte including Transitions, Stores, and Reactivity. One of the smoothest development experiences available for mobile</p>
 		<span class="learn-more">learn more</span>
