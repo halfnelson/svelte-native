@@ -148,9 +148,9 @@ The method is part of the [`dialogs` module](https://docs.nativescript.org/api-r
 
 ```js
 prompt('Your message to the user', 'Suggested user input')
-.then(result => {
-  console.log(`Dialog result: ${result.result}, text: ${result.text}`)
-})
+  .then(result => {
+    console.log(`Dialog result: ${result.result}, text: ${result.text}`)
+  })
 ```
 
 #### Configure dialog options
@@ -182,7 +182,7 @@ inputType: inputType.password
 #### Example
 
 ```js
-import { prompt, inputType } from 'tns-core-modules/ui/dialogs'
+import { inputType } from 'tns-core-modules/ui/dialogs'
 
 prompt({
   title: "Email Prompt",
@@ -190,7 +190,7 @@ prompt({
   okButtonText: "OK",
   cancelButtonText: "Cancel",
   defaultText: "name@domain.com",
-  inputType: inputType.email
+  inputType: dialogs.inputType.email
 }).then(result => {
   console.log(`Dialog result: ${result.result}, text: ${result.text}`)
 });
