@@ -4,6 +4,7 @@ import { extract_frontmatter, extract_metadata, langs } from './markdown.js';
 import marked from 'marked';
 
 import PrismJS from 'prismjs';
+import Normalizer from 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace';
 import 'prismjs/components/prism-bash';
 
 
@@ -38,6 +39,10 @@ export default function (docs_path, anchor_base_url) {
 			const subsections = [];
 			const renderer = new marked.Renderer();
 
+			const codeNormalizer = new Normalizer({
+				'tabs-to-spaces': 4,
+			});
+
 			let block_open = false;
 
 			renderer.hr = (...args) => {
@@ -66,6 +71,8 @@ export default function (docs_path, anchor_base_url) {
 					}
 					if (meta.hidden) return '';
 				}
+
+				source = codeNormalizer.normalize(source)
 
 				const plang = langs[lang];
 				const highlighted = PrismJS.highlight(
