@@ -5,18 +5,22 @@ interface ElementEntry {
     resolver: () => ElementNode,
 }
 
+export interface RegisterElementOptions {
+    override?: boolean;
+}
+
 const elementMap: { [index: string]: ElementEntry } = {}
 
-function registerElementResolver(elementName: string, entry: ElementEntry) {
+function registerElementResolver(elementName: string, entry: ElementEntry, options?: RegisterElementOptions) {
     const normalizedName = normalizeElementName(elementName)
-    if (elementMap[normalizedName]) {
+    if (elementMap[normalizedName] && (!options || options.override !== true)) {
         throw new Error(`Element for ${normalizedName} already registered.`)
     }
     elementMap[normalizedName] = entry
 }
 
-export function registerElement(elementName: string, resolver: () => ElementNode) {
-    registerElementResolver(elementName, { resolver: resolver })
+export function registerElement(elementName: string, resolver: () => ElementNode, options?: RegisterElementOptions) {
+    registerElementResolver(elementName, { resolver: resolver }, options)
 }
 
 export function createElement(elementName: string): ElementNode {
