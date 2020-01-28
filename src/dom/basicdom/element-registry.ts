@@ -14,7 +14,8 @@ const elementMap: { [index: string]: ElementEntry } = {}
 function registerElementResolver(elementName: string, entry: ElementEntry, options?: RegisterElementOptions) {
     const normalizedName = normalizeElementName(elementName)
     if (elementMap[normalizedName] && (!options || options.override !== true)) {
-        throw new Error(`Element for ${normalizedName} already registered.`)
+        console.error(`Element for ${normalizedName} already registered.`);
+        return;
     }
     elementMap[normalizedName] = entry
 }
