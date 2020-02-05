@@ -79,7 +79,9 @@ export default class NativeElementNode<T> extends ElementNode {
         this._normalizedKeys = getNormalizedKeysForObject(this._nativeElement, Object.keys(this.propConfig));
 
         (this._nativeElement as any).__SvelteNativeElement__ = this;
-        log.debug(`created ${this} ${this._nativeElement}`)
+        if (log.enabled) {
+            log.debug(`created ${this} ${this._nativeElement}`)
+        }
     }
 
     get nativeElement() {
@@ -205,11 +207,15 @@ export default class NativeElementNode<T> extends ElementNode {
                 setTarget = setTarget[key];
             } else {
                 try {
-                    log.debug(`setAttr value ${this} ${resolvedKeys.join(".")} ${value}`)
+                    if (log.enabled) {
+                        log.debug(`setAttr value ${this} ${resolvedKeys.join(".")} ${value}`)
+                    }
                     setTarget[key] = value
                 } catch (e) {
                     // ignore but log
-                    log.error(`set attribute threw an error, attr:${key} on ${this._tagName}: ${e.message}`)
+                    if (log.enabled) {
+                        log.error(`set attribute threw an error, attr:${key} on ${this._tagName}: ${e.message}`)
+                    }
                 }
             }
         }

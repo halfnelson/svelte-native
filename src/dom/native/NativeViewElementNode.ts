@@ -50,7 +50,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
         let oldAnimations: KeyframeAnimation[] = [];
 
         const addAnimation = (animation: string) => {
-            log.debug(`Adding animation ${animation}`)
+            if (log.enabled) {
+                log.debug(`Adding animation ${animation}`)
+            }
             if (!this.nativeView) {
                 throw Error("Attempt to apply animation to tag without a native view" + this.tagName);
             }
@@ -94,7 +96,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
         }
 
         const removeAnimation = (animation: string) => {
-            log.debug(`Removing animation ${animation}`)
+            if (log.enabled) {
+                log.debug(`Removing animation ${animation}`)
+            }
             if (animations.has(animation)) {
                 let animationInstance = animations.get(animation);
                 animations.delete(animation);
@@ -122,7 +126,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
             },
 
             set animation(value: string) {
-                log.debug(`setting animation ${value}`)
+                if (log.enabled) {
+                    log.debug(`setting animation ${value}`)
+                }
                 let new_animations = value.trim() == "" ? [] : value.split(',').map(a => a.trim());
                 //add new ones
                 for (let anim of new_animations) {
@@ -139,12 +145,16 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
             },
 
             get cssText(): string {
-                log.debug("got css text");
+                if (log.enabled) {
+                    log.debug("got css text");
+                }
                 return getStyleAttribute();
             },
 
             set cssText(value: string) {
-                log.debug("set css text");
+                if (log.enabled) {
+                    log.debug("set css text");
+                }
                 setStyleAttribute(value);
             }
         }
@@ -152,7 +162,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
 
     /* istanbul ignore next */
     setStyle(property: string, value: string | number) {
-        log.debug(`setStyle ${this} ${property} ${value}`)
+        if (log.enabled) {
+            log.debug(`setStyle ${this} ${property} ${value}`)
+        }
 
         if (!(value = value.toString().trim()).length) {
             return
@@ -176,13 +188,17 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
 
     /* istanbul ignore next */
     addEventListener(event: string, handler: EventListener) {
-        log.debug(`add event listener ${this} ${event}`)
+        if (log.enabled) {
+            log.debug(`add event listener ${this} ${event}`)
+        }
         this.nativeView.on(event, handler)
     }
 
     /* istanbul ignore next */
     removeEventListener(event: string, handler?: EventListener) {
-        log.debug(`remove event listener ${this} ${event}`)
+        if (log.enabled) {
+            log.debug(`remove event listener ${this} ${event}`)
+        }
         this.nativeView.off(event, handler)
     }
 
@@ -271,7 +287,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
         } else if (parentView instanceof View) {
             parentView._removeView(childView)
         } else {
-            log.warn("Unknown parent view type: " + parentView)
+            if (log.enabled) {
+                log.warn("Unknown parent view type: " + parentView)
+            }
         }
     }
 
