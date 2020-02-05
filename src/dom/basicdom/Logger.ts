@@ -1,3 +1,4 @@
+import { isEnabled } from 'tns-core-modules/trace'
 export enum LogLevel {
     Debug,
     Info,
@@ -7,33 +8,37 @@ export enum LogLevel {
 
 type LoggerCallback = (message: string, level: LogLevel) => void
 
-const nullLogger = () => { };
+// const nullLogger = () => { };
 
 class Logger {
     onLog: LoggerCallback
 
     constructor() {
-        this.onLog = () => nullLogger;
+        // this.onLog = () => nullLogger;
     }
 
     setHandler(logger: LoggerCallback): void {
-        this.onLog = logger || nullLogger
+        this.onLog = logger
+    }
+
+    get enabled() {
+        return !!this.onLog && isEnabled()
     }
 
     debug(message: string): void {
-        this.onLog(message, LogLevel.Debug);
+        this.onLog && this.onLog(message, LogLevel.Debug);
     }
 
     info(message: string): void {
-        this.onLog(message, LogLevel.Info);
+        this.onLog && this.onLog(message, LogLevel.Info);
     }
 
     warn(message: string): void {
-        this.onLog(message, LogLevel.Warn);
+        this.onLog && this.onLog(message, LogLevel.Warn);
     }
 
     error(message: string): void {
-        this.onLog(message, LogLevel.Error);
+        this.onLog && this.onLog(message, LogLevel.Error);
     }
 }
 
