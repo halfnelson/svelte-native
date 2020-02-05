@@ -208,8 +208,8 @@ export default class NativeElementNode<T> extends ElementNode {
             } else {
                 try {
                     if (log.enabled) {
-                        log.debug(`setAttr value ${this} ${resolvedKeys.join(".")} ${value}`)
-                        // log.debug(`setAttr value ${this} ${value}`)
+                        // log.debug(`setAttr value ${this} ${resolvedKeys.join(".")} ${value}`)
+                        log.debug(`setAttr value ${this} ${value}`)
                     }
                     setTarget[key] = value
                 } catch (e) {
