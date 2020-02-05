@@ -8,13 +8,10 @@ export enum LogLevel {
 
 type LoggerCallback = (message: string, level: LogLevel) => void
 
-// const nullLogger = () => { };
-
 class Logger {
     onLog: LoggerCallback
 
     constructor() {
-        // this.onLog = () => nullLogger;
     }
 
     setHandler(logger: LoggerCallback): void {
