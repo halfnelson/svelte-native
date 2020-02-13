@@ -9,6 +9,7 @@
       "outDir": "./dist",
       "target": "es6",
       "moduleResolution": "node",
+      "experimentalDecorators":true,
       "allowSyntheticDefaultImports": false,
       "esModuleInterop": false,   
     },

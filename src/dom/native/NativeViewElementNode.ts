@@ -5,6 +5,7 @@ import { CssAnimationParser } from '@nativescript/core/ui/styling/css-animation-
 import { Page, View, EventData, ContentView } from '@nativescript/core/ui/page';
 import { LayoutBase } from '@nativescript/core/ui/layouts/layout-base';
 import NativeElementNode, { NativeElementPropConfig } from './NativeElementNode';
+import { profile } from '@nativescript/core/profiling';
 
 interface IStyleProxy {
     setProperty(propertyName: string, value: string, priority?: string): void;
@@ -202,7 +203,7 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
         this.nativeView.off(event, handler)
     }
 
-
+    @profile
     onInsertedChild(childNode: ViewNode, index: number) {
         super.onInsertedChild(childNode, index);
 
@@ -215,6 +216,7 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
 
         const parentView = this.nativeView
         const childView = childNode.nativeView
+
 
         if (!parentView || !childView) {
             return
@@ -258,6 +260,7 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
         throw new Error("Parent can't contain children: " + this + ", " + childNode);
     }
 
+    @profile
     onRemovedChild(childNode: ViewNode) {
         super.onRemovedChild(childNode);
 
