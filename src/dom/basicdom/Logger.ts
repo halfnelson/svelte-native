@@ -1,4 +1,4 @@
-import { isEnabled } from 'tns-core-modules/trace'
+import { isEnabled } from '@nativescript/core/trace'
 export enum LogLevel {
     Debug,
     Info,
