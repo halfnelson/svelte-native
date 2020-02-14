@@ -1,9 +1,16 @@
-import { ItemEventData, ItemsSource } from '@nativescript/core/ui/list-view';
-import { View } from '@nativescript/core/ui/core/view';
-import { NativeViewElementNode, TemplateElement, ViewNode, createElement, logger, registerElement } from 'svelte-native/dom';
-import { flush } from 'svelte/internal';
-import { CollectionView } from 'nativescript-collectionview';
-import { profile } from '@nativescript/core/profiling';
+import { ItemEventData, ItemsSource } from "@nativescript/core/ui/list-view";
+import { View } from "@nativescript/core/ui/core/view";
+import {
+    NativeViewElementNode,
+    TemplateElement,
+    ViewNode,
+    createElement,
+    logger,
+    registerElement
+} from "svelte-native-akylas/dom";
+import { flush } from "svelte/internal";
+import { CollectionView } from "nativescript-collectionview";
+import { profile } from "@nativescript/core/profiling";
 
 class SvelteKeyedTemplate {
     _key: string;
@@ -22,31 +29,44 @@ class SvelteKeyedTemplate {
         // create a proxy element to eventually contain our item (once we have one to render)
         // TODO is StackLayout the best choice here?
         // logger.debug(`creating view for key ${this.key}`);
-        const wrapper = createElement('StackLayout') as NativeViewElementNode<View>;
+        const wrapper = createElement("StackLayout") as NativeViewElementNode<
+            View
+        >;
 
         const nativeEl = wrapper.nativeView;
+        // console.log('createView', this.key)
+        (nativeEl as any).dontAddToCollectionView = true;
 
-        (nativeEl as any).__SvelteComponentBuilder__ = profile('__SvelteComponentBuilder__', props => {
+        (nativeEl as any).__SvelteComponentBuilder__ = props => { 
             (nativeEl as any).__SvelteComponent__ = new this.component({
                 target: wrapper,
                 props
             });
-        });
+        };
         return nativeEl;
     }
 }
 
-export default class CollectionViewViewElement extends NativeViewElementNode<CollectionView> {
+export default class CollectionViewViewElement extends NativeViewElementNode<
+    CollectionView
+> {
     constructor() {
-        super('collectionview', CollectionView);
+        super("collectionview", CollectionView);
         const nativeView = this.nativeView;
-        nativeView.itemViewLoader = (viewType: any): View => this.loadView(viewType);
-        this.nativeView.on(CollectionView.itemLoadingEvent, this.updateListItem, this);
+        nativeView.itemViewLoader = (viewType: any): View =>
+            this.loadView(viewType);
+        this.nativeView.on(
+            CollectionView.itemLoadingEvent,
+            this.updateListItem,
+            this
+        );
     }
 
     private loadView(viewType: string): View {
         if (Array.isArray(this.nativeElement.itemTemplates)) {
-            const keyedTemplate = this.nativeElement.itemTemplates.find(t => t.key === 'default');
+            const keyedTemplate = this.nativeElement.itemTemplates.find(
+                t => t.key === "default"
+            );
             if (keyedTemplate) {
                 return keyedTemplate.createView();
             }
@@ -55,7 +75,9 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
         const componentClass = this.getComponentForView(viewType);
         if (!componentClass) return null;
 
-        const wrapper = createElement('StackLayout') as NativeViewElementNode<View>;
+        const wrapper = createElement("StackLayout") as NativeViewElementNode<
+            View
+        >;
         const nativeEl = wrapper.nativeView;
 
         const builder = (props: any) => {
@@ -64,6 +86,7 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
                 props
             });
         };
+        // in svelte we want to add the wrapper as a child of the collectionview ourselves
         (nativeEl as any).__SvelteComponentBuilder__ = builder;
         return nativeEl;
     }
@@ -71,8 +94,8 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
     // For some reason itemTemplateSelector isn't defined as a "property" on radListView, so when we set the property, it is lowercase (due to svelte's forced downcasing)
     // we intercept and fix the case here.
     setAttribute(fullkey: string, value: any): void {
-        if (fullkey.toLowerCase() === 'itemtemplateselector') {
-            fullkey = 'itemTemplateSelector';
+        if (fullkey.toLowerCase() === "itemtemplateselector") {
+            fullkey = "itemTemplateSelector";
         }
         super.setAttribute(fullkey, value);
     }
@@ -80,7 +103,12 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
     private getComponentForView(viewType: string) {
         const normalizedViewType = viewType.toLowerCase();
 
-        const templateEl = this.childNodes.find(n => n.tagName === 'template' && String(n.getAttribute('type')).toLowerCase() === normalizedViewType) as any;
+        const templateEl = this.childNodes.find(
+            n =>
+                n.tagName === "template" &&
+                String(n.getAttribute("type")).toLowerCase() ===
+                    normalizedViewType
+        ) as any;
         if (!templateEl) return null;
         return templateEl.component;
     }
@@ -88,18 +116,29 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
     onInsertedChild(childNode: ViewNode, index: number) {
         super.onInsertedChild(childNode, index);
         if (childNode instanceof TemplateElement) {
-            const key = childNode.getAttribute('key') || 'default';
-            const templates = !this.nativeView.itemTemplates || typeof this.nativeView.itemTemplates === 'string' ? [] : (this.nativeView.itemTemplates as any[]);
-            this.nativeView.itemTemplates = templates.concat([new SvelteKeyedTemplate(key, childNode)]);
+            const key = childNode.getAttribute("key") || "default";
+            const templates =
+                !this.nativeView.itemTemplates ||
+                typeof this.nativeView.itemTemplates === "string"
+                    ? []
+                    : (this.nativeView.itemTemplates as any[]);
+            this.nativeView.itemTemplates = templates.concat([
+                new SvelteKeyedTemplate(key, childNode)
+            ]);
         }
     }
 
     onRemovedChild(childNode: ViewNode) {
         super.onRemovedChild(childNode);
         if (childNode instanceof TemplateElement) {
-            const key = childNode.getAttribute('key') || 'default';
-            if (this.nativeView.itemTemplates && typeof this.nativeView.itemTemplates !== 'string') {
-                this.nativeView.itemTemplates = this.nativeView.itemTemplates.filter(t => t.key !== key);
+            const key = childNode.getAttribute("key") || "default";
+            if (
+                this.nativeView.itemTemplates &&
+                typeof this.nativeView.itemTemplates !== "string"
+            ) {
+                this.nativeView.itemTemplates = this.nativeView.itemTemplates.filter(
+                    t => t.key !== key
+                );
             }
         }
     }
@@ -107,10 +146,14 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
         const _view = args.view as any;
         const props = { item: args.bindingContext };
         const componentInstance = _view.__SvelteComponent__;
+        
         if (!componentInstance) {
             if (_view.__SvelteComponentBuilder__) {
                 _view.__SvelteComponentBuilder__(props);
                 _view.__SvelteComponentBuilder__ = null;
+                if ((_view as any).dontAddToCollectionView) {
+                    this.nativeView._addViewCore(_view);
+                }
             }
         } else {
             // console.log('updateListItem', args.index, props.item);
@@ -120,6 +163,9 @@ export default class CollectionViewViewElement extends NativeViewElementNode<Col
     }
 
     static register() {
-        registerElement('collectionview', () => new CollectionViewViewElement());
+        registerElement(
+            "collectionview",
+            () => new CollectionViewViewElement()
+        );
     }
 }

@@ -7,7 +7,7 @@ RadSideDrawerElement.register();
 import CollectionViewElement from './collectionview';
 CollectionViewElement.register();
 
-import * as trace from "@nativescript/core/trace"
+// import * as trace from "@nativescript/core/trace"
 // trace.enable();
 // trace.addCategories(DomTraceCategory);
 

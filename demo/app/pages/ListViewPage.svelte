@@ -27,14 +27,12 @@
   let listView;
 
   function generateItems(count, offset = 0) {
-    return new Array(count)
-      .fill()
-      .map((_, i) => ({
-        index: i,
-        name: `Item ${i + offset}`,
-        description: `Item ${i + offset} description`,
-        image: images[(i + offset) % images.length]
-      }));
+    return new Array(count).fill().map((_, i) => ({
+      index: i,
+      name: `Item ${i + offset}`,
+      description: `Item ${i + offset} description`,
+      image: images[(i + offset) % images.length]
+    }));
   }
 
   let items = new ObservableArray(generateItems(50));
@@ -80,7 +78,7 @@
 <page>
   <Header title="ListView" />
   {#if items}
-  <ListViewTemplateComponent item={items.getItem(0)} />
+    <ListViewTemplateComponent item={items.getItem(0)} />
   {/if}
   <collectionview
     {items}
@@ -94,8 +92,10 @@
     <Template key="odd" let:item>
       <gridLayout columns="*, auto" class="item-template odd">
         <stackLayout>
-          <label style="font-size: 20">{item.name}</label>
-          <label style="font-size: 10">{item.description}</label>
+          <label id="labeltest2" whiteSpace="normal">
+            <span fontSize="20" text="{item.name}{'\n'}" />
+            <span fontSize="10" text={item.description} />
+          </label>
         </stackLayout>
         <image col="1" src={item.image} class="far" />
       </gridLayout>
