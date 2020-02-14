@@ -53,9 +53,9 @@ export default class ElementNode extends ViewNode {
     appendChild(childNode: ViewNode) {
         super.appendChild(childNode)
 
-        // if (childNode.nodeType === 3) {
-        //     this.setText((childNode as TextNode).text)
-        // }
+        if (childNode.nodeType === 3 && (childNode as TextNode).text) {
+            this.setText((childNode as TextNode).text)
+        }
 
         if (childNode.nodeType === 7) {
             (childNode as PropertyNode).setOnNode(this);
