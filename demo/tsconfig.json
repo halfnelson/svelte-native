@@ -1,33 +1,30 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
+        "target": "es6",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "removeComments": false,
+        "sourceMap": true,
+        "skipLibCheck": true,
+        "importHelpers": true,
         "noEmitHelpers": true,
         "noEmitOnError": true,
-        "skipLibCheck": true,
-        "moduleResolution": "node",
-        "lib": [
-            "es6",
-        ],
-        "types": [
-            "./node_modules/svelte/",
-            "mocha",
-            "karma-chai"
-        ],
+        "preserveSymlinks": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "noImplicitUseStrict": true,
+        "lib": ["es6", "dom", "es2015.iterable", "es2017.string", "es2018.promise"],
         "baseUrl": ".",
+        "types": ["svelte"],  
         "paths": {
-            "~/*": [
-                "app/*"
-            ],
-            "*": [
-                "./node_modules/*"
-            ]
+            "~/*": ["app/*"],
+            "svelte-native": ["./node_modules/svelte-native-akylas"],
+            "svelte-native/*": ["./node_modules/svelte-native-akylas/*"],
+            "tns-core-modules": ["./node_modules/@nativescript/core"],
+            "tns-core-modules/*": ["./node_modules/@nativescript/core/*"],
+            "*": ["./node_modules/*"]
         }
     },
-    "exclude": [
-        "node_modules",
-        "platforms"
-    ]
+    "include": ["app/**/*", "references.d.ts"],
+    "exclude": ["node_modules", "platforms", "**/angular"]
 }
