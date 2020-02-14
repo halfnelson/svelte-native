@@ -34,12 +34,13 @@ class SvelteKeyedTemplate {
         >;
 
         const nativeEl = wrapper.nativeView;
-        // console.log('createView', this.key)
-        // (nativeEl as any).dontAddToCollectionView = true;
 
-        (nativeEl as any).__SvelteComponentBuilder__ = props => { 
+        // because of the way {N} works we cant use that wrapper as the target for the component
+        // it will trigger uncessary {N} component updates because the parent view is already attached
+
+        (nativeEl as any).__SvelteComponentBuilder__ = (parentView, props) => {
             (nativeEl as any).__SvelteComponent__ = new this.component({
-                target: wrapper,
+                target: parentView,
                 props
             });
         };
@@ -80,9 +81,9 @@ export default class CollectionViewViewElement extends NativeViewElementNode<
         >;
         const nativeEl = wrapper.nativeView;
 
-        const builder = (props: any) => {
+        const builder = (parentView, props: any) => {
             (nativeEl as any).__SvelteComponent__ = new componentClass({
-                target: wrapper,
+                target: parentView,
                 props
             });
         };
@@ -146,14 +147,18 @@ export default class CollectionViewViewElement extends NativeViewElementNode<
         const _view = args.view as any;
         const props = { item: args.bindingContext };
         const componentInstance = _view.__SvelteComponent__;
-        
+
         if (!componentInstance) {
             if (_view.__SvelteComponentBuilder__) {
-                _view.__SvelteComponentBuilder__(props);
+                const wrapper = createElement(
+                    "StackLayout"
+                ) as NativeViewElementNode<View>;
+                _view.__SvelteComponentBuilder__(wrapper, props);
                 _view.__SvelteComponentBuilder__ = null;
-                if ((_view as any).dontAddToCollectionView) {
-                    this.nativeView._addViewCore(_view);
-                }
+                const nativeEl = wrapper.nativeView;
+                // if ((_view as any).dontAddToCollectionView) {
+                    _view.addChild(nativeEl);
+                // }
             }
         } else {
             // console.log('updateListItem', args.index, props.item);
