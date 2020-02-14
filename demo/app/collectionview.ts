@@ -35,7 +35,7 @@ class SvelteKeyedTemplate {
 
         const nativeEl = wrapper.nativeView;
         // console.log('createView', this.key)
-        (nativeEl as any).dontAddToCollectionView = true;
+        // (nativeEl as any).dontAddToCollectionView = true;
 
         (nativeEl as any).__SvelteComponentBuilder__ = props => { 
             (nativeEl as any).__SvelteComponent__ = new this.component({
