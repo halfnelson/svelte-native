@@ -1,11 +1,17 @@
-import ViewNode from '../basicdom/ViewNode'
-import { logger as log, registerElement, RegisterElementOptions } from '../basicdom'
-import { KeyframeAnimation } from '@nativescript/core/ui/animation/keyframe-animation';
-import { CssAnimationParser } from '@nativescript/core/ui/styling/css-animation-parser';
-import { Page, View, EventData, ContentView } from '@nativescript/core/ui/page';
-import { LayoutBase } from '@nativescript/core/ui/layouts/layout-base';
-import NativeElementNode, { NativeElementPropConfig } from './NativeElementNode';
-import { profile } from '@nativescript/core/profiling';
+import ViewNode from "../basicdom/ViewNode";
+import {
+    logger as log,
+    registerElement,
+    RegisterElementOptions,
+} from "../basicdom";
+import { KeyframeAnimation } from "@nativescript/core/ui/animation/keyframe-animation";
+import { CssAnimationParser } from "@nativescript/core/ui/styling/css-animation-parser";
+import { Page, View, EventData, ContentView } from "@nativescript/core/ui/page";
+import { LayoutBase } from "@nativescript/core/ui/layouts/layout-base";
+import NativeElementNode, {
+    NativeElementPropConfig,
+} from "./NativeElementNode";
+import { profile } from "@nativescript/core/profiling";
 
 interface IStyleProxy {
     setProperty(propertyName: string, value: string, priority?: string): void;
@@ -18,44 +24,73 @@ function camelize(kebab: string): string {
     return kebab.replace(/[\-]+(\w)/g, (m, l) => l.toUpperCase());
 }
 
-export function registerNativeViewElement<T extends View>(elementName: string, resolver: () => new () => T, parentProp: string = null, propConfig: NativeElementPropConfig = {}, options?: RegisterElementOptions) {
-    registerElement(elementName, () => new NativeViewElementNode(elementName, resolver(), parentProp, propConfig), options);
+export function registerNativeViewElement<T extends View>(
+    elementName: string,
+    resolver: () => new () => T,
+    parentProp: string = null,
+    propConfig: NativeElementPropConfig = {},
+    options?: RegisterElementOptions
+) {
+    registerElement(
+        elementName,
+        () =>
+            new NativeViewElementNode(
+                elementName,
+                resolver(),
+                parentProp,
+                propConfig
+            ),
+        options
+    );
 }
-
 
 export type EventListener = (args: any) => void;
 
 // A NativeViewElementNode, wraps a native View and handles style, event dispatch, and native view hierarchy management.
-export default class NativeViewElementNode<T extends View> extends NativeElementNode<T> {
+export default class NativeViewElementNode<
+    T extends View
+> extends NativeElementNode<T> {
     style: IStyleProxy;
 
-    constructor(tagName: string, viewClass: new () => T, setsParentProp: string = null, propConfig: NativeElementPropConfig = {}) {
-        super(tagName, viewClass, setsParentProp, propConfig)
+    constructor(
+        tagName: string,
+        viewClass: new () => T,
+        setsParentProp: string = null,
+        propConfig: NativeElementPropConfig = {}
+    ) {
+        super(tagName, viewClass, setsParentProp, propConfig);
+        this.init();
+    }
 
+    @profile
+    init() {
         let setStyleAttribute = (value: string): void => {
-            this.setAttribute('style', value);
-        }
+            this.setAttribute("style", value);
+        };
 
         let getStyleAttribute = (): string => {
-            return this.getAttribute('style');
-        }
+            return this.getAttribute("style");
+        };
 
         let getParentPage = (): NativeViewElementNode<Page> => {
             if (this.nativeView && this.nativeView.page) {
                 return (this.nativeView.page as any).__SvelteNativeElement__;
             }
             return null;
-        }
+        };
 
         let animations: Map<string, KeyframeAnimation> = new Map();
         let oldAnimations: KeyframeAnimation[] = [];
 
         const addAnimation = (animation: string) => {
             if (log.enabled) {
-                log.debug(`Adding animation ${animation}`)
+                log.debug(`Adding animation ${animation}`);
             }
             if (!this.nativeView) {
-                throw Error("Attempt to apply animation to tag without a native view" + this.tagName);
+                throw Error(
+                    "Attempt to apply animation to tag without a native view" +
+                        this.tagName
+                );
             }
 
             let page = getParentPage();
@@ -73,7 +108,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
             }
 
             //Parse our "animation" style property into an animation info instance (this won't include the keyframes from the css)
-            let animationInfos = CssAnimationParser.keyframeAnimationsFromCSSDeclarations([{ property: "animation", value: animation }]);
+            let animationInfos = CssAnimationParser.keyframeAnimationsFromCSSDeclarations(
+                [{ property: "animation", value: animation }]
+            );
             if (!animationInfos) {
                 animations.set(animation, null);
                 return;
@@ -81,7 +118,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
             let animationInfo = animationInfos[0];
 
             //Fetch an animationInfo instance that includes the keyframes from the css (this won't include the animation properties parsed above)
-            let animationWithKeyframes = (page.nativeView as Page).getKeyframeAnimationWithName(animationInfo.name);
+            let animationWithKeyframes = (page.nativeView as Page).getKeyframeAnimationWithName(
+                animationInfo.name
+            );
             if (!animationWithKeyframes) {
                 animations.set(animation, null);
                 return;
@@ -89,16 +128,18 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
 
             animationInfo.keyframes = animationWithKeyframes.keyframes;
             //combine the keyframes from the css with the animation from the parsed attribute to get a complete animationInfo object
-            let animationInstance = KeyframeAnimation.keyframeAnimationFromInfo(animationInfo);
+            let animationInstance = KeyframeAnimation.keyframeAnimationFromInfo(
+                animationInfo
+            );
 
             // save and launch the animation
             animations.set(animation, animationInstance);
             animationInstance.play(this.nativeView);
-        }
+        };
 
         const removeAnimation = (animation: string) => {
             if (log.enabled) {
-                log.debug(`Removing animation ${animation}`)
+                log.debug(`Removing animation ${animation}`);
             }
             if (animations.has(animation)) {
                 let animationInstance = animations.get(animation);
@@ -111,10 +152,14 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
                     }
                 }
             }
-        }
+        };
 
         this.style = {
-            setProperty: (propertyName: string, value: string, priority?: string) => {
+            setProperty: (
+                propertyName: string,
+                value: string,
+                priority?: string
+            ) => {
                 this.setStyle(camelize(propertyName), value);
             },
 
@@ -123,14 +168,17 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
             },
 
             get animation(): string {
-                return [...animations.keys()].join(", ")
+                return [...animations.keys()].join(", ");
             },
 
             set animation(value: string) {
                 if (log.enabled) {
-                    log.debug(`setting animation ${value}`)
+                    log.debug(`setting animation ${value}`);
                 }
-                let new_animations = value.trim() == "" ? [] : value.split(',').map(a => a.trim());
+                let new_animations =
+                    value.trim() == ""
+                        ? []
+                        : value.split(",").map(a => a.trim());
                 //add new ones
                 for (let anim of new_animations) {
                     if (!animations.has(anim)) {
@@ -157,50 +205,50 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
                     log.debug("set css text");
                 }
                 setStyleAttribute(value);
-            }
-        }
+            },
+        };
     }
 
     /* istanbul ignore next */
+    @profile
     setStyle(property: string, value: string | number) {
         if (log.enabled) {
-            log.debug(`setStyle ${this} ${property} ${value}`)
+            log.debug(`setStyle ${this} ${property} ${value}`);
         }
 
         if (!(value = value.toString().trim()).length) {
-            return
+            return;
         }
 
-        if (property.endsWith('Align')) {
+        if (property.endsWith("Align")) {
             // NativeScript uses Alignment instead of Align, this ensures that text-align works
-            property += 'ment'
+            property += "ment";
         }
-        (this.nativeView.style as any)[property] = value
+        (this.nativeView.style as any)[property] = value;
     }
 
-
     get nativeView() {
-        return this.nativeElement
+        return this.nativeElement;
     }
 
     set nativeView(view) {
-        this.nativeElement = view
+        this.nativeElement = view;
     }
 
     /* istanbul ignore next */
     addEventListener(event: string, handler: EventListener) {
         if (log.enabled) {
-            log.debug(`add event listener ${this} ${event}`)
+            log.debug(`add event listener ${this} ${event}`);
         }
-        this.nativeView.on(event, handler)
+        this.nativeView.on(event, handler);
     }
 
     /* istanbul ignore next */
     removeEventListener(event: string, handler?: EventListener) {
         if (log.enabled) {
-            log.debug(`remove event listener ${this} ${event}`)
+            log.debug(`remove event listener ${this} ${event}`);
         }
-        this.nativeView.off(event, handler)
+        this.nativeView.off(event, handler);
     }
 
     @profile
@@ -208,18 +256,17 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
         super.onInsertedChild(childNode, index);
 
         if (!(childNode instanceof NativeViewElementNode)) {
-            return
+            return;
         }
 
         //if we are a property value, then skip adding to parent
         if (childNode.propAttribute) return;
 
-        const parentView = this.nativeView
-        const childView = childNode.nativeView
-
+        const parentView = this.nativeView;
+        const childView = childNode.nativeView;
 
         if (!parentView || !childView) {
-            return
+            return;
         }
 
         //use the builder logic if we aren't being dynamic, to catch config items like <actionbar> that are not likely to be toggled
@@ -227,19 +274,25 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
             (parentView as any)._addChildFromBuilder(
                 childView.constructor.name,
                 childView
-            )
-            return
+            );
+            return;
         }
 
         if (parentView instanceof LayoutBase) {
             if (index >= 0) {
-                //our dom includes "textNode" and "commentNode" which does not appear in the nativeview's children. 
+                //our dom includes "textNode" and "commentNode" which does not appear in the nativeview's children.
                 //we recalculate the index required for the insert operation by only including native view element nodes in the count
                 //that aren't property setter nodes
-                let nativeIndex = this.childNodes.filter(e => e instanceof NativeViewElementNode && !e.propAttribute).indexOf(childNode)
+                let nativeIndex = this.childNodes
+                    .filter(
+                        e =>
+                            e instanceof NativeViewElementNode &&
+                            !e.propAttribute
+                    )
+                    .indexOf(childNode);
                 parentView.insertChild(childView, nativeIndex);
             } else {
-                parentView.addChild(childView)
+                parentView.addChild(childView);
             }
             return;
         }
@@ -249,7 +302,7 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
             return (parentView as any)._addChildFromBuilder(
                 childView.constructor.name,
                 childView
-            )
+            );
         }
 
         if (parentView instanceof ContentView) {
@@ -257,7 +310,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
             return;
         }
 
-        throw new Error("Parent can't contain children: " + this + ", " + childNode);
+        throw new Error(
+            "Parent can't contain children: " + this + ", " + childNode
+        );
     }
 
     @profile
@@ -265,33 +320,33 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
         super.onRemovedChild(childNode);
 
         if (!(childNode instanceof NativeViewElementNode)) {
-            return
+            return;
         }
 
         //childnodes with propAttributes aren't added to native views
         if (childNode.propAttribute) return;
 
         if (!this.nativeView || !childNode.nativeView) {
-            return
+            return;
         }
 
-        const parentView = this.nativeView
-        const childView = childNode.nativeView
+        const parentView = this.nativeView;
+        const childView = childNode.nativeView;
 
         if (parentView instanceof LayoutBase) {
-            parentView.removeChild(childView)
+            parentView.removeChild(childView);
         } else if (parentView instanceof ContentView) {
             if (parentView.content === childView) {
-                parentView.content = null
+                parentView.content = null;
             }
             if (childNode.nodeType === 8) {
-                parentView._removeView(childView)
+                parentView._removeView(childView);
             }
         } else if (parentView instanceof View) {
-            parentView._removeView(childView)
+            parentView._removeView(childView);
         } else {
             if (log.enabled) {
-                log.warn("Unknown parent view type: " + parentView)
+                log.warn("Unknown parent view type: " + parentView);
             }
         }
     }
@@ -304,4 +359,3 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
         }
     }
 }
-

@@ -2,6 +2,7 @@
 import ViewNode from './ViewNode'
 import TextNode from './TextNode';
 import PropertyNode from './PropertyNode';
+import { profile } from "@nativescript/core/profiling";
 
 
 export interface IClassList {
@@ -29,6 +30,7 @@ export default class ElementNode extends ViewNode {
         this.setAttribute('id', value)
     }
 
+    @profile
     get classList() {
         if (!this._classList) {
             const getClasses = () => (this.getAttribute('class') || "").split(/\s+/).filter((k: string) => k != "")
@@ -50,6 +52,7 @@ export default class ElementNode extends ViewNode {
         return this._classList;
     }
 
+    @profile
     appendChild(childNode: ViewNode) {
         super.appendChild(childNode)
 
@@ -62,6 +65,7 @@ export default class ElementNode extends ViewNode {
         }
     }
 
+    @profile
     insertBefore(childNode: ViewNode, referenceNode: ViewNode) {
         super.insertBefore(childNode, referenceNode)
 
@@ -74,6 +78,7 @@ export default class ElementNode extends ViewNode {
         }
     }
 
+    @profile
     removeChild(childNode: ViewNode) {
         super.removeChild(childNode)
 

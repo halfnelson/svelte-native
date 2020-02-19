@@ -3,6 +3,7 @@ import { logger as log, ViewNode, registerElement } from '../basicdom'
 import { isAndroid, isIOS } from '@nativescript/core/ui/page';
 import ElementNode from '../basicdom/ElementNode';
 import { ObservableArray } from '@nativescript/core/data/observable-array/observable-array';
+import { profile } from "@nativescript/core/profiling";
 
 export enum NativeElementPropType {
     Value,
@@ -96,6 +97,7 @@ export default class NativeElementNode<T> extends ElementNode {
         this._nativeElement = el
     }
 
+    @profile
     getAttribute(fullkey: string) {
         let getTarget = this.nativeElement as any;
 
@@ -125,6 +127,7 @@ export default class NativeElementNode<T> extends ElementNode {
         return null;
     }
 
+    @profile
     onInsertedChild(childNode: ViewNode, index: number) {
         super.onInsertedChild(childNode, index);
         // support for the prop: shorthand for setting parent property to native element
@@ -146,6 +149,7 @@ export default class NativeElementNode<T> extends ElementNode {
         }
     }
 
+    @profile
     onRemovedChild(childNode: ViewNode) {
         if (!(childNode instanceof NativeElementNode)) return;
         let propName = childNode.propAttribute;
@@ -165,6 +169,7 @@ export default class NativeElementNode<T> extends ElementNode {
         super.onRemovedChild(childNode)
     }
 
+    @profile
     setAttribute(fullkey: string, value: any) {
         const nv = this.nativeElement as any
         let setTarget = nv;
