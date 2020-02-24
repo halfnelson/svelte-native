@@ -13,7 +13,9 @@ class StyleSheet {
     deleteRule(index: number) {
         let removed = this._rules.splice(index, 1);
         for (let r in removed) {
-            log.debug(`removing transition rule ${r}`);
+            if (log.enabled) {
+                log.debug(`removing transition rule ${r}`);
+            }
             // Turns out nativescript doesn't support "removing" css.
             // this is pretty horrible but better than a memory leak. 
             // since this code is called mainly for keyframes, and keyframes don't add new selectors (they just end up in _keyframes)
@@ -31,7 +33,9 @@ class StyleSheet {
     }
 
     insertRule(rule: string, index: number = 0) {
-        log.debug(`Adding transition rule ${rule}`);
+        if (log.enabled) {
+            log.debug(`Adding transition rule ${rule}`);
+        }
         let frame = topmost();
         frame.addCss(rule);
         this._rules.splice(index, 0, rule);
