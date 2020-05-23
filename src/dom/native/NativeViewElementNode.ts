@@ -259,12 +259,12 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
         //childnodes with propAttributes aren't added to native views
         if (childNode.propAttribute) return;
 
-        if (!this.nativeView || !childNode.nativeView) {
+        const parentView = this.nativeView
+        const childView = childNode.nativeView
+        if (!parentView || !childView || !(childView instanceof View)) {
             return
         }
 
-        const parentView = this.nativeView
-        const childView = childNode.nativeView
 
         if (parentView instanceof LayoutBase) {
             parentView.removeChild(childView)
