@@ -12,7 +12,6 @@ declare global {
 }
 
 export function svelteNativeNoFrame(rootElement: typeof SvelteComponent, data: any): Promise<SvelteComponent> {
-    initializeDom();
     return new Promise((resolve, reject) => {
 
         let elementInstance: SvelteComponent;
@@ -41,8 +40,6 @@ export function svelteNativeNoFrame(rootElement: typeof SvelteComponent, data: a
 }
 
 export function svelteNative(startPage: typeof SvelteComponent, data: any): Promise<SvelteComponent> {
-    initializeDom();
-
     let rootFrame: FrameElement; 
     let pageInstance: SvelteComponent;
 
@@ -73,8 +70,9 @@ export function svelteNative(startPage: typeof SvelteComponent, data: any): Prom
 }
 
 // Svelte looks to see if window is undefined in order to determine if it is running on the client or in SSR.
-// window is undefined until initializeDom is called. We will set it to a temporary value here and overwrite it in intializedom.
-(global as any).window = { env: "Svelte Native" }
+// any imports of svelte/internals global also bind to the current value of window (during module import) so we need to 
+// configure our dom now.
+initializeDom()
 
 
 export { navigate, goBack, showModal, closeModal, initializeDom, DomTraceCategory } from "./dom"
