@@ -27,7 +27,6 @@ export function svelteNativeNoFrame(rootElement: typeof SvelteComponent, data: a
 
         //wait for launch before returning
         on(launchEvent, () => {
-            console.log("Application Launched");
             resolve(elementInstance);
         })
 
@@ -46,7 +45,6 @@ export function svelteNative(startPage: typeof SvelteComponent, data: any): Prom
     return new Promise((resolve, reject) => {
         //wait for launch
         on(launchEvent, () => {
-            console.log("Application Launched");
             resolve(pageInstance);
         })
 
