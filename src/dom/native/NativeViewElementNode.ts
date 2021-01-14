@@ -274,7 +274,7 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
             if (childNode.nodeType === 8) {
                 parentView._removeView(childView)
             }
-        } else if (parentView instanceof View) {
+        } else if (typeof parentView._removeView === 'function') {
             parentView._removeView(childView)
         } else {
                 log.warn(() => "Unknown parent view type: " + parentView)
