@@ -89,10 +89,6 @@ function initializeLogger() {
 export function initializeDom() {
     initializeLogger();
     registerSvelteElements();
-    // TODO: move __AUTO_REGISTER_UI_MODULES__ out of global
-    // breaking change needs to be in sync with N webpack release
-    if (global.__AUTO_REGISTER_UI_MODULES__ !== false) {
-        registerNativeElements();
-    }
+    registerNativeElements();
     return installGlobalShims();
 }
