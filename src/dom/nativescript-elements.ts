@@ -11,7 +11,6 @@ import ActionBarElement from './native/ActionBarElement';
 import TabStripElement from './native/TabStripElement';
 
 
-
 export function registerNativeElements() {
   registerNativeViewElement(
     'ActionItem',

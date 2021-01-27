@@ -16,6 +16,8 @@ export { default as ActionBarElement } from './native/ActionBarElement'
 export { default as FrameElement } from "./native/FrameElement"
 export { default as TabsElement } from './native/TabsElement'
 export { default as PageElement } from './native/PageElement'
+export { default as TabViewElement } from './native/TabViewElement'
+export { default as TabStripElement } from './native/TabStripElement'
 export { default as ListViewElement, SvelteKeyedTemplate } from './native/ListViewElement'
 export { default as BottomNavigationElement } from './native/BottomNavigationElement'
 
@@ -87,6 +89,10 @@ function initializeLogger() {
 export function initializeDom() {
     initializeLogger();
     registerSvelteElements();
-    registerNativeElements();
+    // TODO: move __AUTO_REGISTER_UI_MODULES__ out of global
+    // breaking change needs to be in sync with N webpack release
+    if (!global.__AUTO_REGISTER_UI_MODULES__) {
+        registerNativeElements();
+    }
     return installGlobalShims();
 }
