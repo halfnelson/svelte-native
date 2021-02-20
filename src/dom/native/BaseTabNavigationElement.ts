@@ -1,6 +1,7 @@
 import { ViewNode, logger as log } from "../basicdom";
-import { TabNavigationBase, TabContentItem } from '@nativescript/core'
+import { TabNavigationBase, TabContentItem, Trace } from '@nativescript/core'
 import NativeViewElementNode from "./NativeViewElementNode";
+import { DomTraceCategory } from "..";
 
 export default class BaseTabNavigationElement extends NativeViewElementNode<TabNavigationBase> {
 
@@ -13,7 +14,9 @@ export default class BaseTabNavigationElement extends NativeViewElementNode<TabN
     onInsertedChild(childNode: ViewNode, index: number) {
         try {
             if (childNode instanceof NativeViewElementNode && childNode.nativeView instanceof TabContentItem) {
-                log.debug(() => `adding tab content to nav`);
+                if(Trace.isEnabled()) {
+            Trace.write( `adding tab content to nav`, DomTraceCategory, Trace.messageType.log);
+        };
                 this.pendingInserts.push(childNode.nativeView)
                 //wait for next turn so that any content for our tab is attached to the dom
                 Promise.resolve().then(() => {
@@ -34,7 +37,9 @@ export default class BaseTabNavigationElement extends NativeViewElementNode<TabN
     onRemovedChild(childNode: ViewNode) {
         try {
             if (childNode instanceof NativeViewElementNode && childNode.nativeView instanceof TabContentItem) {
-                log.debug(() => `removing content item from nav`);
+                if(Trace.isEnabled()) {
+            Trace.write( `removing content item from nav`, DomTraceCategory, Trace.messageType.log);
+        };
                 let items = (this.nativeView.items || []).filter(i => i != childNode.nativeView);
                 this.nativeView.items = [];
                 this.nativeView.items = items;

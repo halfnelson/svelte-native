@@ -1,7 +1,8 @@
-import { ListView, ItemEventData, ItemsSource, View } from '@nativescript/core'
+import { ListView, ItemEventData, ItemsSource, View, Trace } from '@nativescript/core'
 import TemplateElement from '../svelte/TemplateElement';
 import { createElement, logger as log, ViewNode } from '../basicdom';
 import NativeViewElementNode from './NativeViewElementNode';
+import { DomTraceCategory } from '..';
 
 export class SvelteKeyedTemplate {
     _key: string;
@@ -23,7 +24,9 @@ export class SvelteKeyedTemplate {
     createView(): View {
         //create a proxy element to eventually contain our item (once we have one to render)
         //TODO is StackLayout the best choice here? 
-        log.debug(() => `creating view for key ${this.key}`)
+        if(Trace.isEnabled()) {
+            Trace.write( `creating view for key ${this.key}`, DomTraceCategory, Trace.messageType.log);
+        }
         let wrapper = createElement('StackLayout') as NativeViewElementNode<View>;
         wrapper.setStyle("padding", 0)
         wrapper.setStyle("margin", 0)
@@ -67,14 +70,18 @@ export default class ListViewElement extends NativeViewElementNode<ListView> {
             let component;
 
             if (args.view && (args.view as any).__SvelteComponentBuilder__) {
-                log.debug(() => `instantiating component in keyed view item at ${args.index}`);
+                if(Trace.isEnabled()) {
+            Trace.write( `instantiating component in keyed view item at ${args.index}`, DomTraceCategory, Trace.messageType.log);
+        };
                 //now we have an item, we can create and mount this component
                 (args.view as any).__SvelteComponentBuilder__({ item });
                 (args.view as any).__SvelteComponentBuilder__ = null; //free the memory
                 return;
             }
 
-            log.debug(() => `creating default view for item at ${args.index}`)
+            if(Trace.isEnabled()) {
+            Trace.write( `creating default view for item at ${args.index}`, DomTraceCategory, Trace.messageType.log);
+        }
             if (typeof listView.itemTemplates == "object") {
                 component = listView.itemTemplates.filter(x => x.key == "default").map(x => (x as SvelteKeyedTemplate).component)[0]
             }
@@ -96,7 +103,9 @@ export default class ListViewElement extends NativeViewElementNode<ListView> {
             args.view = nativeEl;
         } else {
             let componentInstance: SvelteComponent = (args.view as any).__SvelteComponent__
-            log.debug(() => `updating view for ${args.index} which is a ${args.view}`)
+            if(Trace.isEnabled()) {
+            Trace.write( `updating view for ${args.index} which is a ${args.view}`, DomTraceCategory, Trace.messageType.log);
+        }
             componentInstance.$set({ item })
         }
     }
@@ -105,7 +114,9 @@ export default class ListViewElement extends NativeViewElementNode<ListView> {
         super.onInsertedChild(childNode, index);
         if (childNode instanceof TemplateElement) {
             let key = childNode.getAttribute('key') || "default"
-            log.debug(() => `Adding template for key ${key}`);
+            if(Trace.isEnabled()) {
+            Trace.write( `Adding template for key ${key}`, DomTraceCategory, Trace.messageType.log);
+        };
             if (!this.nativeView.itemTemplates || typeof this.nativeView.itemTemplates == "string") {
                 this.nativeView.itemTemplates = []
             }

@@ -1,4 +1,6 @@
 
+import { Trace } from '@nativescript/core';
+import { DomTraceCategory } from '..';
 import DocumentNode from './DocumentNode';
 import { logger as log } from './Logger';
 import TextNode from './TextNode';
@@ -95,7 +97,9 @@ export default class ViewNode {
 
     /* istanbul ignore next */
     setText(text: string) {
-        log.debug(() => `setText ${this} ${text}`)
+        if(Trace.isEnabled()) {
+            Trace.write( `setText ${this} ${text}`, DomTraceCategory, Trace.messageType.log);
+        }
         this.setAttribute('text', text)
     }
 
@@ -108,7 +112,9 @@ export default class ViewNode {
     onRemovedChild(childNode: ViewNode) { }
 
     insertBefore(childNode: ViewNode, referenceNode: ViewNode) {
-        log.debug(() => `insert before ${this} ${childNode} ${referenceNode}`)
+        if(Trace.isEnabled()) {
+            Trace.write( `insert before ${this} ${childNode} ${referenceNode}`, DomTraceCategory, Trace.messageType.log);
+        }
         if (!childNode) {
             throw new Error(`Can't insert child.`)
         }
@@ -152,7 +158,9 @@ export default class ViewNode {
     }
 
     appendChild(childNode: ViewNode) {
-        log.debug(() => `append child ${this} ${childNode}`)
+        if(Trace.isEnabled()) {
+            Trace.write( `append child ${this} ${childNode}`, DomTraceCategory, Trace.messageType.log);
+        }
         if (!childNode) {
             throw new Error(`Can't append child.`)
         }
@@ -178,12 +186,14 @@ export default class ViewNode {
             this.lastChild.nextSibling = childNode
         }
 
-        this.childNodes.push(childNode)
-        this.onInsertedChild(childNode, this.childNodes.length - 1)
+        const length = this.childNodes.push(childNode)
+        this.onInsertedChild(childNode, length - 1)
     }
 
     removeChild(childNode: ViewNode) {
-        log.debug(() => `remove child ${this} ${childNode}`)
+        if(Trace.isEnabled()) {
+            Trace.write( `remove child ${this} ${childNode}`, DomTraceCategory, Trace.messageType.log);
+        }
         if (!childNode) {
             throw new Error(`Can't remove child.`)
         }

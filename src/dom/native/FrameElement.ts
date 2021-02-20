@@ -1,7 +1,8 @@
 import { createElement, ViewNode, logger as log } from "../basicdom";
-import { Frame, View } from '@nativescript/core'
+import { Frame, Trace, View } from '@nativescript/core'
 import PageElement from "./PageElement";
 import NativeViewElementNode from "./NativeViewElementNode";
+import { DomTraceCategory } from "..";
 
 export default class FrameElement extends NativeViewElementNode<Frame> {
 
@@ -11,7 +12,9 @@ export default class FrameElement extends NativeViewElementNode<Frame> {
 
     setAttribute(key: string, value: any) {
         if (key.toLowerCase() == "defaultpage") {
-            log.debug(() => `loading page ${value}`);
+            if(Trace.isEnabled()) {
+            Trace.write( `loading page ${value}`, DomTraceCategory, Trace.messageType.log);
+        };
             let dummy = createElement('fragment');
             let page = new (value as any)({ target: dummy, props: {} });
             (this.nativeView as Frame).navigate({ create: () => (dummy.firstElement() as NativeViewElementNode<View>).nativeView });

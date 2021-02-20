@@ -1,6 +1,7 @@
 import { logger as log, ViewNode, registerElement, logger } from '../basicdom'
-import { isAndroid, isIOS, ObservableArray } from '@nativescript/core';
+import { isAndroid, isIOS, ObservableArray, Trace } from '@nativescript/core';
 import ElementNode from '../basicdom/ElementNode';
+import { DomTraceCategory } from '..';
 
 export enum NativeElementPropType {
     Value,
@@ -112,7 +113,9 @@ export default class NativeElementNode<T> extends ElementNode {
         this._normalizedKeys = getNormalizedKeysForObject(this._nativeElement, Object.keys(this.propConfig));
 
         (this._nativeElement as any).__SvelteNativeElement__ = this;
-        log.debug(() => `created ${this} ${this._nativeElement}`)
+        if(Trace.isEnabled()) {
+            Trace.write( `created ${this} ${this._nativeElement}`, DomTraceCategory, Trace.messageType.log);
+        }
     }
 
     get nativeElement() {
@@ -246,7 +249,9 @@ export default class NativeElementNode<T> extends ElementNode {
                 setTarget = setTarget[key];
             } else {
                 try {
-                    log.debug(() => `setAttr value ${this} ${resolvedKeys.join(".")} ${value}`)
+                    if(Trace.isEnabled()) {
+            Trace.write( `setAttr value ${this} ${resolvedKeys.join(".")} ${value}`, DomTraceCategory, Trace.messageType.log);
+        }
                     setTarget[key] = value
                 } catch (e) {
                     // ignore but log
