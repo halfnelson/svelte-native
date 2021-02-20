@@ -1,7 +1,8 @@
 import { ViewNode, logger as log } from "../basicdom";
-import { TabStrip, TabStripItem } from '@nativescript/core';
+import { TabStrip, TabStripItem, Trace } from '@nativescript/core';
 
 import NativeViewElementNode from "./NativeViewElementNode";
+import { DomTraceCategory } from "..";
 
 export default class TabStripElement extends NativeViewElementNode<TabStrip> {
 
@@ -15,7 +16,9 @@ export default class TabStripElement extends NativeViewElementNode<TabStrip> {
         // is to set items to [] before setting it to the new array.
         try {
             if (childNode instanceof NativeViewElementNode && childNode.nativeView instanceof TabStripItem) {
-                log.debug(() => `adding tab strip item ${childNode.nativeView.title}`);
+                if(Trace.isEnabled()) {
+            Trace.write( `adding tab strip item ${childNode.nativeView.title}`, DomTraceCategory, Trace.messageType.log);
+        };
                 const items = this.nativeView.items || [];
                 this.nativeView.items = [];
                 this.nativeView.items = items.concat([childNode.nativeView]);
@@ -30,7 +33,9 @@ export default class TabStripElement extends NativeViewElementNode<TabStrip> {
     onRemovedChild(childNode: ViewNode) {
         try {
             if (childNode instanceof NativeViewElementNode && childNode.nativeView instanceof TabStripItem) {
-                log.debug(() => `removing tab strip item ${childNode.nativeView.title}`);
+                if(Trace.isEnabled()) {
+            Trace.write( `removing tab strip item ${childNode.nativeView.title}`, DomTraceCategory, Trace.messageType.log);
+        };
                 let items = (this.nativeView.items || []).filter(i => i != childNode.nativeView);
                 this.nativeView.items = [];
                 this.nativeView.items = items;

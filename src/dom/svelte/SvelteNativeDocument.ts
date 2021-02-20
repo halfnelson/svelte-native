@@ -1,4 +1,6 @@
 
+import { Trace } from '@nativescript/core';
+import { DomTraceCategory } from '..';
 import { DocumentNode, ElementNode, createElement, TextNode, logger as log } from '../basicdom';
 
 export default class SvelteNativeDocument extends DocumentNode {
@@ -9,12 +11,16 @@ export default class SvelteNativeDocument extends DocumentNode {
         this.head = createElement('head')
         this.appendChild(this.head);
 
-        log.debug(() => `created ${this}`)
+        if(Trace.isEnabled()) {
+            Trace.write( `created ${this}`, DomTraceCategory, Trace.messageType.log);
+        }
     }
 
     createTextNode(text: string) {
         const el = new TextNode(text)
-        log.debug(() => `created ${el}`)
+        if(Trace.isEnabled()) {
+            Trace.write( `created ${el}`, DomTraceCategory, Trace.messageType.log);
+        }
         return el;
     }
 

@@ -1,6 +1,7 @@
 import { ElementNode, logger as log } from '../basicdom'
 import { StyleScope } from '@nativescript/core/ui/styling/style-scope'
-import { Frame } from '@nativescript/core'
+import { Frame, Trace } from '@nativescript/core'
+import { DomTraceCategory } from '..';
 
 class StyleSheet {
 
@@ -13,7 +14,9 @@ class StyleSheet {
     deleteRule(index: number) {
         let removed = this._rules.splice(index, 1);
         for (let r in removed) {
-            log.debug(() => `removing transition rule ${r}`);
+            if(Trace.isEnabled()) {
+            Trace.write( `removing transition rule ${r}`, DomTraceCategory, Trace.messageType.log);
+        };
             // Turns out nativescript doesn't support "removing" css.
             // this is pretty horrible but better than a memory leak. 
             // since this code is called mainly for keyframes, and keyframes don't add new selectors (they just end up in _keyframes)
@@ -31,7 +34,9 @@ class StyleSheet {
     }
 
     insertRule(rule: string, index: number = 0) {
-        log.debug(() => `Adding transition rule ${rule}`);
+        if(Trace.isEnabled()) {
+            Trace.write( `Adding transition rule ${rule}`, DomTraceCategory, Trace.messageType.log);
+        };
         let frame = Frame.topmost();
         frame.addCss(rule);
         this._rules.splice(index, 0, rule);

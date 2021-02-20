@@ -1,9 +1,10 @@
 import ViewNode from '../basicdom/ViewNode'
 import { logger as log, registerElement, RegisterElementOptions } from '../basicdom'
-import { KeyframeAnimation, LayoutBase, EventData, Page, View, ContentView } from '@nativescript/core';
+import { KeyframeAnimation, LayoutBase, EventData, Page, View, ContentView, Trace } from '@nativescript/core';
 import { CssAnimationParser } from '@nativescript/core/ui/styling/css-animation-parser';
 
 import NativeElementNode, { NativeElementPropConfig } from './NativeElementNode';
+import { DomTraceCategory } from '..';
 
 interface IStyleProxy {
     setProperty(propertyName: string, value: string, priority?: string): void;
@@ -49,7 +50,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
         let oldAnimations: KeyframeAnimation[] = [];
 
         const addAnimation = (animation: string) => {
-            log.debug(() => `Adding animation ${animation}`)
+            if(Trace.isEnabled()) {
+            Trace.write( `Adding animation ${animation}`, DomTraceCategory, Trace.messageType.log);
+        }
             if (!this.nativeView) {
                 throw Error("Attempt to apply animation to tag without a native view" + this.tagName);
             }
@@ -93,7 +96,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
         }
 
         const removeAnimation = (animation: string) => {
-            log.debug(() => `Removing animation ${animation}`)
+            if(Trace.isEnabled()) {
+            Trace.write( `Removing animation ${animation}`, DomTraceCategory, Trace.messageType.log);
+        }
             if (animations.has(animation)) {
                 let animationInstance = animations.get(animation);
                 animations.delete(animation);
@@ -121,7 +126,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
             },
 
             set animation(value: string) {
-                log.debug(() => `setting animation ${value}`)
+                if(Trace.isEnabled()) {
+            Trace.write( `setting animation ${value}`, DomTraceCategory, Trace.messageType.log);
+        }
                 let new_animations = value.trim() == "" ? [] : value.split(',').map(a => a.trim());
                 //add new ones
                 for (let anim of new_animations) {
@@ -138,12 +145,16 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
             },
 
             get cssText(): string {
-                log.debug(() => "got css text");
+                if(Trace.isEnabled()) {
+            Trace.write( "got css text", DomTraceCategory, Trace.messageType.log);
+        };
                 return getStyleAttribute();
             },
 
             set cssText(value: string) {
-                log.debug(() => "set css text");
+                if(Trace.isEnabled()) {
+            Trace.write( "set css text", DomTraceCategory, Trace.messageType.log);
+        };
                 setStyleAttribute(value);
             }
         }
@@ -151,7 +162,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
 
     /* istanbul ignore next */
     setStyle(property: string, value: string | number) {
-        log.debug(() => `setStyle ${this} ${property} ${value}`)
+        if(Trace.isEnabled()) {
+            Trace.write( `setStyle ${this} ${property} ${value}`, DomTraceCategory, Trace.messageType.log);
+        }
 
         if (!(value = value.toString().trim()).length) {
             return
@@ -175,7 +188,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
 
     /* istanbul ignore next */
     addEventListener(event: string, handler: EventListener) {
-        log.debug(() => `add event listener ${this} ${event}`);
+        if(Trace.isEnabled()) {
+            Trace.write( `add event listener ${this} ${event}`, DomTraceCategory, Trace.messageType.log);
+        };
 
         //svelte compatibility wrapper
         (handler as any).__wrapper = (handler as any).__wrapper || ((args: EventData) => {
@@ -188,7 +203,9 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
 
     /* istanbul ignore next */
     removeEventListener(event: string, handler?: EventListener) {
-        log.debug(() => `remove event listener ${this} ${event}`)
+        if(Trace.isEnabled()) {
+            Trace.write( `remove event listener ${this} ${event}`, DomTraceCategory, Trace.messageType.log);
+        }
         this.nativeView.off(event, (handler as any).__wrapper || handler )
     }
 

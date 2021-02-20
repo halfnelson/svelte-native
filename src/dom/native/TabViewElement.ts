@@ -1,6 +1,7 @@
 import { ViewNode, logger as log } from "../basicdom";
-import { TabView, TabViewItem } from '@nativescript/core'
+import { TabView, TabViewItem, Trace } from '@nativescript/core'
 import NativeViewElementNode from "./NativeViewElementNode";
+import { DomTraceCategory } from "..";
 
 export default class TabViewElement extends NativeViewElementNode<TabView> {
 
@@ -11,7 +12,9 @@ export default class TabViewElement extends NativeViewElementNode<TabView> {
 
     doUpdate() {
         let items = this.childNodes.filter(x => x instanceof NativeViewElementNode && x.nativeView instanceof TabViewItem).map(x => (x as any).nativeView as TabViewItem);
-        log.debug(() => `updating tab items. now has ${items.length} items`);
+        if(Trace.isEnabled()) {
+            Trace.write( `updating tab items. now has ${items.length} items`, DomTraceCategory, Trace.messageType.log);
+        };
         (this.nativeView as TabView).items = items;
     }
 
