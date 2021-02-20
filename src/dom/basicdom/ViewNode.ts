@@ -4,10 +4,15 @@ import { logger as log } from './Logger';
 import TextNode from './TextNode';
 
 const dashRegExp = /-/g
+const tagNameCache:{ [k:string]: string } = {};
 export function normalizeElementName(elementName: string) {
-    return `${elementName
-        .replace(dashRegExp, '')
-        .toLowerCase()}`
+    let cached = tagNameCache[elementName];
+    if (!cached)  {
+        cached = tagNameCache[elementName] = `${elementName
+            .replace(dashRegExp, '')
+            .toLowerCase()}`
+    }
+    return cached;
 }
 
 export function* elementIterator(el: ViewNode): Iterable<ViewNode> {
