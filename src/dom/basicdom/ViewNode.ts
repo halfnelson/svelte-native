@@ -1,4 +1,5 @@
 
+import { View } from '@nativescript/core';
 import DocumentNode from './DocumentNode';
 import { logger as log } from './Logger';
 import TextNode from './TextNode';
@@ -40,7 +41,7 @@ export default class ViewNode {
     }
 
     hasAttribute(name: string) {
-        return Object.keys(this._attributes).indexOf(name) > -1;
+        return this._attributes.hasOwnProperty(name);
     }
 
     removeAttribute(name: string) {
