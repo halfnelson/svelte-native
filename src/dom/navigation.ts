@@ -121,6 +121,7 @@ export function showModal<T>(modalOptions: ShowModalOptions): Promise<T> {
         let resolved = false;
         const closeCallback = (result: T) => {
             if (resolved) return;
+            modalStack.pop();
             resolved = true;
             try {
                 componentInstanceInfo.pageInstance.$destroy(); //don't let an exception in destroy kill the promise callback
@@ -134,6 +135,10 @@ export function showModal<T>(modalOptions: ShowModalOptions): Promise<T> {
 }
 
 export function closeModal(result: any): void {
-    let modalPageInstanceInfo = modalStack.pop();
+    let modalPageInstanceInfo = modalStack[modalStack.length-1];
     modalPageInstanceInfo.element.nativeView.closeModal(result);
+}
+
+export function isModalOpened() {
+    return modalStack.length > 0;
 }

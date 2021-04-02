@@ -20,7 +20,7 @@ export { default as ListViewElement, SvelteKeyedTemplate } from './native/ListVi
 export { default as BottomNavigationElement } from './native/BottomNavigationElement'
 
 export { registerElement, createElement, ViewNode, ElementNode, logger, LogLevel } from './basicdom'
-export { navigate, goBack, showModal, closeModal, ShowModalOptions, NavigationOptions, BackNavigationOptions } from './navigation'
+export { navigate, goBack, showModal, closeModal, isModalOpened, ShowModalOptions, NavigationOptions, BackNavigationOptions } from './navigation'
 
 
 function installGlobalShims(): SvelteNativeDocument {
