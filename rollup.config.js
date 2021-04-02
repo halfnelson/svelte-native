@@ -1,5 +1,5 @@
-import typescript from 'rollup-plugin-typescript2'
-import resolve from 'rollup-plugin-node-resolve'
+import typescript from '@rollup/plugin-typescript'
+import resolve from '@rollup/plugin-node-resolve'
 import svelte from 'rollup-plugin-svelte';
 import pkg from './package.json'
 
@@ -9,17 +9,14 @@ let externalModules = pkg.peerDependencies ? Object.keys(pkg.peerDependencies) :
 let localModules = ["dom", "components", "transitions"]
 
 let plugins = [
-  resolve({
-    extensions: ['.mjs', '.js']
-  }),
-  svelte({
-    include: 'src/components/**/*.svelte',
-  }),
-  typescript({
-    typescript: require('typescript'),
-    useTsconfigDeclarationDir: true
-  })
-]
+    resolve({
+        extensions: [".mjs", ".js"],
+    }),
+    typescript(),
+    svelte({
+        include: "src/components/**/*.svelte",
+    }),
+];
 
 function module_defs() {
   return localModules.map(mod => {
@@ -35,7 +32,6 @@ function module_defs() {
   })
 
 }
-
 
 export default [
   {

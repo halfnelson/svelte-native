@@ -1,19 +1,19 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",
-        "paths": { "*": ["types/*"] },
+      "baseUrl": ".",
       "declaration": true,
       "declarationDir": "./dist",
       "module": "es2015",
       "noImplicitAny": true,
       "outDir": "./dist",
+      "rootDir": "src",
       "target": "es6",
       "moduleResolution": "node",
       "allowSyntheticDefaultImports": false,
       "esModuleInterop": false,   
     },
     "include": [
-      "src/**/*"
+      "src"
     ],
     "exclude": ["node_modules"]
   }

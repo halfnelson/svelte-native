@@ -1,34 +1,33 @@
 {
     "compilerOptions": {
-        "target": "es2017",
         "module": "esnext",
+        "target": "es2017",
         "moduleResolution": "node",
-        "declaration": true,
-        "removeComments": true,
-        "noLib": false,
-        "emitDecoratorMetadata": false,
-        "experimentalDecorators": true,
-        "sourceMap": true,
-        "pretty": true,
-        "allowUnreachableCode": false,
-        "allowUnusedLabels": false,
-        "noEmitHelpers": true,
-        "noEmitOnError": false,
-        "noImplicitAny": false,
-        "noImplicitReturns": false,
-        "noImplicitUseStrict": false,
-        "noFallthroughCasesInSwitch": true,
         "allowSyntheticDefaultImports": true,
-        "lib": ["es6", "dom", "es2015.iterable", "es2017.string", "es2018.promise"],
+        "esModuleInterop": false,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noEmitHelpers": true,
+        "noEmitOnError": true,
+        "skipLibCheck": true,
+        "lib": [
+            "es6",
+            "dom",
+            "es2017"
+        ],
         "baseUrl": ".",
-        "types": ["node", "svelte", "mocha", "karma-chai"],  
+        "typeRoots": ["./node_modules/svelte/types", "./node_modules/@types"],
         "paths": {
-            "~/*": ["app/*"],
-            "tns-core-modules": ["./node_modules/@nativescript/core"],
-            "tns-core-modules/*": ["./node_modules/@nativescript/core/*"],
-            "*": ["./node_modules/*"]
+            "~/*": [
+                "app/*"
+            ]
         }
     },
-    "include": ["app/**/*", "references.d.ts"],
-    "exclude": ["node_modules", "platforms", "**/angular"]
+    "include": [
+        "app", "types"
+    ],
+    "exclude": [
+        "node_modules",
+        "platforms"
+    ]
 }

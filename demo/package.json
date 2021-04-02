@@ -3,15 +3,15 @@
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
   "dependencies": {
-    "@nativescript/core": "7.0.0",
-    "@nativescript/theme": "^2.3.3",
+    "@nativescript/core": "~8.0.0",
+    "@nativescript/theme": "^3.0.1",
     "nativescript-ui-sidedrawer": "^9.0.3",
-    "svelte-native": "file:../dist",
-    "svelte-native-nativescript-ui": "0.9.0",
-    "@nativescript/webpack": "3.0.0"
+    "svelte-native-nativescript-ui": "0.9.0"
   },
   "devDependencies": {
-    "@nativescript/android": "7.0.0",
+    "@nativescript/android": "8.0.0",
+    "@nativescript/unit-test-runner": "~1.0.2",
+    "@nativescript/webpack": "~5.0.0-beta.0",
     "@types/chai": "^4.2.4",
     "@types/karma-chai": "0.1.1",
     "@types/mocha": "^8.0.3",
@@ -19,15 +19,16 @@
     "karma": ">=0.10.9",
     "karma-chai": "0.1.0",
     "karma-mocha": "2.0.1",
-    "karma-nativescript-launcher": "0.4.0",
-    "karma-webpack": "3.0.5",
+    "karma-nativescript-launcher": "^0.4.0",
+    "karma-webpack": "~5.0.0",
     "mocha": "^8.1.3",
-    "svelte": "~3.24.0",
-    "svelte-loader": "halfnelson/svelte-loader#fix-virtual-purge",
+    "svelte-native": "file:../dist",
+    "svelte": "3.37.0",
     "svelte-native-preprocessor": "~0.2.0",
-    "typescript": "3.9.7",
-    "@nativescript/unit-test-runner": "1.0.0"
+    "svelte-preprocess": "^4.7.0",
+    "typescript": "~4.0.0",
+    "svelte-loader-hot": "~0.3.1"
   },
   "readme": "NativeScript Application",
-  "main": "app.js"
+  "main": "./app/app.ts"
 }
