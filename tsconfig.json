@@ -2,7 +2,6 @@
     "compilerOptions": {
       "baseUrl": ".",
       "declaration": true,
-      "declarationDir": "./dist",
       "module": "es2015",
       "noImplicitAny": true,
       "outDir": "./dist",

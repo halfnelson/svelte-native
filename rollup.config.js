@@ -37,7 +37,8 @@ export default [
   {
     input: 'src/index.ts',
     output: [{
-      file: "dist/index.js",
+      dir: './',
+      entryFileNames: "dist/index.js",
       format: 'esm',
     }
     ],
