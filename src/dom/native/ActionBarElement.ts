@@ -14,7 +14,6 @@ export default class ActionBarElement extends NativeViewElementNode<ActionBar> {
         if (childNode instanceof NativeElementNode) {
             let propName = childNode.propAttribute;
             if (propName) {
-                propName = this._normalizedKeys.get(propName) || propName
                 if (propName.toLowerCase() == "actionitems") {
                     this.nativeView.actionItems.addItem(childNode.nativeElement);
                     return; //skip rest of the processing.
@@ -29,7 +28,6 @@ export default class ActionBarElement extends NativeViewElementNode<ActionBar> {
         if (childNode instanceof NativeElementNode) {
             let propName = childNode.propAttribute;
             if (propName) {
-                propName = this._normalizedKeys.get(propName) || propName
                 if (propName.toLowerCase() == "actionitems") {
                     this.nativeView.actionItems.removeItem(childNode.nativeElement);
                     return; //skip rest of the processing.

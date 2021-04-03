@@ -55,50 +55,11 @@ function removeFromArrayProp(parent: any, value: any, propName: string) {
     }
 }
 
-const _normalizedKeys: Map<any, Map<string, string>> = new Map();
-
-function getNormalizedKeysForObject(obj: any, knownPropNames: string[]): Map<string, string> {
-    let proto = Object.getPrototypeOf(obj);
-    let m = _normalizedKeys.get(proto);
-    
-    if (m) return m;
-
-    //calculate our prop names
-    let props = new Map<string, string>();
-    _normalizedKeys.set(proto, props);
-
-    //include known props
-    knownPropNames.forEach(p => props.set(p.toLowerCase(), p));
-
-    //infer the rest from the passed object (including updating any incorrect known prop names if found)
-    let item = obj;
-    while (item) {
-        Object.getOwnPropertyNames(item)
-            .filter(p => !p.startsWith('_') && !p.startsWith('css:') && p.indexOf('-') === -1)
-            .map(p => props.set(p.toLowerCase(), p));
-        item = Object.getPrototypeOf(item);
-    }
-
-    return props;
-}
-
-function normalizeKeyFromObject(obj: any, key: string) {
-    let lowerkey = key.toLowerCase();
-    for (let p in obj) {
-        if (p.toLowerCase() == lowerkey) {
-            return p;
-        }
-    }
-    return key;
-}
-
-
 // Implements an ElementNode that wraps a NativeScript object. It uses the object as the source of truth for its attributes
 export default class NativeElementNode<T> extends ElementNode {
     _nativeElement: T;
     propAttribute: string = null;
     propConfig: NativeElementPropConfig;
-    _normalizedKeys: Map<string, string>;
 
     constructor(tagName: string, elementClass: new () => T, setsParentProp: string = null, propConfig: NativeElementPropConfig = {}) {
         super(tagName);
@@ -109,8 +70,7 @@ export default class NativeElementNode<T> extends ElementNode {
         } catch(err) {
             throw new Error(`[NativeElementNode] failed to created native element for tag ${tagName}: ${err}`);
         }
-        this._normalizedKeys = getNormalizedKeysForObject(this._nativeElement, Object.keys(this.propConfig));
-
+     
         (this._nativeElement as any).__SvelteNativeElement__ = this;
         log.debug(() => `created ${this} ${this._nativeElement}`)
     }
@@ -138,12 +98,6 @@ export default class NativeElementNode<T> extends ElementNode {
 
             let key = keypath.shift();
 
-            if (resolvedKeys.length == 0) {
-                key = this._normalizedKeys.get(key) || key
-            } else {
-                key = normalizeKeyFromObject(getTarget, key)
-            }
-
             resolvedKeys.push(key)
 
             if (keypath.length > 0) {
@@ -164,8 +118,6 @@ export default class NativeElementNode<T> extends ElementNode {
         if (!propName) return;
 
         //Special case Array and Observable Array keys
-        propName = this._normalizedKeys.get(propName) || propName
-
         if (!this.propConfig[propName] || this.propConfig[propName] == NativeElementPropType.Value) {
             this.setAttribute(propName, childNode);
             return;
@@ -190,7 +142,6 @@ export default class NativeElementNode<T> extends ElementNode {
         let propName = childNode.propAttribute;
         if (!propName) return;
         //Special case Array and Observable Array keys
-        propName = this._normalizedKeys.get(propName) || propName
 
         switch (this.propConfig[propName]) {
             case NativeElementPropType.Array:
@@ -232,14 +183,6 @@ export default class NativeElementNode<T> extends ElementNode {
         while (keypath.length > 0) {
             if (!setTarget) return;
             let key = keypath.shift();
-
-            // normalize to correct case
-            if (resolvedKeys.length == 0) {
-                key = this._normalizedKeys.get(key) || key
-            } else {
-                key = normalizeKeyFromObject(setTarget, key)
-            }
-
             resolvedKeys.push(key)
 
             if (keypath.length > 0) {
