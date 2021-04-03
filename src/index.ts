@@ -2,9 +2,6 @@ import { Application } from '@nativescript/core'
 import { navigate, ViewNode, createElement, initializeDom, FrameElement, NativeElementNode } from './dom';
 import { View } from '@nativescript/core';
 
-
-//const { run, on, launchEvent } = Application;
-
 declare global {
     export class SvelteComponent {
         $destroy(): void;
