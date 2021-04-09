@@ -81,6 +81,11 @@ export function registerNativeElements() {
   //   () => require('@nativescript/core').Repeater
   // )
   registerNativeViewElement(
+    'RootLayout',
+    () => require('@nativescript/core').RootLayout
+  )
+
+  registerNativeViewElement(
     'ScrollView',
     () => require('@nativescript/core').ScrollView
   )

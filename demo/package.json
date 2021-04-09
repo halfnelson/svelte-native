@@ -11,7 +11,7 @@
   "devDependencies": {
     "@nativescript/android": "8.0.0",
     "@nativescript/unit-test-runner": "^1.0.2",
-    "@nativescript/webpack": "~5.0.0-beta.0",
+    "@nativescript/webpack": "file:../../NativeScript/packages/webpack5/nativescript-webpack-5.0.0-dev.tgz",
     "@types/chai": "^4.2.4",
     "@types/karma-chai": "0.1.1",
     "@types/mocha": "^8.0.3",
@@ -22,10 +22,11 @@
     "karma-nativescript-launcher": "0.4.0",
     "karma-webpack": "^5.0.0",
     "mocha": "8.3.2",
+    "semver": "^7.3.5",
     "svelte": "3.37.0",
     "svelte-loader": "^3.0.0",
     "svelte-native": "file:../dist",
-    "svelte-native-preprocessor": "file:../../svelte-native-preprocessor",
+    "svelte-native-preprocessor": "^1.0.0",
     "svelte-preprocess": "^4.7.0",
     "typescript": "~4.0.0"
   },

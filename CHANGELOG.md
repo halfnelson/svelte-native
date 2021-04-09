@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-beta.0]
+  
+  - **BREAKING**: BottomNavigation and Tabs are gone, use `@nativescript-community/ui-material-tabs` and `@nativescript-community/ui-material-bottom-navigation` as drop in replacements
+  - **BREAKING**: Svelte Native is now case sensitive on attributes, this brings it in line with other frameworks on NativeScript. The types included should give nice autocomplete and hints in VSCode to help.
+  - Added RootLayout component
+  - Rebuild against NativeScript 8 (changes in NS8 [here](https://blog.nativescript.org/nativescript-8-announcement/#updating-to-nativescript-8)) 
+  - Add JSX types for core widgets for better VSCode experience
+
+
 ## [0.9.5]
   - Fix typing for Template element (added $$prop_defs)
   - Initialize Dom on package import so that svelte latches onto our populated global and window shims correctly
