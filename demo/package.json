@@ -3,10 +3,10 @@
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
   "dependencies": {
-    "@nativescript/core": "~8.0.0",
     "@nativescript/theme": "^3.0.1",
     "nativescript-ui-sidedrawer": "^9.0.3",
-    "svelte-native-nativescript-ui": "0.9.0"
+    "svelte-native-nativescript-ui": "0.9.0",
+    "@nativescript/core": "~8.0.2"
   },
   "devDependencies": {
     "@nativescript/android": "8.0.0",
@@ -20,7 +20,7 @@
     "karma-chai": "0.1.0",
     "karma-mocha": "2.0.1",
     "karma-nativescript-launcher": "0.4.0",
-    "karma-webpack": "^5.0.0",
+    "karma-webpack": "3.0.5",
     "mocha": "8.3.2",
     "semver": "^7.3.5",
     "svelte": "3.37.0",

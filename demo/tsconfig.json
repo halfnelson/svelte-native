@@ -18,6 +18,9 @@
         "baseUrl": ".",
         "typeRoots": ["./node_modules/svelte/types", "./node_modules/@types"],
         "paths": {
+            "*": [
+                "./node_modules/*"
+            ],
             "~/*": [
                 "app/*"
             ]
