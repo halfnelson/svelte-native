@@ -11,7 +11,7 @@
   "devDependencies": {
     "@nativescript/android": "8.0.0",
     "@nativescript/unit-test-runner": "^1.0.2",
-    "@nativescript/webpack": "file:../../NativeScript/packages/webpack5/nativescript-webpack-5.0.0-dev.tgz",
+    "@nativescript/webpack": "4.1.0",
     "@types/chai": "^4.2.4",
     "@types/karma-chai": "0.1.1",
     "@types/mocha": "^8.0.3",
@@ -31,5 +31,5 @@
     "typescript": "~4.0.0"
   },
   "readme": "NativeScript Application",
-  "main": "./app/app.ts"
+  "main": "app.js"
 }
