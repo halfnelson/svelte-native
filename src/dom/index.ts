@@ -14,10 +14,9 @@ export { default as NativeElementNode, NativeElementPropConfig, NativeElementPro
 export { default as NativeViewElementNode, registerNativeViewElement } from './native/NativeViewElementNode'
 export { default as ActionBarElement } from './native/ActionBarElement'
 export { default as FrameElement } from "./native/FrameElement"
-export { default as TabsElement } from './native/TabsElement'
 export { default as PageElement } from './native/PageElement'
 export { default as ListViewElement, SvelteKeyedTemplate } from './native/ListViewElement'
-export { default as BottomNavigationElement } from './native/BottomNavigationElement'
+
 
 export { registerElement, createElement, ViewNode, ElementNode, logger, LogLevel } from './basicdom'
 export { navigate, goBack, showModal, closeModal, isModalOpened, ShowModalOptions, NavigationOptions, BackNavigationOptions } from './navigation'

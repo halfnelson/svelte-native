@@ -1,14 +1,11 @@
 
-import { View } from '@nativescript/core';
 import DocumentNode from './DocumentNode';
 import { logger as log } from './Logger';
 import TextNode from './TextNode';
 
 const dashRegExp = /-/g
 export function normalizeElementName(elementName: string) {
-    return `${elementName
-        .replace(dashRegExp, '')
-        .toLowerCase()}`
+    return `${elementName.toLowerCase()}`
 }
 
 export function* elementIterator(el: ViewNode): Iterable<ViewNode> {

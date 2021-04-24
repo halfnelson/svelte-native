@@ -3,14 +3,9 @@ import FrameElement from './native/FrameElement';
 import PageElement from './native/PageElement';
 import ListViewElement from './native/ListViewElement';
 import TabViewElement from './native/TabViewElement';
-import BottomNavigationElement from './native/BottomNavigationElement';
-import TabsElement from './native/TabsElement';
 import { registerNativeViewElement } from './native/NativeViewElementNode';
 import { NativeElementPropType } from './native/NativeElementNode';
 import ActionBarElement from './native/ActionBarElement';
-import TabStripElement from './native/TabStripElement';
-
-
 
 export function registerNativeElements() {
   registerNativeViewElement(
@@ -86,6 +81,11 @@ export function registerNativeElements() {
   //   () => require('@nativescript/core').Repeater
   // )
   registerNativeViewElement(
+    'RootLayout',
+    () => require('@nativescript/core').RootLayout
+  )
+
+  registerNativeViewElement(
     'ScrollView',
     () => require('@nativescript/core').ScrollView
   )
@@ -151,9 +151,5 @@ export function registerNativeElements() {
   registerElement('ListView', () => new ListViewElement())
   registerElement('TabView', () => new TabViewElement())
 
-  registerElement('BottomNavigation', () => new BottomNavigationElement())
-  registerElement('Tabs', () => new TabsElement())
-  registerElement('TabStrip', () => new TabStripElement());
-  registerNativeViewElement('TabStripItem', () => require('@nativescript/core').TabStripItem);
-  registerNativeViewElement('TabContentItem', () => require('@nativescript/core').TabContentItem);
+  
 }

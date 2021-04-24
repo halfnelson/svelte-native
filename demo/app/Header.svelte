@@ -2,7 +2,7 @@
     {#if isAndroid}
         <navigationButton icon="res://menu" on:tap="{toggleDrawer}" />
     {:else}
-        <actionItem icon="res://menu" ios.position="left" on:tap="{toggleDrawer}" />
+        <actionItem icon="res://menu" ios={{ position:"left"}} on:tap="{toggleDrawer}" />
     {/if}
     <slot></slot>
 </actionBar>

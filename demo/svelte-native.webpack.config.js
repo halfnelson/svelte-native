@@ -1,10 +1,9 @@
 const webpackConfig = require("./webpack.config");
-const svelteNativePreprocessor = require("svelte-native-preprocessor");
+const svelteConfig = require('./svelte.config');
 
 module.exports = env => {
     const config = webpackConfig(env);
     config.externals = (config.externals || []).filter(x => x != 'svelte' && x != 'svelte-native')
-    console.log(config.externals);
     config.resolve.extensions = [".ts", ".mjs", ".js", ".svelte", ".scss", ".css"];
     config.module.rules.push({
         test: /\.mjs$/,
@@ -17,7 +16,7 @@ module.exports = env => {
             {
                 loader: 'svelte-loader',
                 options: {
-                    preprocess: svelteNativePreprocessor(),
+                    ...svelteConfig
                 }
             }
         ]
