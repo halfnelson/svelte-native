@@ -36,7 +36,7 @@ for (let file of filesToCopy) {
     fs.copyFileSync(path.resolve(__dirname, `../${file}`), path.resolve(__dirname, `../dist/${file}`))
 }
 
-const typeDefsToCopy = ["components/Template.svelte.d.ts", "jsx/svelte-native-jsx-nativescript-core.d.ts"]
+const typeDefsToCopy = ["components/Template.svelte.d.ts", "jsx/svelte-native-jsx-nativescript-core.d.ts", "jsx/shims.d.ts"]
 for (let file of typeDefsToCopy) {
     let dest = path.resolve(__dirname, `../dist/${file}`);
     if (!fs.existsSync(path.dirname(dest)))
@@ -47,4 +47,4 @@ for (let file of typeDefsToCopy) {
 // inject our JSX types
 var indexdtspath = path.resolve(__dirname, `../dist/index.d.ts`);
 var indexdts = fs.readFileSync(indexdtspath, "utf-8");
-fs.writeFileSync(indexdtspath, indexdts + "\n\nimport './jsx/svelte-native-jsx-nativescript-core'\n", "utf-8");
+fs.writeFileSync(indexdtspath, indexdts + "\n\nimport './jsx/svelte-native-jsx-nativescript-core'\nimport './jsx/shims.d.ts'\n", "utf-8");

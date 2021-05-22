@@ -3,7 +3,6 @@ import DocumentNode from './DocumentNode';
 import { logger as log } from './Logger';
 import TextNode from './TextNode';
 
-const dashRegExp = /-/g
 export function normalizeElementName(elementName: string) {
     return `${elementName.toLowerCase()}`
 }
