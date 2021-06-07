@@ -58,14 +58,14 @@ function removeFromArrayProp(parent: any, value: any, propName: string) {
 const _normalizedKeys: Map<any, Map<string, string>> = new Map();
 
 function getNormalizedKeysForObject(obj: any, knownPropNames: string[]): Map<string, string> {
-    let proto = Object.getPrototypeOf(obj);
-    let m = _normalizedKeys.get(proto);
+    let cons = obj.constructor || obj;
+    let m = _normalizedKeys.get(cons);
     
     if (m) return m;
 
     //calculate our prop names
     let props = new Map<string, string>();
-    _normalizedKeys.set(proto, props);
+    _normalizedKeys.set(cons, props);
 
     //include known props
     knownPropNames.forEach(p => props.set(p.toLowerCase(), p));
@@ -83,13 +83,8 @@ function getNormalizedKeysForObject(obj: any, knownPropNames: string[]): Map<str
 }
 
 function normalizeKeyFromObject(obj: any, key: string) {
-    let lowerkey = key.toLowerCase();
-    for (let p in obj) {
-        if (p.toLowerCase() == lowerkey) {
-            return p;
-        }
-    }
-    return key;
+    var keys = getNormalizedKeysForObject(obj, [])
+    return keys.get(key.toLowerCase()) ?? key 
 }
 
 
