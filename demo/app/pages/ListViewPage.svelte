@@ -3,20 +3,20 @@
     <listView items={items} bind:this={listView}
             itemTemplateSelector="{selectTemplate}"
             on:itemTap="{onItemTap}">
-        <Template key="even" let:item>
+        <Template key="even" let:item let:index>
             <gridLayout columns="auto,*" class="item-template">
                 <image src="{item.image}" class="far" />
                 <stackLayout col="1" >
-                    <label style="font-size: 20">{item.name}</label>
+                    <label style="font-size: 20">{index}. {item.name}</label>
                     <label style="font-size: 10">{item.description}</label>
                 </stackLayout>
             </gridLayout>
         </Template>
 
-         <Template key="odd" let:item>
+         <Template key="odd" let:item let:index>
             <gridLayout columns="*, auto" class="item-template odd">
                 <stackLayout>
-                    <label style="font-size: 20">{item.name}</label>
+                    <label style="font-size: 20">{index}. {item.name}</label>
                     <label style="font-size: 10">{item.description}</label>
                 </stackLayout>
                 <image col="1" src="{item.image}" class="far" />
