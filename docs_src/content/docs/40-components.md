@@ -308,9 +308,9 @@ If you need to style parts of the text, you can use a combination of a [`Formatt
 
 ```html
 <listView items="{listOfItems}" on:itemTap="{onItemTap}">
-  <Template let:item>
+  <Template let:item let:index>
     <!-- Shows the list item label in the default color and style. -->
-    <label text="{item}" />
+    <label text="{index} - {item}" />
   </Template>
 </listView>
 
