@@ -69,7 +69,7 @@ export default class ListViewElement extends NativeViewElementNode<ListView> {
             if (args.view && (args.view as any).__SvelteComponentBuilder__) {
                 log.debug(() => `instantiating component in keyed view item at ${args.index}`);
                 //now we have an item, we can create and mount this component
-                (args.view as any).__SvelteComponentBuilder__({ item });
+                (args.view as any).__SvelteComponentBuilder__({ item, index: args.index });
                 (args.view as any).__SvelteComponentBuilder__ = null; //free the memory
                 return;
             }
@@ -87,7 +87,8 @@ export default class ListViewElement extends NativeViewElementNode<ListView> {
             let componentInstance = new component({
                 target: wrapper,
                 props: {
-                    item
+                    item,
+                    index: args.index
                 }
             });
 
@@ -97,7 +98,7 @@ export default class ListViewElement extends NativeViewElementNode<ListView> {
         } else {
             let componentInstance: SvelteComponent = (args.view as any).__SvelteComponent__
             log.debug(() => `updating view for ${args.index} which is a ${args.view}`)
-            componentInstance.$set({ item })
+            componentInstance.$set({ item, index: args.index })
         }
     }
 
