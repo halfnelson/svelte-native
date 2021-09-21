@@ -23,13 +23,13 @@ module.exports = env => {
     });
 
     // insert the mjs loader after ts-loader
-    const tsLoaderRule = config.module.rules.find(r => r.use.loader === "ts-loader");
+   /* const tsLoaderRule = config.module.rules.find(r => r.use.loader === "ts-loader");
     const indexOfTsLoaderRule = config.module.rules.indexOf(tsLoaderRule);
     const mjsRule = {
         test: /\.mjs$/,
         type: 'javascript/auto',
-    };
+    }; 
     config.module.rules.splice(indexOfTsLoaderRule, 0, mjsRule);
-
+*/
     return config;
 };

@@ -51,6 +51,10 @@ function installGlobalShims(): SvelteNativeDocument {
         }
     }
 
+    window.dispatchEvent = function (event: CustomEvent) {
+        logger.info(() => `Event dispatched ${event}`);
+    }
+
     return window.document;
 }
 

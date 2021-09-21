@@ -1,6 +1,7 @@
 import { Application } from '@nativescript/core'
 import { navigate, ViewNode, createElement, initializeDom, FrameElement, NativeElementNode } from './dom';
 import { View } from '@nativescript/core';
+import { DocumentNode } from './dom/basicdom';
 
 declare global {
     export class SvelteComponent {
@@ -16,7 +17,7 @@ export function svelteNativeNoFrame(rootElement: typeof SvelteComponent, data: a
         let elementInstance: SvelteComponent;
 
         const buildElement = () => {
-            let frag = createElement('fragment');
+            let frag = createElement('fragment', window.document as unknown as DocumentNode);
             elementInstance = new rootElement({
                 target: frag,
                 props: data || {}
@@ -49,7 +50,7 @@ export function svelteNative(startPage: typeof SvelteComponent, data: any): Prom
 
         try {
             Application.run({ create: () => {
-                rootFrame = createElement('frame') as FrameElement;
+                rootFrame = createElement('frame', window.document as unknown as DocumentNode) as FrameElement;
                 rootFrame.setAttribute("id", "app-root-frame");
 
                 pageInstance = navigate({

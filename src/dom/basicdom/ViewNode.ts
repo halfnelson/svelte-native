@@ -57,11 +57,11 @@ export default class ViewNode {
         return this._tagName
     }
 
-    get firstChild() {
+    get firstChild(): ViewNode {
         return this.childNodes.length ? this.childNodes[0] : null
     }
 
-    get lastChild() {
+    get lastChild(): ViewNode {
         return this.childNodes.length
             ? this.childNodes[this.childNodes.length - 1]
             : null

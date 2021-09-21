@@ -1,5 +1,6 @@
 import { normalizeElementName } from './ViewNode'
 import ElementNode from './ElementNode';
+import { DocumentNode } from '.';
 
 interface ElementEntry {
     resolver: () => ElementNode,
@@ -24,12 +25,14 @@ export function registerElement(elementName: string, resolver: () => ElementNode
     registerElementResolver(elementName, { resolver: resolver }, options)
 }
 
-export function createElement(elementName: string): ElementNode {
+export function createElement(elementName: string, owner: DocumentNode): ElementNode {
     const normalizedName = normalizeElementName(elementName);
     const elementDefinition = elementMap[normalizedName];
     if (!elementDefinition) {
         throw new TypeError(`No known component for element ${elementName}.`)
     }
-    return elementDefinition.resolver();
+    const el = elementDefinition.resolver();
+    el._ownerDocument = owner
+    return el;
 }
 

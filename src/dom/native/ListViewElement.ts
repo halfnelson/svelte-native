@@ -1,6 +1,6 @@
 import { ListView, ItemEventData, ItemsSource, View } from '@nativescript/core'
 import TemplateElement from '../svelte/TemplateElement';
-import { createElement, logger as log, ViewNode } from '../basicdom';
+import { createElement, DocumentNode, logger as log, ViewNode } from '../basicdom';
 import NativeViewElementNode from './NativeViewElementNode';
 
 export class SvelteKeyedTemplate {
@@ -24,7 +24,7 @@ export class SvelteKeyedTemplate {
         //create a proxy element to eventually contain our item (once we have one to render)
         //TODO is StackLayout the best choice here? 
         log.debug(() => `creating view for key ${this.key}`)
-        let wrapper = createElement('StackLayout') as NativeViewElementNode<View>;
+        let wrapper = createElement('StackLayout', this._templateEl.ownerDocument) as NativeViewElementNode<View>;
         wrapper.setStyle("padding", 0)
         wrapper.setStyle("margin", 0)
         let nativeEl = wrapper.nativeView;
@@ -83,7 +83,7 @@ export default class ListViewElement extends NativeViewElementNode<ListView> {
                 log.error(() => `Couldn't determine component to use for item at ${args.index}`);
                 return;
             }
-            let wrapper = createElement('ProxyViewContainer') as NativeViewElementNode<View>;
+            let wrapper = createElement('ProxyViewContainer', this.ownerDocument) as NativeViewElementNode<View>;
             let componentInstance = new component({
                 target: wrapper,
                 props: {

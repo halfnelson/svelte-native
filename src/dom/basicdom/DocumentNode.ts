@@ -25,7 +25,7 @@ export default class DocumentNode extends ViewNode {
             let bits = tagName.split(".", 2);
             return this.createPropertyNode(bits[0], bits[1]);
         }
-        return createElement(tagName);
+        return createElement(tagName, this);
     }
 
     createElementNS(namespace: string, tagName: string): ElementNode {

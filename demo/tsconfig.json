@@ -16,10 +16,10 @@
             "es2017"
         ],
         "baseUrl": ".",
-        "typeRoots": ["./node_modules/svelte/types", "./node_modules/@types"],
+        "types": ["svelte"],
         "paths": {
-            "*": [
-                "./node_modules/*"
+            "@/*": [
+                "app/*"
             ],
             "~/*": [
                 "app/*"
@@ -27,7 +27,7 @@
         }
     },
     "include": [
-        "app", "types"
+        "app/**/*"
     ],
     "exclude": [
         "node_modules",
