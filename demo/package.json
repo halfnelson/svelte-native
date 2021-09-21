@@ -3,15 +3,15 @@
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
   "dependencies": {
+    "@nativescript/core": "~8.1.3",
     "@nativescript/theme": "^3.0.1",
     "nativescript-ui-sidedrawer": "^9.0.3",
-    "svelte-native-nativescript-ui": "0.9.0",
-    "@nativescript/core": "~8.0.2"
+    "svelte-native-nativescript-ui": "0.9.0"
   },
   "devDependencies": {
-    "@nativescript/android": "8.0.0",
+    "@nativescript/android": "~8.1.1",
     "@nativescript/unit-test-runner": "^1.0.2",
-    "@nativescript/webpack": "4.1.0",
+    "@nativescript/webpack": "~5.0.0",
     "@types/chai": "^4.2.4",
     "@types/karma-chai": "0.1.1",
     "@types/mocha": "^8.0.3",
@@ -23,7 +23,7 @@
     "karma-webpack": "3.0.5",
     "mocha": "8.3.2",
     "semver": "^7.3.5",
-    "svelte": "3.37.0",
+    "svelte": "3.42.6",
     "svelte-loader": "^3.0.0",
     "svelte-native": "file:../dist",
     "svelte-native-preprocessor": "^1.0.0",
@@ -31,5 +31,5 @@
     "typescript": "~4.0.0"
   },
   "readme": "NativeScript Application",
-  "main": "app.js"
+  "main": "app/app.ts"
 }

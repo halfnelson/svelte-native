@@ -1,6 +1,6 @@
 import { ViewBase, View, NavigatedData, NavigationTransition, Frame, BackstackEntry } from "@nativescript/core";
 import FrameElement from "./native/FrameElement";
-import { createElement, logger as log } from "./basicdom";
+import { createElement, DocumentNode, logger as log } from "./basicdom";
 import PageElement from "./native/PageElement";
 import NativeViewElementNode from "./native/NativeViewElementNode";
 
@@ -34,7 +34,7 @@ function resolveFrame(frameSpec: FrameSpec): Frame {
 interface ComponentInstanceInfo { element: NativeViewElementNode<View>, pageInstance: SvelteComponent }
 
 function resolveComponentElement(pageSpec: PageSpec, props?: any): ComponentInstanceInfo {
-    let dummy = createElement('fragment');
+    let dummy = createElement('fragment', window.document as unknown as DocumentNode);
     let pageInstance = new pageSpec({ target: dummy, props: props });
     let element = dummy.firstElement() as NativeViewElementNode<View>;
     return { element, pageInstance }

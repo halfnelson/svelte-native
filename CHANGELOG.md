@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.0.0-beta.3]
+  - Update to Nativescript 8.1
+  - Resolve several problems preventing svelte 3.46.x from working with svelte native
+  - Resolve a problem preventing svelte-loader 3.x from working correctly with svelte native
+
 ## [1.0.0-beta.2]
   - Change JSX types to use interfaces so they can be extended/augmented
   - Added `shims.d.ts` to fix type errors reporting on `bind:this`

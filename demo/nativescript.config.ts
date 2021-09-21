@@ -7,6 +7,5 @@ export default {
     v8Flags: '--expose_gc',
     markingMode: 'full',
   },
-  webpackConfigPath: './svelte-native.webpack.config.js',
   appPath: 'app',
 } as NativeScriptConfig

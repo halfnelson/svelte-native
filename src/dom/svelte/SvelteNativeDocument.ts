@@ -6,7 +6,7 @@ export default class SvelteNativeDocument extends DocumentNode {
     constructor() {
         super()
 
-        this.head = createElement('head')
+        this.head = this.createElement('head')
         this.appendChild(this.head);
 
         log.debug(() => `created ${this}`)

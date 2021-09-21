@@ -8,6 +8,7 @@
       "rootDir": "src",
       "target": "es6",
       "moduleResolution": "node",
+      "skipLibCheck": true,
       "allowSyntheticDefaultImports": false,
       "esModuleInterop": false,   
     },

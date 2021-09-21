@@ -8,4 +8,4 @@ RadSideDrawerElement.register();
 //trace.addCategories(DomTraceCategory);
 
 import App from "./App.svelte";
-svelteNativeNoFrame(App, {});
+svelteNativeNoFrame(App as typeof SvelteComponent, {});
