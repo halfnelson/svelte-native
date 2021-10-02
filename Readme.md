@@ -10,20 +10,19 @@ See https://svelte-native.technology for docs and tutorials
 
 Svelte-Native includes Svelte specific integrations such as
 
- * The ability to use svelte components to create native applications on top of NativeScript core
- * Svelte specific navigation and modals eg `navigate({ page: MySvelteComponent })`
- * Integration with svelte's transistions eg `<label transition:fade="{duration: 2000}">`
- * Integration with sveltes scoped styles
- * Complete coverage of the Nativescript core UI modules
- * Uses unmodified Svelte and Nativescript modules
+-   The ability to use svelte components to create native applications on top of NativeScript core
+-   Svelte specific navigation and modals eg `navigate({ page: MySvelteComponent })`
+-   Integration with svelte's transistions eg `<label transition:fade="{duration: 2000}">`
+-   Integration with sveltes scoped styles
+-   Complete coverage of the Nativescript core UI modules
+-   Uses unmodified Svelte and Nativescript modules
 
 ## Work In Progress
 
 While Svelte Native is feature complete, there are some items outstanding to bring it to the level of other Nativescript library integrations
 
- - [x] At least 1 emoji in readme.md :+1:
- - [ ] More Tests 😳 [#54](https://github.com/halfnelson/svelte-native/issues/54)
- 
+-   [x] At least 1 emoji in readme.md :+1:
+-   [ ] More Tests 😳 [#54](https://github.com/halfnelson/svelte-native/issues/54)
 
 ## Installation
 
@@ -31,40 +30,42 @@ You can get started developing with this using the latest template
 
 ```bash
 $ npm install -g nativescript
-$ tns create myapp --template tns-template-blank-svelte
+$ tns create myapp --template @nativescript/template-blank-svelte
 ```
 
 A fresh Svelte Native app will be found in the `myapp` folder
 
-Once installed use the `tns preview`, `tns build` or `tns run` commands as for a normal NativeScript application. 
+Once installed use the `tns preview`, `tns build` or `tns run` commands as for a normal NativeScript application.
 
 ## Usage
 
 App.svelte
+
 ```html
 <page>
     <actionBar title="Svelte Native"></actionBar>
     <stackLayout>
-        <label text={msg}></label>
+        <label text="{msg}"></label>
         <button text="Change" on:tap="{toggle}"></button>
     </stackLayout>
 </page>
 
 <script>
-  export let msg = 'Hello World!'
-  const toggle = () => {
-      msg = "Hi from svelte"
-  }
+    export let msg = "Hello World!";
+    const toggle = () => {
+        msg = "Hi from svelte";
+    };
 </script>
 ```
 
 Main.ts
+
 ```js
-import App from './components/App.svelte';
+import App from "./components/App.svelte";
 
-import { svelteNative } from 'svelte-native'
+import { svelteNative } from "svelte-native";
 
-svelteNative(App, {msg: "Hi from launcher"});
+svelteNative(App, { msg: "Hi from launcher" });
 ```
 
 ## Examples
@@ -93,10 +94,8 @@ See https://github.com/halfnelson/svelte-native-realworld for the repo.
 
 ![Realworld Example Image](https://raw.githubusercontent.com/halfnelson/svelte-native-realworld/master/nativescript-svelte-realworld.gif)
 
-
 ## Credits
 
 The DOM implementation is based on the one from Nativescript-Vue. Thanks!
 The API Docs were ported from the Nativescript-Vue Too
 The Site Design is from SvelteJS
-
