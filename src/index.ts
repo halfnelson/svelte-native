@@ -6,7 +6,7 @@ import { DocumentNode } from './dom/basicdom';
 declare global {
     export class SvelteComponent {
         $destroy(): void;
-        constructor(options: { target?: ViewNode | Element , props?: any, anchor?: ViewNode | Element, intro?: boolean });
+        constructor(options: typeof { target?: ViewNode | Element , props?: any, anchor?: ViewNode | Element, intro?: boolean });
         $set(props: any): void;
     }
 }
