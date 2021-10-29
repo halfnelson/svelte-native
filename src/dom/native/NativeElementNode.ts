@@ -1,5 +1,5 @@
 import { logger as log, ViewNode, registerElement, logger } from '../basicdom'
-import { EventData, isAndroid, isIOS, Observable, ObservableArray } from '@nativescript/core';
+import { isAndroid, isIOS, ObservableArray } from '@nativescript/core';
 import ElementNode from '../basicdom/ElementNode';
 
 export enum NativeElementPropType {
@@ -7,8 +7,6 @@ export enum NativeElementPropType {
     Array,
     ObservableArray
 }
-
-export type EventListener = (args: EventData) => void;
 
 export interface NativeElementPropConfig {
     [key: string]: NativeElementPropType
@@ -58,62 +56,35 @@ function removeFromArrayProp(parent: any, value: any, propName: string) {
 }
 
 // Implements an ElementNode that wraps a NativeScript object. It uses the object as the source of truth for its attributes
-export default class NativeElementNode<T extends Observable> extends ElementNode {
+export default class NativeElementNode<T> extends ElementNode {
     _nativeElement: T;
     propAttribute: string = null;
     propConfig: NativeElementPropConfig;
 
-    constructor(
-        tagName: string,
-        elementClass: new () => T,
-        setsParentProp: string = null,
-        propConfig: NativeElementPropConfig = {}
-    ) {
+    constructor(tagName: string, elementClass: new () => T, setsParentProp: string = null, propConfig: NativeElementPropConfig = {}) {
         super(tagName);
-        this.propConfig = propConfig;
-        this.propAttribute = setsParentProp;
+        this.propConfig = propConfig
+        this.propAttribute = setsParentProp
         try {
             this._nativeElement = new elementClass();
-        } catch (err) {
-            throw new Error(
-                `[NativeElementNode] failed to created native element for tag ${tagName}: ${err}`
-            );
+        } catch(err) {
+            throw new Error(`[NativeElementNode] failed to created native element for tag ${tagName}: ${err}`);
         }
-
+     
         (this._nativeElement as any).__SvelteNativeElement__ = this;
-        log.debug(() => `created ${this} ${this._nativeElement}`);
+        log.debug(() => `created ${this} ${this._nativeElement}`)
     }
 
     get nativeElement() {
-        return this._nativeElement;
+        return this._nativeElement
     }
 
     set nativeElement(el) {
         if (this._nativeElement) {
-            throw new Error(`Can't overwrite native element.`);
+            throw new Error(`Can't overwrite native element.`)
         }
 
-        this._nativeElement = el;
-    }
-    /* istanbul ignore next */
-    addEventListener(event: string, handler: EventListener) {
-        log.debug(() => `add event listener ${this} ${event}`);
-
-        //svelte compatibility wrapper
-        (handler as any).__wrapper =
-            (handler as any).__wrapper ||
-            ((args: EventData) => {
-                (args as any).type = args.eventName;
-                handler(args);
-            });
-
-        this.nativeElement.on(event, (handler as any).__wrapper);
-    }
-
-    /* istanbul ignore next */
-    removeEventListener(event: string, handler?: EventListener) {
-        log.debug(() => `remove event listener ${this} ${event}`);
-        this.nativeElement.off(event, (handler as any).__wrapper || handler);
+        this._nativeElement = el
     }
 
     getAttribute(fullkey: string) {
@@ -127,7 +98,7 @@ export default class NativeElementNode<T extends Observable> extends ElementNode
 
             let key = keypath.shift();
 
-            resolvedKeys.push(key);
+            resolvedKeys.push(key)
 
             if (keypath.length > 0) {
                 getTarget = getTarget[key];
@@ -147,40 +118,21 @@ export default class NativeElementNode<T extends Observable> extends ElementNode
         if (!propName) return;
 
         //Special case Array and Observable Array keys
-        if (
-            !this.propConfig[propName] ||
-            this.propConfig[propName] == NativeElementPropType.Value
-        ) {
+        if (!this.propConfig[propName] || this.propConfig[propName] == NativeElementPropType.Value) {
             this.setAttribute(propName, childNode);
             return;
         }
-
+        
         //our array index is based on how many items with the same prop attribute come before us
-        const allPropSetters = this.childNodes.filter(
-            (n) =>
-                n instanceof NativeElementNode &&
-                n.propAttribute &&
-                n.propAttribute.toLowerCase() == propName.toLowerCase()
-        );
-        const myIndex = allPropSetters.indexOf(childNode);
+        const allPropSetters = this.childNodes.filter(n => n instanceof NativeElementNode && n.propAttribute && n.propAttribute.toLowerCase() == propName.toLowerCase());
+        const myIndex = allPropSetters.indexOf(childNode)
 
         switch (this.propConfig[propName]) {
             case NativeElementPropType.Array:
-                setOnArrayProp(
-                    this.nativeElement,
-                    childNode.nativeElement,
-                    propName,
-                    myIndex
-                );
+                setOnArrayProp(this.nativeElement, childNode.nativeElement, propName, myIndex)
                 return;
             case NativeElementPropType.ObservableArray:
-                setOnArrayProp(
-                    this.nativeElement,
-                    childNode.nativeElement,
-                    propName,
-                    myIndex,
-                    (v) => new ObservableArray(v)
-                );
+                setOnArrayProp(this.nativeElement, childNode.nativeElement, propName, myIndex, (v) => new ObservableArray(v))
                 return;
         }
     }
@@ -194,28 +146,24 @@ export default class NativeElementNode<T extends Observable> extends ElementNode
         switch (this.propConfig[propName]) {
             case NativeElementPropType.Array:
             case NativeElementPropType.ObservableArray:
-                removeFromArrayProp(
-                    this.nativeElement,
-                    childNode.nativeElement,
-                    propName
-                );
+                removeFromArrayProp(this.nativeElement, childNode.nativeElement, propName)
                 return;
             default:
                 this.setAttribute(propName, null);
         }
 
-        super.onRemovedChild(childNode);
+        super.onRemovedChild(childNode)
     }
 
     setAttribute(fullkey: string, value: any) {
-        const nv = this.nativeElement as any;
+        const nv = this.nativeElement as any
         let setTarget = nv;
 
         // normalize key
-        if (isAndroid && fullkey.startsWith("android:")) {
+        if (isAndroid && fullkey.startsWith('android:')) {
             fullkey = fullkey.substr(8);
         }
-        if (isIOS && fullkey.startsWith("ios:")) {
+        if (isIOS && fullkey.startsWith('ios:')) {
             fullkey = fullkey.substr(4);
         }
 
@@ -226,7 +174,7 @@ export default class NativeElementNode<T extends Observable> extends ElementNode
 
         //we might be getting an element from a propertyNode eg page.actionBar, unwrap
         if (value instanceof NativeElementNode) {
-            value = value.nativeElement;
+            value = value.nativeElement
         }
 
         let keypath = fullkey.split(".");
@@ -235,40 +183,24 @@ export default class NativeElementNode<T extends Observable> extends ElementNode
         while (keypath.length > 0) {
             if (!setTarget) return;
             let key = keypath.shift();
-            resolvedKeys.push(key);
+            resolvedKeys.push(key)
 
             if (keypath.length > 0) {
                 setTarget = setTarget[key];
             } else {
                 try {
-                    log.debug(
-                        () =>
-                            `setAttr value ${this} ${resolvedKeys.join(
-                                "."
-                            )} ${value}`
-                    );
-                    setTarget[key] = value;
+                    log.debug(() => `setAttr value ${this} ${resolvedKeys.join(".")} ${value}`)
+                    setTarget[key] = value
                 } catch (e) {
                     // ignore but log
-                    log.error(
-                        () =>
-                            `set attribute threw an error, attr:${key} on ${this._tagName}: ${e.message}`
-                    );
+                    log.error(() => `set attribute threw an error, attr:${key} on ${this._tagName}: ${e.message}`)
                 }
             }
-        }
-    }
-
-    dispatchEvent(event: EventData) {
-        if (this.nativeElement) {
-            //nativescript uses the EventName while dom uses Type
-            event.eventName = (event as any).type;
-            this.nativeElement.notify(event);
         }
     }
 }
 
 
-export function registerNativeConfigElement<T extends Observable>(elementName: string, resolver: () => new () => T, parentProp: string = null, propConfig: NativeElementPropConfig = {}) {
+export function registerNativeConfigElement<T>(elementName: string, resolver: () => new () => T, parentProp: string = null, propConfig: NativeElementPropConfig = {}) {
     registerElement(elementName, () => new NativeElementNode(elementName, resolver(), parentProp, propConfig));
 }

@@ -1,7 +1,7 @@
 import { ActionBar, ActionItem, NavigationButton } from "@nativescript/core";
-import NativeViewElementNode from "./NativeViewElementNode";
+import NativeViewElementNode, { registerNativeViewElement } from "./NativeViewElementNode";
 import { registerElement, ViewNode } from "../basicdom";
-import NativeElementNode, { registerNativeConfigElement } from "./NativeElementNode";
+import NativeElementNode from "./NativeElementNode";
 
 export default class ActionBarElement extends NativeViewElementNode<ActionBar> {
     constructor() {
@@ -44,13 +44,13 @@ export default class ActionBarElement extends NativeViewElementNode<ActionBar> {
     static register() {
         registerElement("ActionBar", () => new ActionBarElement())
 
-        registerNativeConfigElement(
+        registerNativeViewElement(
             "NavigationButton",
             () => NavigationButton,
             "navigationButton"
         );
 
-        registerNativeConfigElement(
+        registerNativeViewElement(
             "ActionItem",
             () => ActionItem,
             "actionItems"

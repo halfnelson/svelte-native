@@ -1,9 +1,8 @@
 import { registerElement } from "../basicdom";
 import { SegmentedBar, SegmentedBarItem } from "@nativescript/core";
-import NativeViewElementNode from "./NativeViewElementNode";
+import NativeViewElementNode, { registerNativeViewElement } from "./NativeViewElementNode";
 import {
     NativeElementPropType,
-    registerNativeConfigElement,
 } from "./NativeElementNode";
 
 export default class SegmentedBarElement extends NativeViewElementNode<SegmentedBar> {
@@ -15,7 +14,7 @@ export default class SegmentedBarElement extends NativeViewElementNode<Segmented
 
     static register() {
         registerElement("SegmentedBar", () => new SegmentedBarElement());
-        registerNativeConfigElement(
+        registerNativeViewElement(
             "SegmentedBarItem",
             () => SegmentedBarItem,
             "items"

@@ -1,6 +1,6 @@
 import ViewNode from '../basicdom/ViewNode'
 import { logger as log, registerElement, RegisterElementOptions } from '../basicdom'
-import { KeyframeAnimation, LayoutBase, EventData, Page, View, ContentView } from '@nativescript/core';
+import { KeyframeAnimation, LayoutBase, EventData, Page, ViewBase, View, ContentView } from '@nativescript/core';
 import { CssAnimationParser } from '@nativescript/core/ui/styling/css-animation-parser';
 
 import NativeElementNode, { NativeElementPropConfig } from './NativeElementNode';
@@ -16,12 +16,15 @@ function camelize(kebab: string): string {
     return kebab.replace(/[\-]+(\w)/g, (m, l) => l.toUpperCase());
 }
 
-export function registerNativeViewElement<T extends View>(elementName: string, resolver: () => new () => T, parentProp: string = null, propConfig: NativeElementPropConfig = {}, options?: RegisterElementOptions) {
+export function registerNativeViewElement<T extends ViewBase>(elementName: string, resolver: () => new () => T, parentProp: string = null, propConfig: NativeElementPropConfig = {}, options?: RegisterElementOptions) {
     registerElement(elementName, () => new NativeViewElementNode(elementName, resolver(), parentProp, propConfig), options);
 }
 
+
+export type EventListener = (args: EventData) => void;
+
 // A NativeViewElementNode, wraps a native View and handles style, event dispatch, and native view hierarchy management.
-export default class NativeViewElementNode<T extends View> extends NativeElementNode<T> {
+export default class NativeViewElementNode<T extends ViewBase> extends NativeElementNode<T> {
     style: IStyleProxy;
 
     constructor(tagName: string, viewClass: new () => T, setsParentProp: string = null, propConfig: NativeElementPropConfig = {}) {
@@ -86,7 +89,7 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
 
             // save and launch the animation
             animations.set(animation, animationInstance);
-            animationInstance.play(this.nativeView);
+            animationInstance.play(this.nativeView as unknown as View);
         }
 
         const removeAnimation = (animation: string) => {
@@ -170,7 +173,25 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
         this.nativeElement = view
     }
 
-  
+    /* istanbul ignore next */
+    addEventListener(event: string, handler: EventListener) {
+        log.debug(() => `add event listener ${this} ${event}`);
+
+        //svelte compatibility wrapper
+        (handler as any).__wrapper = (handler as any).__wrapper || ((args: EventData) => {
+            (args as any).type = args.eventName; 
+            handler(args)
+        })
+         
+        this.nativeView.on(event, (handler as any).__wrapper)
+    }
+
+    /* istanbul ignore next */
+    removeEventListener(event: string, handler?: EventListener) {
+        log.debug(() => `remove event listener ${this} ${event}`)
+        this.nativeView.off(event, (handler as any).__wrapper || handler )
+    }
+
 
     onInsertedChild(childNode: ViewNode, index: number) {
         super.onInsertedChild(childNode, index);
@@ -260,5 +281,11 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
             }
         }
 
-  
+    dispatchEvent(event: EventData) {
+        if (this.nativeView) {
+            //nativescript uses the EventName while dom uses Type
+            event.eventName = (event as any).type;
+            this.nativeView.notify(event);
+        }
+    }
 }

@@ -1,11 +1,9 @@
 import { registerElement } from "../basicdom";
 import { FormattedString, Span } from "@nativescript/core";
-import NativeElementNode, {
-    NativeElementPropType,
-    registerNativeConfigElement,
-} from "./NativeElementNode";
+import { NativeElementPropType } from "./NativeElementNode";
+import  NativeViewElementNode, { registerNativeViewElement } from "./NativeViewElementNode";
 
-export default class FormattedStringElement extends NativeElementNode<FormattedString> {
+export default class FormattedStringElement extends NativeViewElementNode<FormattedString> {
     constructor() {
         super("FormattedString", FormattedString, "formattedText", {
             spans: NativeElementPropType.ObservableArray,
@@ -14,6 +12,6 @@ export default class FormattedStringElement extends NativeElementNode<FormattedS
 
     static register() {
         registerElement("FormattedString", () => new FormattedStringElement());
-        registerNativeConfigElement("Span", () => Span, "spans");
+        registerNativeViewElement("Span", () => Span, "spans");
     }
 }

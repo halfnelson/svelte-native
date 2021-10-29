@@ -1,7 +1,6 @@
 import { ViewNode, logger as log, registerElement } from "../basicdom";
 import { TabView, TabViewItem } from '@nativescript/core'
-import NativeViewElementNode from "./NativeViewElementNode";
-import { registerNativeConfigElement } from "./NativeElementNode";
+import NativeViewElementNode, { registerNativeViewElement } from "./NativeViewElementNode";
 
 export default class TabViewElement extends NativeViewElementNode<TabView> {
 
@@ -45,7 +44,7 @@ export default class TabViewElement extends NativeViewElementNode<TabView> {
     }
 
     static register() {
-          registerNativeConfigElement("TabViewItem", () => TabViewItem);
+          registerNativeViewElement("TabViewItem", () => TabViewItem);
           registerElement("TabView", () => new TabViewElement());
     }
 }
