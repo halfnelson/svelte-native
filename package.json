@@ -1,6 +1,6 @@
 {
   "name": "svelte-native",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "Svelte integration for NativeScript",
   "private": true,
   "repository": {
@@ -23,7 +23,7 @@
   "license": "MIT",
   "peerDependencies": {
     "@nativescript/core": "~8.1.3",
-    "svelte": "~3.42.6"
+    "svelte": "~3.44.0"
   },
   "devDependencies": {
     "@nativescript/core": "8.1.3",
