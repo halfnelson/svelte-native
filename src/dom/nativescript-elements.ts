@@ -1,155 +1,107 @@
-import { registerElement } from './basicdom'
-import FrameElement from './native/FrameElement';
-import PageElement from './native/PageElement';
-import ListViewElement from './native/ListViewElement';
-import TabViewElement from './native/TabViewElement';
-import { registerNativeViewElement } from './native/NativeViewElementNode';
-import { NativeElementPropType } from './native/NativeElementNode';
-import ActionBarElement from './native/ActionBarElement';
+import FrameElement from "./native/FrameElement";
+import PageElement from "./native/PageElement";
+import ListViewElement from "./native/ListViewElement";
+import TabViewElement from "./native/TabViewElement";
+import ActionBarElement from "./native/ActionBarElement";
+import LabelElement from "./native/LabelElement";
+import DatePickerElement from "./native/DatePickerElement";
+import AbsoluteLayoutElement from "./native/AbsoluteLayoutElement";
+import ActivityIndicatorElement from "./native/ActivityIndicatorElement";
+import ButtonElement from "./native/ButtonElement";
+import DockLayoutElement from "./native/DockLayoutElement";
+import GridLayoutElement from "./native/GridLayoutElement";
+import HtmlViewElement from "./native/HtmlViewElement";
+import ImageElement from "./native/ImageElement";
+import ListPickerElement from "./native/ListPickerElement";
+import ContentViewElement from "./native/ContentViewElement";
+import FlexboxLayoutElement from "./native/FlexboxLayoutElement";
+import FormattedStringElement from "./native/FormattedStringElement";
+import PlaceholderElement from "./native/PlaceholderElement";
+import ProgressElement from "./native/ProgressElement";
+import ProxyViewContainerElement from "./native/ProxyViewContainerElement";
+import RootLayoutElement from "./native/RootLayoutElement";
+import ScrollViewElement from "./native/ScrollViewElement";
+import SearchBarElement from "./native/SearchBarElement";
+import SegmentedBarElement from "./native/SegmentedBarElement";
+import SliderElement from "./native/SliderElement";
+import StackLayoutElement from "./native/StackLayoutElement";
+import SwitchElement from "./native/SwitchElement";
+import TextFieldElement from "./native/TextFieldElement";
+import TextViewElement from "./native/TextViewElement";
+import TimePickerElement from "./native/TimePickerElement";
+import WebViewElement from "./native/WebViewElement";
+import WrapLayoutElement from "./native/WrapLayoutElement";
+import { SvelteKeyedTemplate } from "./native/ListViewElement";
 
 export function registerNativeElements() {
-  registerNativeViewElement(
-    'ActionItem',
-    () => require('@nativescript/core').ActionItem,
-    'actionItems'
-  )
+    AbsoluteLayoutElement.register();
+    ActionBarElement.register();
+    ActivityIndicatorElement.register();
+    ButtonElement.register();
+    ContentViewElement.register();
+    DatePickerElement.register();
+    DockLayoutElement.register();
+    FlexboxLayoutElement.register();
+    FormattedStringElement.register();
+    FrameElement.register();
+    GridLayoutElement.register();
+    HtmlViewElement.register();
+    ImageElement.register();
+    LabelElement.register();
+    ListPickerElement.register();
+    ListViewElement.register();
+    PageElement.register();
+    PlaceholderElement.register();
+    ProgressElement.register();
+    ProxyViewContainerElement.register();
+    RootLayoutElement.register();
+    ScrollViewElement.register();
+    SearchBarElement.register();
+    SegmentedBarElement.register();
+    SliderElement.register();
+    StackLayoutElement.register();
+    SwitchElement.register();
+    TabViewElement.register();
+    TextFieldElement.register();
+    TextViewElement.register();
+    TimePickerElement.register();
+    WebViewElement.register();
+    WrapLayoutElement.register();
+}
 
-  registerNativeViewElement(
-    'NavigationButton',
-    () => require('@nativescript/core').NavigationButton,
-    'navigationButton'
-  )
-
-
-  registerNativeViewElement(
-    'TabViewItem',
-    () => require('@nativescript/core').TabViewItem
-  )
-
-  registerNativeViewElement('Label', () => require('@nativescript/core').Label)
-  
-  registerNativeViewElement(
-    'DatePicker',
-    () => require('@nativescript/core').DatePicker,
-  )
-
-  registerNativeViewElement(
-    'AbsoluteLayout',
-    () => require('@nativescript/core').AbsoluteLayout
-  )
-  registerNativeViewElement(
-    'ActivityIndicator',
-    () => require('@nativescript/core').ActivityIndicator
-  )
-  registerNativeViewElement('Button', () => require('@nativescript/core').Button)
-  registerNativeViewElement(
-    'ContentView',
-    () => require('@nativescript/core').ContentView
-  )
-  registerNativeViewElement(
-    'DockLayout',
-    () => require('@nativescript/core').DockLayout
-  )
-  registerNativeViewElement(
-    'GridLayout',
-    () => require('@nativescript/core').GridLayout
-  )
-  registerNativeViewElement(
-    'HtmlView',
-    () => require('@nativescript/core').HtmlView
-  )
-  registerNativeViewElement('Image', () => require('@nativescript/core').Image)
-  registerNativeViewElement(
-    'ListPicker',
-    () => require('@nativescript/core').ListPicker,
-  )
-
-  registerNativeViewElement(
-    'Placeholder',
-    () => require('@nativescript/core').Placeholder
-  )
-  registerNativeViewElement(
-    'Progress',
-    () => require('@nativescript/core').Progress,
-  )
-  registerNativeViewElement(
-    'ProxyViewContainer',
-    () => require('@nativescript/core').ProxyViewContainer
-  )
-  // registerElement(
-  //   'Repeater',
-  //   () => require('@nativescript/core').Repeater
-  // )
-  registerNativeViewElement(
-    'RootLayout',
-    () => require('@nativescript/core').RootLayout
-  )
-
-  registerNativeViewElement(
-    'ScrollView',
-    () => require('@nativescript/core').ScrollView
-  )
-  registerNativeViewElement(
-    'SearchBar',
-    () => require('@nativescript/core').SearchBar,
-  )
-  registerNativeViewElement(
-    'SegmentedBar',
-    () => require('@nativescript/core').SegmentedBar,
-    null,
-    { "items": NativeElementPropType.Array }
-  )
-  registerNativeViewElement(
-    'SegmentedBarItem',
-    () => require('@nativescript/core').SegmentedBarItem,
-    "items"
-  )
-  registerNativeViewElement('Slider', () => require('@nativescript/core').Slider)
-  registerNativeViewElement(
-    'StackLayout',
-    () => require('@nativescript/core').StackLayout
-  )
-  registerNativeViewElement(
-    'FlexboxLayout',
-    () => require('@nativescript/core').FlexboxLayout
-  )
-  registerNativeViewElement('Switch', () => require('@nativescript/core').Switch)
-
-  registerNativeViewElement(
-    'TextField',
-    () => require('@nativescript/core').TextField,
-
-  )
-  registerNativeViewElement(
-    'TextView',
-    () => require('@nativescript/core').TextView,
-
-  )
-  registerNativeViewElement(
-    'TimePicker',
-    () => require('@nativescript/core').TimePicker,
-
-  )
-  registerNativeViewElement(
-    'WebView',
-    () => require('@nativescript/core').WebView
-  )
-  registerNativeViewElement(
-    'WrapLayout',
-    () => require('@nativescript/core').WrapLayout
-  )
-
-  registerNativeViewElement('FormattedString', () => require('@nativescript/core').FormattedString, "formattedText", {
-    "spans": NativeElementPropType.ObservableArray
-  })
-
-  registerNativeViewElement('Span', () => require('@nativescript/core').Span, "spans")
-
-  registerElement('ActionBar', () => new ActionBarElement())
-  registerElement('Frame', () => new FrameElement())
-  registerElement('Page', () => new PageElement())
-  registerElement('ListView', () => new ListViewElement())
-  registerElement('TabView', () => new TabViewElement())
-
-  
+export {
+    AbsoluteLayoutElement,
+    ActionBarElement,
+    ActivityIndicatorElement,
+    ButtonElement,
+    ContentViewElement,
+    DatePickerElement,
+    DockLayoutElement,
+    FlexboxLayoutElement,
+    FormattedStringElement,
+    FrameElement,
+    GridLayoutElement,
+    HtmlViewElement,
+    ImageElement,
+    LabelElement,
+    ListPickerElement,
+    ListViewElement,
+    PageElement,
+    PlaceholderElement,
+    ProgressElement,
+    ProxyViewContainerElement,
+    RootLayoutElement,
+    ScrollViewElement,
+    SearchBarElement,
+    SegmentedBarElement,
+    SliderElement,
+    StackLayoutElement,
+    SwitchElement,
+    TabViewElement,
+    TextFieldElement,
+    TextViewElement,
+    TimePickerElement,
+    WebViewElement,
+    WrapLayoutElement,
+    SvelteKeyedTemplate
 }
