@@ -1,6 +1,7 @@
-import { ViewNode, logger as log } from "../basicdom";
+import { ViewNode, logger as log, registerElement } from "../basicdom";
 import { TabView, TabViewItem } from '@nativescript/core'
 import NativeViewElementNode from "./NativeViewElementNode";
+import { registerNativeConfigElement } from "./NativeElementNode";
 
 export default class TabViewElement extends NativeViewElementNode<TabView> {
 
@@ -41,5 +42,10 @@ export default class TabViewElement extends NativeViewElementNode<TabView> {
         if (!(childNode instanceof NativeViewElementNode && childNode.nativeView instanceof TabViewItem))
             return super.onRemovedChild(childNode);
         console.error("Removing a TabViewItem is not supported atm see:  https://github.com/NativeScript/nativescript-angular/issues/621");
+    }
+
+    static register() {
+          registerNativeConfigElement("TabViewItem", () => TabViewItem);
+          registerElement("TabView", () => new TabViewElement());
     }
 }

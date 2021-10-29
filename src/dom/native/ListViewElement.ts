@@ -1,6 +1,6 @@
 import { ListView, ItemEventData, ItemsSource, View } from '@nativescript/core'
 import TemplateElement from '../svelte/TemplateElement';
-import { createElement, DocumentNode, logger as log, ViewNode } from '../basicdom';
+import { createElement, DocumentNode, logger as log, registerElement, ViewNode } from '../basicdom';
 import NativeViewElementNode from './NativeViewElementNode';
 
 export class SvelteKeyedTemplate {
@@ -43,7 +43,7 @@ export class SvelteKeyedTemplate {
 
 export default class ListViewElement extends NativeViewElementNode<ListView> {
     constructor() {
-        super('listview', ListView);
+        super("ListView", ListView);
         this.nativeView.on(ListView.itemLoadingEvent, (args) => { this.updateListItem(args as ItemEventData) });
     }
 
@@ -121,5 +121,9 @@ export default class ListViewElement extends NativeViewElementNode<ListView> {
                 this.nativeView.itemTemplates = this.nativeView.itemTemplates.filter(t => t.key != key);
             }
         }
+    }
+
+    static register() {
+        registerElement("ListView", () => new ListViewElement())
     }
 }

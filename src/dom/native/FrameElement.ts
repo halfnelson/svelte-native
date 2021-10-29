@@ -1,4 +1,4 @@
-import { createElement, ViewNode, logger as log } from "../basicdom";
+import { createElement, ViewNode, logger as log, registerElement } from "../basicdom";
 import { Frame, View } from '@nativescript/core'
 import PageElement from "./PageElement";
 import NativeViewElementNode from "./NativeViewElementNode";
@@ -6,7 +6,7 @@ import NativeViewElementNode from "./NativeViewElementNode";
 export default class FrameElement extends NativeViewElementNode<Frame> {
 
     constructor() {
-        super('frame', Frame);
+        super('Frame', Frame);
     }
 
     setAttribute(key: string, value: any) {
@@ -29,5 +29,9 @@ export default class FrameElement extends NativeViewElementNode<Frame> {
             return;
 
         this.nativeView.navigate({ create: () => childNode.nativeView, clearHistory: true })
+    }
+
+    static register() {
+        registerElement("Frame", () => new FrameElement())
     }
 }
