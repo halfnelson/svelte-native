@@ -33,31 +33,26 @@ This guide assumes a existing familiarity with the Svelte framework. Run through
 We will start our from a fresh app template:
 
 ```bash
-$ npx degit halfnelson/svelte-native-template todoapp
+$ ns create todoapp --svelte
 $ cd todoapp
 $ npm install
 ```
 
-Remove the default `.btn` rule from `app.css` and set the contents of App.svelte to:
+Set the contents of `components/Home.svelte` to:
 
 ```html
-<!--{ filename: 'App.svelte' }-->
+<!--{ filename: 'components/Home.svelte' }-->
 <page>
     <actionBar title="My Tasks" />
 
-    <tabs tabsPosition="bottom">
-        <tabStrip>
-            <tabStripItem title="To Do" />
-            <tabStripItem title="Completed" />
-        </tabStrip>
-
-        <tabContentItem>
+    <tabView>
+        <tabViewItem title="To Do">
             <label textWrap="true">This tab will list active tasks and will let users add new tasks.</label>
-        </tabContentItem>
-        <tabContentItem>
+        </tabViewItem>
+        <tabViewItem title="Completed">
             <label textWrap="true">This tab will list completed tasks for tracking.</label>
-        </tabContentItem>
-    </tabs>
+        </tabViewItem>
+    </tabView>
 </page>
 ```
  > **NOTE** Notice that all tags start with a lower case letter. This is different to other NativeScript implementations. The lower case letter lets the Svelte compiler know that these are NativeScript views and not Svelte components. Think of `<page>` and `<actionBar>` as just another set of application building blocks like `<ul>` and `<div>`.
@@ -74,14 +69,14 @@ The `<label>` tags have been used differently. One has the `text=` attribute, wh
 
 #### Progress So Far
 
-<img src="/media/todoapp/todo-basic-design-1.png" alt="tab 1" width=300> <img src="/media/todoapp/todo-basic-design-2.png" alt="tab 2" width=300>
+<img src="/media/todoapp/todo-basic-design-1.png" alt="tab 1" width=300> 
 
 
 ### Basic Functionality: Add Tasks
 
 We have our basic design, lets allow the user to add some tasks.
 
-Replace the contents of the first `<tabContentItem>` with:
+Replace the contents of the first `<tabViewItem>` with:
 
 ```html
 <gridLayout columns="*,120" rows="70,*">
@@ -124,7 +119,7 @@ and to the bottom of the file add a script tag:
 
 To allow the user to enter a todo item, we need to capture the name of the task. We did this by adding a `<textField>`. A `<button>` was added to submit the task and a `<listView>` to display the task.
 
-Since this functionality required adding 3 elements to the tabview, we use layouts to tell NativeScript where to place each item. Here we used a `<gridLayout>` to define 2 columns and 2 rows where the second column is 120dp and the first column takes all remaining space(`*,120`), and the first row is 70dp while the second takes the rest (`70,*`). We place the `<textField>` in the first row and column, the `<button>` in the first row second column (which is fixed at 120x70) and the `<>` in the second row spanning 2 columns (`colSpan=2`).
+Since this functionality required adding 3 elements to the tabview, we use layouts to tell NativeScript where to place each item. Here we used a `<gridLayout>` to define 2 columns and 2 rows where the second column is 120dp and the first column takes all remaining space(`*,120`), and the first row is 70dp while the second takes the rest (`70,*`). We place the `<textField>` in the first row and column, the `<button>` in the first row second column (which is fixed at 120x70) and the `<listView>` in the second row spanning 2 columns (`colSpan=2`).
 
 The `<listView>` contains a `<Template>` which is a Svelte component used to render each item. The template component needs to be imported just like all Svelte components.
 
@@ -191,7 +186,7 @@ Native script comes with a global [`dialogs`](https://docs.nativescript.org/ui/d
 
 To get that sense of satisfaction from completing an item on your todo list, it would be good to be able to see the item on the completed tab. In this section we will add a `listView` to display the items and allow you to delete them or restore them to the todos using an action.
 
-First add the `listView` below to the second `tabContentItem` replacing the `label`
+First add the `listView` below to the second `tabViewItem` replacing the `label`
 ```html
 <listView items="{dones}" on:itemTap="{onDoneTap}">
 	<Template let:item>
@@ -227,7 +222,7 @@ async function onDoneTap(args) {
 
 #### What we just did
 
-To display our done items we added the `listView` to the "completed" `tabContentItem` and bound it to the `dones` variable we defined in last step.
+To display our done items we added the `listView` to the "completed" `tabViewItem` and bound it to the `dones` variable we defined in last step.
 
 We added an event handler to handle taps on the "completed" items. This handler is very similar to the handler added in the last section, except that it works on the `dones` array and not the `todos`.
 
@@ -276,6 +271,9 @@ To the label in the `listView` for the `dones` add `class="todo-item-completed"`
 Add the following CSS rules to the `style` tag
 
 ```css
+label {
+        font-size: 18;
+}
 
 .todo-item-completed {
   color: #939393;
