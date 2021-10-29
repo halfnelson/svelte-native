@@ -25,7 +25,10 @@ export function registerElement(elementName: string, resolver: () => ElementNode
     registerElementResolver(elementName, { resolver: resolver }, options)
 }
 
-export function createElement(elementName: string, owner: DocumentNode): ElementNode {
+export function createElement(elementName: string, owner?: DocumentNode): ElementNode {
+    if (!owner) {
+        owner = document as unknown as DocumentNode;
+    }
     const normalizedName = normalizeElementName(elementName);
     const elementDefinition = elementMap[normalizedName];
     if (!elementDefinition) {

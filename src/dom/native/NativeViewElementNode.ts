@@ -20,9 +20,6 @@ export function registerNativeViewElement<T extends View>(elementName: string, r
     registerElement(elementName, () => new NativeViewElementNode(elementName, resolver(), parentProp, propConfig), options);
 }
 
-
-export type EventListener = (args: EventData) => void;
-
 // A NativeViewElementNode, wraps a native View and handles style, event dispatch, and native view hierarchy management.
 export default class NativeViewElementNode<T extends View> extends NativeElementNode<T> {
     style: IStyleProxy;
@@ -173,25 +170,7 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
         this.nativeElement = view
     }
 
-    /* istanbul ignore next */
-    addEventListener(event: string, handler: EventListener) {
-        log.debug(() => `add event listener ${this} ${event}`);
-
-        //svelte compatibility wrapper
-        (handler as any).__wrapper = (handler as any).__wrapper || ((args: EventData) => {
-            (args as any).type = args.eventName; 
-            handler(args)
-        })
-         
-        this.nativeView.on(event, (handler as any).__wrapper)
-    }
-
-    /* istanbul ignore next */
-    removeEventListener(event: string, handler?: EventListener) {
-        log.debug(() => `remove event listener ${this} ${event}`)
-        this.nativeView.off(event, (handler as any).__wrapper || handler )
-    }
-
+  
 
     onInsertedChild(childNode: ViewNode, index: number) {
         super.onInsertedChild(childNode, index);
@@ -281,11 +260,5 @@ export default class NativeViewElementNode<T extends View> extends NativeElement
             }
         }
 
-    dispatchEvent(event: EventData) {
-        if (this.nativeView) {
-            //nativescript uses the EventName while dom uses Type
-            event.eventName = (event as any).type;
-            this.nativeView.notify(event);
-        }
-    }
+  
 }
