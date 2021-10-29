@@ -3,11 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
+## [1.0.0-beta.4]
+  - Update supported svelte version
+  - Internal change which should allow self registration of components to reduce bundle size
 
 ## [1.0.0-beta.3]
   - Update to Nativescript 8.1
-  - Resolve several problems preventing svelte 3.46.x from working with svelte native
+  - Resolve several problems preventing svelte 3.42.x from working with svelte native
   - Resolve a problem preventing svelte-loader 3.x from working correctly with svelte native
 
 ## [1.0.0-beta.2]
