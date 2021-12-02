@@ -472,9 +472,9 @@ The following example creates a column of equally-sized items. When the row runs
 
 `<rootLayout>` is a layout container designed to be used as the primary root layout container for your app with a built in api to easily control dynamic view layers. It extends a GridLayout so has all the features of a grid but enhanced with additional apis.
 
-It's api can be observed here:
+Its api can be observed here:
 
-```ts
+```js
 export class RootLayout extends GridLayout {
   open(view: View, options?: RootLayoutOptions): Promise<void>
   close(view: View, exitTo?: TransitionAnimation): Promise<void>
@@ -536,7 +536,7 @@ Sample layout:
 
 Sample api usage:
 
-```ts
+```js
 // Open a dynamic popup
 const view = this.getPopup('#EA5936', 110, -30)
 getRootLayout()
