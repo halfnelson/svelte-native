@@ -176,7 +176,7 @@ export default class ViewNode {
         }
 
         this.childNodes.push(childNode)
-        this.onInsertedChild(childNode, this.childNodes.length - 1)
+        this.onInsertedChild(childNode, -1)
     }
 
     removeChild(childNode: ViewNode) {

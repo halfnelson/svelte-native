@@ -210,14 +210,6 @@ export default class NativeViewElementNode<T extends ViewBase> extends NativeEle
             return
         }
 
-        //use the builder logic if we aren't being dynamic, to catch config items like <actionbar> that are not likely to be toggled
-        if (index < 0 && (parentView as any)._addChildFromBuilder) {
-            (parentView as any)._addChildFromBuilder(
-                childView.constructor.name,
-                childView
-            )
-            return
-        }
 
         if (parentView instanceof LayoutBase) {
             if (index >= 0) {
@@ -232,7 +224,7 @@ export default class NativeViewElementNode<T extends ViewBase> extends NativeEle
             return;
         }
 
-        // we aren't a layout view, but we were given an index, try the _addChildFromBuilder first
+        // we aren't a layout view, _addChildFromBuilder should give the correct behaviour if it exists 
         if ((parentView as any)._addChildFromBuilder) {
             return (parentView as any)._addChildFromBuilder(
                 childView.constructor.name,
@@ -240,11 +232,13 @@ export default class NativeViewElementNode<T extends ViewBase> extends NativeEle
             )
         }
 
+        // No _addChildFromBuilder, we sort of know what to do with ContentView
         if (parentView instanceof ContentView) {
             parentView.content = childView;
             return;
         }
 
+        // Give up.
         throw new Error("Parent can't contain children: " + this + ", " + childNode);
     }
 
