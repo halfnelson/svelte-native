@@ -22,7 +22,7 @@
     "golden-fleece": "^1.0.9",
     "marked": "^0.7.0",
     "nativescript-preview-sdk": "^0.3.3",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.1.1",
     "passport": "^0.4.0",
     "passport-github": "^1.1.0",
     "prismjs": "^1.17.1",
