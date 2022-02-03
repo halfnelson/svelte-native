@@ -105,7 +105,7 @@ function initializeLogger() {
 
 export function initializeDom() {
     initializeLogger();
-    if (__UI_USE_EXTERNAL_RENDERER__) {
+    if (typeof __UI_USE_EXTERNAL_RENDERER__ != "undefined" &&  __UI_USE_EXTERNAL_RENDERER__) {
     } else {
         registerNativeElements();
     }
