@@ -9,6 +9,12 @@ declare global {
         constructor(options: { target?: ViewNode | Element , props?: any, anchor?: ViewNode | Element, intro?: boolean });
         $set(props: any): void;
     }
+    interface Svelte2TsxComponentConstructorParameters<T> {
+        target?: ViewNode | Element;
+        props?: T;
+        anchor?: ViewNode | Element;
+        intro?: boolean;
+    }
 }
 
 export function svelteNativeNoFrame(rootElement: typeof SvelteComponent, data: any): Promise<SvelteComponent> {
