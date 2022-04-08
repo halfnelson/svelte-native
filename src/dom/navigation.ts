@@ -3,7 +3,9 @@ import FrameElement from "./native/FrameElement";
 import { createElement, DocumentNode, logger as log } from "./basicdom";
 import PageElement from "./native/PageElement";
 import NativeViewElementNode from "./native/NativeViewElementNode";
+import { getRootView } from "@nativescript/core/application";
 
+export type ViewSpec = View | NativeViewElementNode<View>
 export type FrameSpec = Frame | FrameElement | string
 export type PageSpec = typeof SvelteComponent;
 export interface NavigationOptions {
@@ -29,6 +31,13 @@ function resolveFrame(frameSpec: FrameSpec): Frame {
         if (!targetFrame) log.error(() => `Navigate could not find frame with id ${frameSpec}`)
     }
     return targetFrame;
+}
+
+function resolveTarget(viewSpec: ViewSpec): View {
+    if (viewSpec instanceof View)  {
+        return viewSpec;
+    }
+    return viewSpec.nativeView;
 }
 
 interface ComponentInstanceInfo { element: NativeViewElementNode<View>, pageInstance: SvelteComponent }
@@ -97,6 +106,7 @@ export function goBack(options: BackNavigationOptions = {}) {
 
 export interface ShowModalOptions {
     page: PageSpec
+    target?: ViewSpec
     props?: any
     android?: { cancelable: boolean }
     ios?: { presentationStyle: any }
@@ -108,10 +118,9 @@ export interface ShowModalOptions {
 const modalStack: ComponentInstanceInfo[] = []
 
 export function showModal<T>(modalOptions: ShowModalOptions): Promise<T> {
-    let { page, props = {}, ...options } = modalOptions;
+    let { page, props = {}, target, ...options } = modalOptions;
 
-    //Get this before any potential new frames are created by component below
-    let modalLauncher = Frame.topmost().currentPage;
+    let modalLauncher = resolveTarget(target) || getRootView();
 
     let componentInstanceInfo = resolveComponentElement(page, props);
     let modalView: ViewBase = componentInstanceInfo.element.nativeView;
