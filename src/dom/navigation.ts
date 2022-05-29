@@ -37,7 +37,7 @@ function resolveTarget(viewSpec: ViewSpec): View {
     if (viewSpec instanceof View)  {
         return viewSpec;
     }
-    return viewSpec.nativeView;
+    return viewSpec?.nativeView;
 }
 
 interface ComponentInstanceInfo { element: NativeViewElementNode<View>, pageInstance: SvelteComponent }
