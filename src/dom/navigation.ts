@@ -70,8 +70,12 @@ export function navigate(options: NavigationOptions): SvelteComponent {
 
     const handler = (args: NavigatedData) => {
         if (args.isBackNavigation) {
-            nativePage.off('navigatedFrom', handler)
-            pageInstance.$destroy()
+            // we need to delay because it could create a crash in N as $destroy()
+            // will remove all set `navigatedFrom` while we are enumerating to actually send them
+            setTimeout(() => {
+                nativePage.off('navigatedFrom', handler);
+                pageInstance.$destroy()
+            }, 0);
         }
     }
     nativePage.on('navigatedFrom', handler)
