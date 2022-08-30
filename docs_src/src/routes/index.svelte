@@ -86,10 +86,9 @@
 	<div style="grid-area: start; display: flex; flex-direction: column; min-width: 0" slot="how">
 		<pre class="language-bash" style="margin: 0 0 1em 0; min-width: 0; min-height: 0">
 npm install -g nativescript
-npx degit halfnelson/svelte-native-template my-mobile-app
+ns create my-mobile-app --svelte
 cd my-mobile-app
 
-npm install
 ns run android
 		</pre>
 
