@@ -57,11 +57,24 @@ type View = import("@nativescript/core").View;
 type ViewBase = import("@nativescript/core").ViewBase;
 type WebViewInterfacesLoadEventData = import("@nativescript/core").LoadEventData;
 type iOSFrame = import("@nativescript/core/ui/frame").iOSFrame;
-type Override<What, With> = Omit<What, keyof With> & With
+type Override<What, With> = Omit<What, keyof With> & With;
+type NativeElementNode<T> = import("src/dom").NativeElementNode<T>
 
 
 declare global {
 namespace svelteNative.JSX {
+
+// Every namespace eligible for use with the new Svelte intellisense needs to implement the following two functions
+function mapElementTag(tag: any): NativeElementNode<any>;
+
+function createElement<Elements extends IntrinsicElements, Key extends keyof Elements>(
+// "undefined | null" because of <svelte:element>
+    element: Key | undefined | null, attrs: Elements[Key]
+): NativeElementNode<any>;
+function createElement<Elements extends IntrinsicElements, Key extends keyof Elements, T>(
+    // "undefined | null" because of <svelte:element>
+    element: Key | undefined | null, attrsEnhancers: T, attrs: Elements[Key] & T
+): NativeElementNode<any>;
 
 // ui/layouts/absolute-layout/index.d.ts
 type TAbsoluteLayoutAttributes = Override<LayoutBaseAttributes, {
