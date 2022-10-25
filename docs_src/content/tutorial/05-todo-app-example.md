@@ -236,7 +236,7 @@ The [NativeScript core theme](https://www.nativescript.org/blog/an-early-look-at
  <button col="1" row="0" text="Add task" on:tap="{onButtonTap}" class="-primary" />
 ```
 
-Our input text should also be more emphasised. At the bottom of `App.svelte` add the following style tag:
+Our input text should also be more emphasised. At the bottom of `Home.svelte` add the following style tag:
 
 ```html
 <style>
