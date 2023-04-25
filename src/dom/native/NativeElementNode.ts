@@ -155,6 +155,12 @@ export default class NativeElementNode<T> extends ElementNode {
         super.onRemovedChild(childNode)
     }
 
+    removeAttribute(name) {
+        // if an attribute is set to null svelte will call removeAttribute
+        // but we still need to call setAttribute to apply the change on N view
+        this.setAttribute(name, null);
+    }
+
     setAttribute(fullkey: string, value: any) {
         const nv = this.nativeElement as any
         let setTarget = nv;
