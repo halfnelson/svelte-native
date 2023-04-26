@@ -12,7 +12,8 @@ Svelte-Native works on top of NativeScript. To install NativeScript:
 $ npm install -g nativescript
 ```
 
-Check it worked by running `ns`:
+Check it worked by running `ns`:  
+_([Remark](https://blog.nativescript.org/nativescript-7-announcement/): `ns` is the new standard as of v7.0, `tns` is kept for historical reasons.)_
 
 ![Success](/media/tns-success.png)
 
