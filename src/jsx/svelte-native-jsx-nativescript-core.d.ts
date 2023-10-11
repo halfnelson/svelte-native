@@ -26,7 +26,7 @@ type ItemEventData = import("@nativescript/core").ItemEventData;
 type ItemsSource = import("@nativescript/core").ItemsSource;
 type KeyedTemplate = import("@nativescript/core").KeyedTemplate;
 type LayoutBase = import("@nativescript/core").LayoutBase;
-type LinearGradient = import("@nativescript/core/ui/styling/gradient").LinearGradient;
+type LinearGradient = import("@nativescript/core/ui/styling/linear-gradient").LinearGradient;
 type ListViewItemsSource = import("@nativescript/core").ItemsSource;
 type LoadEventData = import("@nativescript/core").LoadEventData;
 type NavigatedData = import("@nativescript/core").NavigatedData;
@@ -823,6 +823,7 @@ type TViewAttributes = Override<ViewBaseAttributes, {
     "on:topChange"?: (args: PropertyChangeData) => void;
     "on:touch"?: (arg: TouchGestureEventData) => any;
     "on:unloaded"?: (args: EventData) => void;
+    "on:layoutChanged"?: (args: EventData) => void;
     accessibilityHidden?: string | boolean;
     accessibilityHint?: string;
     accessibilityIdentifier?: string;
@@ -921,6 +922,7 @@ type TViewAttributes = Override<ViewBaseAttributes, {
     ontopChange?: (args: PropertyChangeData) => void;
     ontouch?: (arg: TouchGestureEventData) => any;
     onunloaded?: (args: EventData) => void;
+    onlayoutchanged?: (args: EventData) => void;
     opacity?: string | number;
     originX?: string | number;
     originY?: string | number;
