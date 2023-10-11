@@ -3,7 +3,7 @@ import { logger as log, registerElement, RegisterElementOptions } from '../basic
 import { KeyframeAnimation, LayoutBase, EventData, Page, ViewBase, View, ContentView } from '@nativescript/core';
 import { CssAnimationParser } from '@nativescript/core/ui/styling/css-animation-parser';
 
-import NativeElementNode, { NativeElementPropConfig } from './NativeElementNode';
+import NativeElementNode, { NativeElementPropConfig, NativeElementPropType } from './NativeElementNode';
 
 interface IStyleProxy {
     setProperty(propertyName: string, value: string, priority?: string): void;
@@ -201,12 +201,13 @@ export default class NativeViewElementNode<T extends ViewBase> extends NativeEle
         }
 
         //if we are a property value, then skip adding to parent
-        if (childNode.propAttribute) return;
+        let propName = childNode.propAttribute;
+        if (propName && this.propConfig[propName] && this.propConfig[propName] !== NativeElementPropType.Value) return;
 
         const parentView = this.nativeView
         const childView = childNode.nativeView
 
-        if (!parentView || !childView) {
+        if (!parentView) {
             return
         }
 

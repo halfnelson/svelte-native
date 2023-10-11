@@ -36,7 +36,7 @@ for (let file of filesToCopy) {
     fs.copyFileSync(path.resolve(__dirname, `../${file}`), path.resolve(__dirname, `../dist/${file}`))
 }
 
-const typeDefsToCopy = ["components/Template.svelte.d.ts", "jsx/svelte-native-jsx-nativescript-core.d.ts", "jsx/shims.d.ts"]
+const typeDefsToCopy = ["components/Template.svelte.d.ts", "jsx/svelte-native-jsx-nativescript-core.d.ts", "jsx/shims.d.ts", "ambient.d.ts"]
 for (let file of typeDefsToCopy) {
     let dest = path.resolve(__dirname, `../dist/${file}`);
     if (!fs.existsSync(path.dirname(dest)))

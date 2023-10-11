@@ -7,10 +7,10 @@ import { getRootView } from "@nativescript/core/application";
 
 export type ViewSpec = View | NativeViewElementNode<View>
 export type FrameSpec = Frame | FrameElement | string
-export type PageSpec = typeof SvelteComponent;
-export interface NavigationOptions {
-    page: PageSpec;
-    props?: any;
+export type PageSpec<T> = typeof SvelteComponent<T>;
+export interface NavigationOptions<T> {
+    page: PageSpec<T>;
+    props?: T;
     frame?: FrameSpec;
 
     animated?: boolean;
@@ -40,16 +40,16 @@ function resolveTarget(viewSpec: ViewSpec): View {
     return viewSpec?.nativeView;
 }
 
-interface ComponentInstanceInfo { element: NativeViewElementNode<View>, pageInstance: SvelteComponent }
+interface ComponentInstanceInfo<T = any> { element: NativeViewElementNode<View>, pageInstance: SvelteComponent<T> }
 
-function resolveComponentElement(pageSpec: PageSpec, props?: any): ComponentInstanceInfo {
+function resolveComponentElement<T>(pageSpec: PageSpec<T>, props?: T): ComponentInstanceInfo<T> {
     let dummy = createElement('fragment', window.document as unknown as DocumentNode);
     let pageInstance = new pageSpec({ target: dummy, props: props });
     let element = dummy.firstElement() as NativeViewElementNode<View>;
     return { element, pageInstance }
 }
 
-export function navigate(options: NavigationOptions): SvelteComponent {
+export function navigate<T>(options: NavigationOptions<T>): SvelteComponent<T> {
     let { frame, page, props = {}, ...navOptions } = options;
 
     let targetFrame = resolveFrame(frame);
@@ -108,10 +108,10 @@ export function goBack(options: BackNavigationOptions = {}) {
     return targetFrame.goBack(backStackEntry);
 }
 
-export interface ShowModalOptions {
-    page: PageSpec
+export interface ShowModalOptions<T> {
+    page: PageSpec<T>
     target?: ViewSpec
-    props?: any
+    props?: T
     android?: { cancelable: boolean }
     ios?: { presentationStyle: any }
     animated?: boolean
@@ -121,7 +121,7 @@ export interface ShowModalOptions {
 
 const modalStack: ComponentInstanceInfo[] = []
 
-export function showModal<T>(modalOptions: ShowModalOptions): Promise<T> {
+export function showModal<T, U>(modalOptions: ShowModalOptions<U>): Promise<T> {
     let { page, props = {}, target, ...options } = modalOptions;
 
     let modalLauncher = resolveTarget(target) || getRootView();

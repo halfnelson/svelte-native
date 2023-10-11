@@ -2,20 +2,7 @@ import { Application } from '@nativescript/core'
 import { navigate, ViewNode, createElement, initializeDom, FrameElement, NativeElementNode } from './dom';
 import { View } from '@nativescript/core';
 import { DocumentNode } from './dom/basicdom';
-
-declare global {
-    export class SvelteComponent {
-        $destroy(): void;
-        constructor(options: { target?: ViewNode | Element , props?: any, anchor?: ViewNode | Element, intro?: boolean });
-        $set(props: any): void;
-    }
-    interface Svelte2TsxComponentConstructorParameters<T> {
-        target?: ViewNode | Element;
-        props?: T;
-        anchor?: ViewNode | Element;
-        intro?: boolean;
-    }
-}
+import type {SvelteComponent} from './ambient.js';
 
 export function svelteNativeNoFrame(rootElement: typeof SvelteComponent, data: any): Promise<SvelteComponent> {
     return new Promise((resolve, reject) => {
