@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.9]
+  - fixed `svelteNative` and `svelteNativeNoFrame` typings. Props parameter type is now inferred from component
+
+## [1.0.8]
+  - fixed jsx typings and add missing `layoutChanged` event
+
+## [1.0.7]
+  - fix global typings and made typings more generic to infer props from svelte component
+
 ## [1.0.6]
   - Fix elements properties change to null/undefined not being seen by N Views
 
