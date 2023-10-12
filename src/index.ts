@@ -4,7 +4,7 @@ import { View } from '@nativescript/core';
 import { DocumentNode } from './dom/basicdom';
 import type {SvelteComponent} from './ambient.js';
 
-export function svelteNativeNoFrame(rootElement: typeof SvelteComponent, data: any): Promise<SvelteComponent> {
+export function svelteNativeNoFrame<T>(rootElement: typeof SvelteComponent<T>, data: T): Promise<SvelteComponent<T>> {
     return new Promise((resolve, reject) => {
 
         let elementInstance: SvelteComponent;
@@ -31,7 +31,7 @@ export function svelteNativeNoFrame(rootElement: typeof SvelteComponent, data: a
     });
 }
 
-export function svelteNative(startPage: typeof SvelteComponent, data: any): Promise<SvelteComponent> {
+export function svelteNative<T>(startPage: typeof SvelteComponent<T>, data: T): Promise<SvelteComponent<T>> {
     let rootFrame: FrameElement; 
     let pageInstance: SvelteComponent;
 
