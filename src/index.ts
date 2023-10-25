@@ -1,8 +1,12 @@
-import { Application } from '@nativescript/core'
+import { Application, View } from '@nativescript/core';
 import { navigate, ViewNode, createElement, initializeDom, FrameElement, NativeElementNode } from './dom';
-import { View } from '@nativescript/core';
 import { DocumentNode } from './dom/basicdom';
 import type {SvelteComponent} from './ambient.js';
+
+// Override this function as the default is currently resetting entire content on NativeScript
+global.__onLiveSyncCore = () => {
+    Application.getRootView()?._onCssStateChange();
+};
 
 export function svelteNativeNoFrame<T>(rootElement: typeof SvelteComponent<T>, data: T): Promise<SvelteComponent<T>> {
     return new Promise((resolve, reject) => {
