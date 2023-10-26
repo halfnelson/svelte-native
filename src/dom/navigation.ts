@@ -55,16 +55,16 @@ export function navigate<T>(options: NavigationOptions<T>): SvelteComponent<T> {
     let targetFrame = resolveFrame(frame);
 
     if (!targetFrame) {
-        throw new Error("navigate requires frame option to be a native Frame, a FrameElement, a frame Id, or null")
+        throw new Error("navigate requires frame option to be a native Frame, a FrameElement, a frame Id, or null");
     }
     if (!page) {
-        throw new Error("navigate requires page to be set to the svelte component class that implements the page or reference to a page element")
+        throw new Error("navigate requires page to be set to the svelte component class that implements the page or reference to a page element");
     }
 
     let { element, pageInstance } = resolveComponentElement(page, props);
 
     if (!(element instanceof PageElement))
-        throw new Error("navigate requires a svelte component with a page element at the root")
+        throw new Error("navigate requires a svelte component with a page element at the root");
 
     let nativePage = element.nativeView;
 
@@ -74,11 +74,15 @@ export function navigate<T>(options: NavigationOptions<T>): SvelteComponent<T> {
             // will remove all set `navigatedFrom` while we are enumerating to actually send them
             setTimeout(() => {
                 nativePage.off('navigatedFrom', handler);
-                pageInstance.$destroy()
+                pageInstance.$destroy();
             }, 0);
         }
-    }
-    nativePage.on('navigatedFrom', handler)
+    };
+
+    // This is used by svelte-hmr to register navigate-from handler to new native view upon hot module reload
+    (nativePage as any).__navigateFromHandler = handler;
+
+    nativePage.on('navigatedFrom', handler);
 
     targetFrame.navigate({
         ...navOptions,
