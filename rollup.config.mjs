@@ -1,7 +1,7 @@
 import typescript from '@rollup/plugin-typescript'
 import resolve from '@rollup/plugin-node-resolve'
 import svelte from 'rollup-plugin-svelte';
-import pkg from './package.json'
+import pkg from './package.json' assert { type: "json" };
 
 
 let externalModules = pkg.peerDependencies ? Object.keys(pkg.peerDependencies) : []

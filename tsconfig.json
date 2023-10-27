@@ -1,19 +1,18 @@
 {
     "compilerOptions": {
-      "baseUrl": ".",
-      "declaration": true,
-      "module": "es2015",
-      "noImplicitAny": true,
-      "outDir": "./dist",
-      "rootDir": "src",
-      "target": "es6",
-      "moduleResolution": "node",
-      "skipLibCheck": true,
-      "allowSyntheticDefaultImports": false,
-      "esModuleInterop": false,   
+        "baseUrl": ".",
+        "declaration": true,
+        "module": "es2015",
+        "noImplicitAny": true,
+        "outDir": "./dist",
+        "rootDir": "src",
+        "target": "es6",
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": false,
+        "esModuleInterop": false,
+        "types": ["node"]
     },
-    "include": [
-      "src"
-    ],
+    "include": ["src"],
     "exclude": ["node_modules"]
-  }
+}
