@@ -1,5 +1,5 @@
 import { CubicBezierAnimationCurve, Pair } from "@nativescript/core/ui/animation";
-import { AnimationCurve } from "@nativescript/core/ui/enums";
+import { CoreTypes } from "@nativescript/core";
 import { Animation, AnimationDefinition, Color, View } from "@nativescript/core";
 
 import { ease_in, ease_out, ease, linear, ease_in_out, animation_curve, normalizeCurve, partialCurveFrom, reverseCurve, CubicBezier } from "./bezier"
@@ -19,7 +19,7 @@ export interface NativeAnimationDefinition {
 }
 
 
-export function asSvelteTransition(node: NativeViewElementNode<View>, delay: number = 0, duration: number = 300, curve: string | CubicBezierAnimationCurve = AnimationCurve.linear, nativeAnimationProps: (t: number) => NativeAnimationDefinition) {
+export function asSvelteTransition(node: NativeViewElementNode<View>, delay: number = 0, duration: number = 300, curve: string | CubicBezierAnimationCurve = CoreTypes.AnimationCurve.linear, nativeAnimationProps: (t: number) => NativeAnimationDefinition) {
 
     let svelteAnim: any = {
         delay: delay,
@@ -30,11 +30,11 @@ export function asSvelteTransition(node: NativeViewElementNode<View>, delay: num
 
     if (typeof curve == "string") {
         switch (curve) {
-            case AnimationCurve.ease: svelteCurve = ease; break;
-            case AnimationCurve.easeIn: svelteCurve = ease_in; break;
-            case AnimationCurve.easeOut: svelteCurve = ease_out; break;
-            case AnimationCurve.easeInOut: svelteCurve = ease_in_out; break;
-            case AnimationCurve.linear: svelteCurve = linear; break;
+            case CoreTypes.AnimationCurve.ease: svelteCurve = ease; break;
+            case CoreTypes.AnimationCurve.easeIn: svelteCurve = ease_in; break;
+            case CoreTypes.AnimationCurve.easeOut: svelteCurve = ease_out; break;
+            case CoreTypes.AnimationCurve.easeInOut: svelteCurve = ease_in_out; break;
+            case CoreTypes.AnimationCurve.linear: svelteCurve = linear; break;
             default:
                 console.warn("Unsupported nativescript animation name, reverting to linear")
                 svelteCurve = linear;
@@ -76,7 +76,6 @@ export function asSvelteTransition(node: NativeViewElementNode<View>, delay: num
     // "out" animations have no such quality, therefore we can expect that if we have not been initialized, and get a t=0 we are an Intro
 
     svelteAnim.tick = (t: number) => {
-
         //when you cancel an animation, it appears to set the values back to the start. we use this to reapply them at the given time.
         function applyAnimAtTime(time: number) {
             let animDef = nativeAnimationProps(time);
@@ -102,7 +101,7 @@ export function asSvelteTransition(node: NativeViewElementNode<View>, delay: num
                 last_t = 0;
                 //   console.log("forward animation detected!", node);
                 //don't start our full animation yet since this is just the init frame, and there will be a delay. so wait for next frame
-                return;
+                // return;
             } else {
                 //we must be an outro since all intros get a t==0
                 //  console.log("reverse animation detected!", node);
@@ -136,13 +135,13 @@ export function asSvelteTransition(node: NativeViewElementNode<View>, delay: num
                 //we need to play in reverse, and we might not be playing the whole thing
                 let forwardCurve = t == 1 ? svelteCurve : partialCurveFrom(svelteCurve, 0, t)
                 let finalCurve = normalizeCurve(reverseCurve(forwardCurve));
-                nsAnimation.curve = AnimationCurve.cubicBezier(finalCurve.x1, finalCurve.y1, finalCurve.x2, finalCurve.y2);
+                nsAnimation.curve = CoreTypes.AnimationCurve.cubicBezier(finalCurve.x1, finalCurve.y1, finalCurve.x2, finalCurve.y2);
                 nsAnimation.duration = t * duration;
             } else {
                 //we might be starting from halfway (intro->outro-intro again)
                 let forwardCurve = t == 0 ? svelteCurve : partialCurveFrom(svelteCurve, t, 1)
                 let finalCurve = normalizeCurve(forwardCurve);
-                nsAnimation.curve = AnimationCurve.cubicBezier(finalCurve.x1, finalCurve.y1, finalCurve.x2, finalCurve.y2);
+                nsAnimation.curve = CoreTypes.AnimationCurve.cubicBezier(finalCurve.x1, finalCurve.y1, finalCurve.x2, finalCurve.y2);
                 nsAnimation.duration = (1 - t) * duration;
             }
             //console.log("animation created", t, (direction == AnimationDirection.In) ? "Intro" : "Outro", nsAnimation, node);
@@ -162,7 +161,7 @@ export function fade(node: NativeViewElementNode<View>, {
     duration = 400
 }) {
     const o = node.nativeView.opacity;
-    return asSvelteTransition(node, delay, duration, AnimationCurve.linear,
+    return asSvelteTransition(node, delay, duration, CoreTypes.AnimationCurve.linear,
         (t) => ({
             opacity: t * o
         })
@@ -172,7 +171,7 @@ export function fade(node: NativeViewElementNode<View>, {
 export function fly(node: NativeViewElementNode<View>, {
     delay = 0,
     duration = 400,
-    easing = AnimationCurve.easeOut,
+    easing = CoreTypes.AnimationCurve.easeOut,
     x = 0,
     y = 0
 }) {
@@ -194,7 +193,7 @@ export function fly(node: NativeViewElementNode<View>, {
 export function slide(node: NativeViewElementNode<View>, {
     delay = 0,
     duration = 400,
-    easing = AnimationCurve.easeOut
+    easing = CoreTypes.AnimationCurve.easeOut
 }) {
 
     const height = node.nativeView.effectiveHeight;
