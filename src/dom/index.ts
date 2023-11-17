@@ -4,6 +4,7 @@ import { registerNativeElements } from "./nativescript-elements";
 import SvelteNativeDocument from "./svelte/SvelteNativeDocument";
 import NativeViewElementNode from "./native/NativeViewElementNode";
 import { Trace, View } from "@nativescript/core";
+import { time } from '@nativescript/core/profiling';
 import { logger, LogLevel } from "./basicdom";
 
 export { default as HeadElement } from "./svelte/HeadElement";
@@ -53,12 +54,12 @@ function installGlobalShims(): SvelteNativeDocument {
     window.getComputedStyle = (node: NativeViewElementNode<View>) => {
         return node.nativeView.style;
     };
-
-    window.performance = {
-        now() {
-            return Date.now();
-        },
-    };
+    if (!window.performance) {
+        window.performance = {
+            now: time,
+        };
+    }
+    
 
     window.CustomEvent = class {
         detail: any;
