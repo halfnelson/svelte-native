@@ -2,11 +2,11 @@
     "compilerOptions": {
         "baseUrl": ".",
         "declaration": true,
-        "module": "es2015",
+        "module": "es2020",
         "noImplicitAny": true,
         "outDir": "./dist",
         "rootDir": "src",
-        "target": "es6",
+        "target": "es2020",
         "moduleResolution": "node",
         "skipLibCheck": true,
         "allowSyntheticDefaultImports": false,
