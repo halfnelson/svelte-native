@@ -39,6 +39,12 @@ export function normalizeCurve(curve: CubicBezier): CubicBezier {
 
 	let scale = Math.abs(x3 - x0);
 	let scaley = Math.abs(y3 - y0);
+	if (scale == 0 || scaley == 0)  {
+		return {
+			x0: 0, x1: 0, x2: 0, x3: 0,
+			y0: 0, y1: 0, y2: 0, y3: 0
+		}; 
+	}
 	return {
 		x0: (x0 - tx) / scale, x1: (x1 - tx) / scale, x2: (x2 - tx) / scale, x3: (x3 - tx) / scale,
 		y0: (y0 - ty) / scaley, y1: (y1 - ty) / scaley, y2: (y2 - ty) / scaley, y3: (y3 - ty) / scaley
