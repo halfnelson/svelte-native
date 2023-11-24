@@ -124,8 +124,6 @@ export interface ShowModalOptions<T> {
     stretched?: boolean
 }
 
-// export const modalStack: ComponentInstanceInfo[] = []
-
 export function showModal<T, U>(modalOptions: ShowModalOptions<U>): Promise<T> {
     let { page, props = {}, target, ...options } = modalOptions;
 
@@ -139,7 +137,6 @@ export function showModal<T, U>(modalOptions: ShowModalOptions<U>): Promise<T> {
         let resolved = false;
         const closeCallback = (result: T) => {
             if (resolved) return;
-            // modalStack.pop();
             resolved = true;
             try {
                 componentInstanceInfo.pageInstance.$destroy(); //don't let an exception in destroy kill the promise callback
@@ -147,14 +144,11 @@ export function showModal<T, U>(modalOptions: ShowModalOptions<U>): Promise<T> {
                 resolve(result);
             }
         }
-        // modalStack.push(componentInstanceInfo);
         modalLauncher.showModal(modalView, { ...options, context: {}, closeCallback })
     });
 }
 
 export function closeModal(result: any, parent?: View): void {
-    // let modalPageInstanceInfo = modalStack[modalStack.length-1];
-    console.log('closeModal', parent, _rootModalViews[_rootModalViews.length-1]);
     (parent || _rootModalViews[_rootModalViews.length-1]).closeModal(result);
 }
 
