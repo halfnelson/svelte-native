@@ -1,6 +1,6 @@
 {
   "name": "svelte-native",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Svelte integration for NativeScript",
   "private": true,
   "repository": {
