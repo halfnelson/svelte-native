@@ -1,6 +1,6 @@
 {
   "name": "svelte-native",
-  "version": "1.0.9",
+  "version": "1.0.15",
   "description": "Svelte integration for NativeScript",
   "private": true,
   "repository": {
@@ -23,19 +23,19 @@
   "license": "MIT",
   "peerDependencies": {
     "@nativescript/core": "~8.5.9",
-    "svelte": "~4.2.2"
+    "svelte": "~4.2.8"
   },
   "devDependencies": {
-    "@nativescript/core": "8.6.0",
+    "@nativescript/core": "8.6.1",
     "@nativescript/types": "~8.6.1",
     "@rollup/plugin-node-resolve": "15.2.3",
-    "@rollup/plugin-typescript": "~8.2.5",
-    "@types/node": "20.8.9",
-    "glob": "^7.2.3",
+    "@rollup/plugin-typescript": "~11.1.5",
+    "@types/node": "20.9.1",
+    "glob": "^10.3.10",
     "rimraf": "^2.7.1",
-    "rollup": "~4.1.4",
+    "rollup": "~4.5.0",
     "rollup-plugin-svelte": "^7.1.6",
-    "svelte": "~4.2.2",
+    "svelte": "~4.2.5",
     "tslib": "2.6.2",
     "typescript": "^5.2.2"
   }

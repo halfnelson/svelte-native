@@ -3,6 +3,7 @@ import FrameElement from "./native/FrameElement";
 import { createElement, DocumentNode, logger as log } from "./basicdom";
 import PageElement from "./native/PageElement";
 import NativeViewElementNode from "./native/NativeViewElementNode";
+import { _rootModalViews } from "@nativescript/core/ui/core/view";
 
 export type ViewSpec = View | NativeViewElementNode<View>
 export type FrameSpec = Frame | FrameElement | string
@@ -122,8 +123,6 @@ export interface ShowModalOptions<T> {
     stretched?: boolean
 }
 
-const modalStack: ComponentInstanceInfo[] = []
-
 export function showModal<T, U>(modalOptions: ShowModalOptions<U>): Promise<T> {
     let { page, props = {}, target, ...options } = modalOptions;
 
@@ -137,7 +136,6 @@ export function showModal<T, U>(modalOptions: ShowModalOptions<U>): Promise<T> {
         let resolved = false;
         const closeCallback = (result: T) => {
             if (resolved) return;
-            modalStack.pop();
             resolved = true;
             try {
                 componentInstanceInfo.pageInstance.$destroy(); //don't let an exception in destroy kill the promise callback
@@ -145,16 +143,14 @@ export function showModal<T, U>(modalOptions: ShowModalOptions<U>): Promise<T> {
                 resolve(result);
             }
         }
-        modalStack.push(componentInstanceInfo);
         modalLauncher.showModal(modalView, { ...options, context: {}, closeCallback })
     });
 }
 
-export function closeModal(result: any): void {
-    let modalPageInstanceInfo = modalStack[modalStack.length-1];
-    modalPageInstanceInfo.element.nativeView.closeModal(result);
+export function closeModal(result: any, parent?: View): void {
+    (parent || _rootModalViews[_rootModalViews.length-1]).closeModal(result);
 }
 
 export function isModalOpened() {
-    return modalStack.length > 0;
+    return _rootModalViews.length > 0;
 }
