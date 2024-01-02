@@ -8,6 +8,7 @@ export interface IClassList {
     length: number;
     add(...classNames: string[]): void;
     remove(...classNames: string[]): void;
+    toggle(className: string, toggle:boolean): void
 }
 
 
@@ -31,7 +32,7 @@ export default class ElementNode extends ViewNode {
 
     get classList() {
         if (!this._classList) {
-            const getClasses = () => (this.getAttribute('class') || "").split(/\s+/).filter((k: string) => k != "")
+            const getClasses = () => (this.getAttribute('class') as string || "").split(/\s+/).filter((k: string) => k != "")
 
             this._classList = {
                 add: (...classNames: string[]) => {
@@ -41,7 +42,17 @@ export default class ElementNode extends ViewNode {
                 remove: (...classNames: string[]) => {
                     this.setAttribute('class', getClasses().filter((i: string) => classNames.indexOf(i) == -1).join(" "))
                 },
-
+                toggle:(className: string, toggle:boolean) => {
+                    if (toggle === undefined) {
+                        toggle = getClasses().indexOf(className) === -1;
+                    } 
+                    if (toggle) {
+                        this.classList.add(className);
+                    } else {
+                        this.classList.remove(className);
+                    }
+                    
+                },
                 get length() {
                     return getClasses().length
                 }
