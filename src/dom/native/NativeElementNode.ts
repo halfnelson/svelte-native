@@ -1,4 +1,4 @@
-import { logger as log, ViewNode, registerElement, logger } from '../basicdom'
+import { logger as log, ViewNode, registerElement } from '../basicdom'
 import { isAndroid, isIOS, ObservableArray } from '@nativescript/core';
 import ElementNode from '../basicdom/ElementNode';
 
@@ -13,7 +13,7 @@ export interface NativeElementPropConfig {
 }
 
 function setOnArrayProp(parent: any, value: any, propName: string, index: number, build: (value: any) => any = null) {
-    logger.debug(()=> `setOnArrayProp ${propName} index: ${index}`)
+    log.debug(()=> `setOnArrayProp ${propName} index: ${index}`)
     let current = parent[propName];
     if (!current || !current.push) {
         parent[propName] = build ? build(value) : [value];
@@ -65,12 +65,8 @@ export default class NativeElementNode<T> extends ElementNode {
         super(tagName);
         this.propConfig = propConfig
         this.propAttribute = setsParentProp
-        try {
-            this._nativeElement = new elementClass();
-        } catch(err) {
-            throw new Error(`[NativeElementNode] failed to created native element for tag ${tagName}: ${err}`);
-        }
-     
+        this._nativeElement = new elementClass();
+
         (this._nativeElement as any).__SvelteNativeElement__ = this;
         log.debug(() => `created ${this} ${this._nativeElement}`)
     }
@@ -194,13 +190,8 @@ export default class NativeElementNode<T> extends ElementNode {
             if (keypath.length > 0) {
                 setTarget = setTarget[key];
             } else {
-                try {
-                    log.debug(() => `setAttr value ${this} ${resolvedKeys.join(".")} ${value}`)
-                    setTarget[key] = value
-                } catch (e) {
-                    // ignore but log
-                    log.error(() => `set attribute threw an error, attr:${key} on ${this._tagName}: ${e.message}`)
-                }
+                log.debug(() => `setAttr value ${this} ${resolvedKeys.join(".")} ${value}`)
+                setTarget[key] = value
             }
         }
     }
