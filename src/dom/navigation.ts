@@ -96,6 +96,11 @@ export function navigate<T>(options: NavigationOptions<T>): SvelteComponent<T> {
 export interface BackNavigationOptions {
     frame?: FrameSpec;
     to?: PageElement;
+
+    // only in Akylas fork for now
+    transition?: NavigationTransition;
+    transitionAndroid?: NavigationTransition;
+    transitioniOS?: NavigationTransition;
 }
 
 export function goBack(options: BackNavigationOptions = {}) {
@@ -109,6 +114,11 @@ export function goBack(options: BackNavigationOptions = {}) {
         if (!backStackEntry) {
             throw new Error("Couldn't find the destination page in the frames backstack")
         }
+        delete options.to;
+        Object.assign(backStackEntry, options)
+    } else {
+        backStackEntry = targetFrame.backStack[targetFrame.backStack.length - 1];
+        Object.assign(backStackEntry, options)
     }
     return targetFrame.goBack(backStackEntry);
 }
