@@ -166,11 +166,21 @@ export default class NativeElementNode<T> extends ElementNode {
         let setTarget = nv;
 
         // normalize key
-        if (isAndroid && fullkey.startsWith('android:')) {
-            fullkey = fullkey.substr(8);
+        if (__ANDROID__) {
+            if (fullkey.startsWith('android:')) {
+                fullkey = fullkey.substr(8);
+            }
+            if (fullkey.startsWith('ios:')) {
+                return;
+            }
         }
-        if (isIOS && fullkey.startsWith('ios:')) {
-            fullkey = fullkey.substr(4);
+        if (__IOS__) {
+            if (fullkey.startsWith('ios:')) {
+                fullkey = fullkey.substr(8);
+            }
+            if (fullkey.startsWith('android:')) {
+                return;
+            }
         }
 
         if (fullkey.startsWith("prop:")) {
