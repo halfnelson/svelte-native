@@ -26,6 +26,10 @@ export function svelteNativeNoFrame<T>(rootElement: typeof SvelteComponent<T>, d
         Application.on(Application.launchEvent, () => {
             resolve(elementInstance);
         })
+        Application.on(Application.exitEvent, () => {
+            elementInstance.$destroy();
+            elementInstance = null;
+        })
 
         try {
             Application.run({ create: buildElement });
@@ -43,6 +47,10 @@ export function svelteNative<T>(startPage: typeof SvelteComponent<T>, data: T): 
         //wait for launch
         Application.on(Application.launchEvent, () => {
             resolve(pageInstance);
+        })
+        Application.on(Application.exitEvent, () => {
+            pageInstance.$destroy();
+            pageInstance = null;
         })
 
         try {
