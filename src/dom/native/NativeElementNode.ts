@@ -164,7 +164,7 @@ export default class NativeElementNode<T> extends ElementNode {
         // normalize key
         if (__ANDROID__) {
             if (fullkey.startsWith('android:')) {
-                fullkey = fullkey.substr(8);
+                fullkey = fullkey.substring(8);
             }
             if (fullkey.startsWith('ios:')) {
                 return;
@@ -172,7 +172,7 @@ export default class NativeElementNode<T> extends ElementNode {
         }
         if (__IOS__) {
             if (fullkey.startsWith('ios:')) {
-                fullkey = fullkey.substr(8);
+                fullkey = fullkey.substring(4);
             }
             if (fullkey.startsWith('android:')) {
                 return;
@@ -180,7 +180,7 @@ export default class NativeElementNode<T> extends ElementNode {
         }
 
         if (fullkey.startsWith("prop:")) {
-            this.propAttribute = fullkey.substr(5);
+            this.propAttribute = fullkey.substring(5);
             return;
         }
 
