@@ -72,7 +72,7 @@ If no frame is specified, the navigation will occur on the [topmost](https://doc
 
 #### Other Options
 
-For more information about the options that you can pass, see [NavigationEntry](https://docs.nativescript.org/api-reference/interfaces/_ui_frame_.navigationentry).
+For more information about the options that you can pass, see [NavigationEntry](https://docs.nativescript.org/api-reference/interfaces/navigationentry).
 
 ### goBack
 
