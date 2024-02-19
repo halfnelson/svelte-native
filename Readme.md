@@ -31,12 +31,12 @@ You can get started developing with this using the latest template
 
 ```bash
 $ npm install -g nativescript
-$ tns create myapp --template @nativescript/template-blank-svelte
+$ ns create myapp --template @nativescript/template-blank-svelte
 ```
 
 A fresh Svelte Native app will be found in the `myapp` folder
 
-Once installed use the `tns preview`, `tns build` or `tns run` commands as for a normal NativeScript application. 
+Once installed use the `ns preview`, `ns build` or `ns run` commands as for a normal NativeScript application. 
 
 ## Usage
 
