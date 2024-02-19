@@ -2,7 +2,7 @@
 title: Tab Navigation
 ---
 
-> **NOTE:** Svelte-Native < 1.0.0 only. NativeScript 8 has removed these components from core, in favour of the community managed implementations [@nativescript-community/ui-material-tabs](https://github.com/nativescript-community/ui-material-components/tree/master/packages/tabs) and [@nativescript-community/ui-material-bottom-navigation](https://github.com/nativescript-community/ui-material-components/tree/master/packages/bottom-navigation) which are drop in replacements.
+> **NOTE:** Svelte-Native < 1.0.0 only. NativeScript 8 has removed these components from core, in favour of the community managed implementations [@nativescript-community/ui-material-tabs](https://github.com/nativescript-community/ui-material-components/tree/master/packages/tabs) and [@nativescript-community/ui-material-bottom-navigation](https://github.com/nativescript-community/ui-material-components/tree/master/packages/bottom-navigation) which are drop in replacements. For more information on how to get these community components working with Svelte-Native see this [Issue Thread](https://github.com/nativescript-community/ui-material-components/issues/427).
 
 
 ### TabStrip
