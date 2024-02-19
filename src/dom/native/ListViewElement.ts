@@ -21,12 +21,10 @@ export class SvelteKeyedTemplate {
     }
 
     createView(): View {
-        //create a proxy element to eventually contain our item (once we have one to render)
-        //TODO is StackLayout the best choice here? 
+        // Using a plain view like ContentView is enough.
+        // Even though ProxyViewContainer is usually the best choice for such cases, in the case of ListView it's nested inside a StackLayout.
         log.debug(() => `creating view for key ${this.key}`)
-        let wrapper = createElement('StackLayout', this._templateEl.ownerDocument) as NativeViewElementNode<View>;
-        wrapper.setStyle("padding", 0)
-        wrapper.setStyle("margin", 0)
+        let wrapper = createElement('ContentView', this._templateEl.ownerDocument) as NativeViewElementNode<View>;
         let nativeEl = wrapper.nativeView;
         (nativeEl as any).__SvelteComponentBuilder__ = (props: any) => {
             let instance = new this.component({
@@ -83,7 +81,10 @@ export default class ListViewElement extends NativeViewElementNode<ListView> {
                 log.error(() => `Couldn't determine component to use for item at ${args.index}`);
                 return;
             }
-            let wrapper = createElement('ProxyViewContainer', this.ownerDocument) as NativeViewElementNode<View>;
+
+            // Using a plain view like ContentView is enough.
+            // Even though ProxyViewContainer is usually the best choice for such cases, in the case of ListView it's nested inside a StackLayout.
+            let wrapper = createElement('ContentView', this.ownerDocument) as NativeViewElementNode<View>;
             let componentInstance = new component({
                 target: wrapper,
                 props: {
