@@ -19,7 +19,7 @@ export interface NativeAnimationDefinition {
 }
 
 
-export function asSvelteTransition(node: NativeViewElementNode<View>, delay: number = 0, duration: number = 300, curve: string | CubicBezierAnimationCurve = CoreTypes.AnimationCurve.linear, nativeAnimationProps: (t: number) => NativeAnimationDefinition) {
+export function asSvelteTransition(node: NativeViewElementNode<View>, delay: number = 0, duration: number = 300, curve: string | CubicBezierAnimationCurve = CoreTypes.AnimationCurve.linear, nativeAnimationProps: (t: number) => NativeAnimationDefinition, applyNativeAnimationProps?: (view:View, def:NativeAnimationDefinition) => void) {
 
     let svelteAnim: any = {
         delay: delay,
@@ -78,18 +78,32 @@ export function asSvelteTransition(node: NativeViewElementNode<View>, delay: num
     svelteAnim.tick = (t: number) => {
         //when you cancel an animation, it appears to set the values back to the start. we use this to reapply them at the given time.
         function applyAnimAtTime(time: number) {
-            let animDef = nativeAnimationProps(time);
-            if (typeof animDef.opacity !== 'undefined') node.nativeView.opacity = animDef.opacity;
-            if (typeof animDef.backgroundColor != 'undefined') node.nativeView.backgroundColor = animDef.backgroundColor;
-            if (typeof animDef.rotate != 'undefined') node.nativeView.rotate = animDef.rotate;
-            if (typeof animDef.scale != 'undefined') {
-                node.nativeView.scaleX = animDef.scale.x;
-                node.nativeView.scaleY = animDef.scale.y;
-            }
-            if (typeof animDef.translate != 'undefined') {
-                node.nativeView.translateX = animDef.translate.x;
-                node.nativeView.translateY = animDef.translate.y;
-            }
+            const view  = node.nativeView;
+            view._batchUpdate(()=>{
+                let animDef = nativeAnimationProps(time);
+                if (applyNativeAnimationProps) {
+                    applyNativeAnimationProps(view, animDef)
+                } else {
+                    Object.keys(animDef).forEach(k => {
+                        //@ts-ignore
+                        const value = animDef[k];
+                        switch(k) {
+                            case 'scale':
+                            view.scaleX = value.scale.x;
+                            view.scaleY = value.scale.y;
+                            break;
+                            case 'translate':
+                            view.translateX = value.translate.x;
+                            view.translateY = value.translate.y;
+                            break;
+                            default:
+                            //@ts-ignore
+                            (view.style || view)[k] = value;
+                            break;
+                        }
+                    })
+                }
+            });
         }
 
         //our first frame! are we an in or out
@@ -147,7 +161,11 @@ export function asSvelteTransition(node: NativeViewElementNode<View>, delay: num
             //console.log("animation created", t, (direction == AnimationDirection.In) ? "Intro" : "Outro", nsAnimation, node);
             // kick it off
             animation = node.nativeView.createAnimation(nsAnimation);
-            animation.play();
+            //we use setTimeout to ensure transition works if triggered
+            //with a suspend animation block like CollectionView item update
+            setTimeout(() => {
+                animation.play();
+            }, 0);
         }
     }
 
