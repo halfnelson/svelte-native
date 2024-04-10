@@ -1,5 +1,5 @@
 import { CubicBezierAnimationCurve, Pair } from "@nativescript/core/ui/animation";
-import { CoreTypes } from "@nativescript/core";
+import { CoreTypes, Trace } from "@nativescript/core";
 import { Animation, AnimationDefinition, Color, View } from "@nativescript/core";
 
 import { ease_in, ease_out, ease, linear, ease_in_out, animation_curve, normalizeCurve, partialCurveFrom, reverseCurve, CubicBezier } from "./bezier"
@@ -142,7 +142,11 @@ export function asSvelteTransition(node: NativeViewElementNode<View>, delay: num
         if (!animation) {
             //create a new animation that will cover us from now to either t=duration or t=0
             let target_t = (direction == AnimationDirection.In) ? 1 : 0;
-            let animProps = nativeAnimationProps(target_t)
+            if (!node.nativeView.nativeViewProtected) {
+                applyAnimAtTime(target_t);
+                return;
+            }
+            let animProps = nativeAnimationProps(target_t);
             let nsAnimation: AnimationDefinition = { ...animProps }
             nsAnimation.delay = 0;
             if (direction == AnimationDirection.Out) {
@@ -161,11 +165,25 @@ export function asSvelteTransition(node: NativeViewElementNode<View>, delay: num
             //console.log("animation created", t, (direction == AnimationDirection.In) ? "Intro" : "Outro", nsAnimation, node);
             // kick it off
             animation = node.nativeView.createAnimation(nsAnimation);
-            //we use setTimeout to ensure transition works if triggered
-            //with a suspend animation block like CollectionView item update
-            setTimeout(() => {
-                animation.play();
-            }, 0);
+            function animateBlock() {
+                try {
+                    animation.play();
+                } catch (error) {
+                    if (Trace.isEnabled()) {
+                        Trace.error(error);
+                    }
+                }
+            }
+            if(direction == AnimationDirection.Out) {
+                animateBlock();
+            } else {
+                //we use setTimeout to ensure transition works if triggered
+                //with a suspend animation block like CollectionView item update
+                //we dont do it in out or view might already be unloaded
+                setTimeout(() => {
+                    animateBlock();
+                }, 0);
+            }
         }
     }
 
