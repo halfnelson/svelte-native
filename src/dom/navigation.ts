@@ -159,7 +159,7 @@ export function showModal<T, U>(modalOptions: ShowModalOptions<U>): Promise<T> {
 }
 
 export function closeModal(result: any, parent?: View): void {
-    (parent || _rootModalViews[_rootModalViews.length-1]).closeModal(result);
+    (parent || _rootModalViews[_rootModalViews.length-1])?.closeModal(result);
 }
 
 export function isModalOpened() {
