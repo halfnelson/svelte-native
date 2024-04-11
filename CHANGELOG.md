@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.21]
+  - fix: prevent crash on `closeModal` if called without modal
+
+## [1.0.20]
+  - fix: transition error handling
+  - fix: transition fix
+  - chore: fix regression after last changes
+
+## [1.0.19]
+  - fix: completely ignore other platforms (ios: or android:)
+
+## [1.0.18]
+  - fix(android): allow custom transition on navigation back
+
+## [1.0.17]
+  - fix: dont catch and re throw on error or we loose original stack
+
+## [1.0.16]
+  - fix: support svelte class directive
+
 ## [1.0.15]
   - fix: correctly destroy root element on application exit
 
