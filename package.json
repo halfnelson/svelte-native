@@ -2,6 +2,7 @@
   "name": "svelte-native",
   "version": "1.0.21",
   "description": "Svelte integration for NativeScript",
+  "sideEffects": false,
   "private": true,
   "repository": {
     "type": "git",

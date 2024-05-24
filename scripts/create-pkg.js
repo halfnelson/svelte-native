@@ -9,6 +9,7 @@ let desiredKeys = [
     "description",
     "author",
     "license",
+    "sideEffects",
     "peerDependencies",
     "keywords",
     "homepage",
