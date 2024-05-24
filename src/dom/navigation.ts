@@ -75,7 +75,7 @@ export function navigate<T>(options: NavigationOptions<T>): SvelteComponent<T> {
             // will remove all set `navigatedFrom` while we are enumerating to actually send them
             setTimeout(() => {
                 nativePage.off('navigatedFrom', handler);
-                pageInstance.$destroy();
+                pageInstance?.$destroy();
             }, 0);
         }
     };

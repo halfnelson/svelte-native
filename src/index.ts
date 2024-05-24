@@ -49,8 +49,10 @@ export function svelteNative<T>(startPage: typeof SvelteComponent<T>, data: T): 
             resolve(pageInstance);
         })
         Application.on(Application.exitEvent, () => {
-            pageInstance.$destroy();
-            pageInstance = null;
+            if (pageInstance) {
+                pageInstance.$destroy();
+                pageInstance = null;
+            }
         })
 
         try {
