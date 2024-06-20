@@ -1,9 +1,8 @@
-import { ViewBase, View, NavigatedData, NavigationTransition, Frame, BackstackEntry } from "@nativescript/core";
+import { Application, ViewBase, View, NavigatedData, NavigationTransition, Frame, BackstackEntry } from "@nativescript/core";
 import FrameElement from "./native/FrameElement";
 import { createElement, DocumentNode, logger as log } from "./basicdom";
 import PageElement from "./native/PageElement";
 import NativeViewElementNode from "./native/NativeViewElementNode";
-import { getRootView } from "@nativescript/core/application";
 import { _rootModalViews } from "@nativescript/core/ui/core/view";
 
 export type ViewSpec = View | NativeViewElementNode<View>
@@ -137,7 +136,7 @@ export interface ShowModalOptions<T> {
 export function showModal<T, U>(modalOptions: ShowModalOptions<U>): Promise<T> {
     let { page, props = {}, target, ...options } = modalOptions;
 
-    let modalLauncher = resolveTarget(target) || getRootView();
+    let modalLauncher = resolveTarget(target) || Application.getRootView();
 
     let componentInstanceInfo = resolveComponentElement(page, props);
     let modalView: ViewBase = componentInstanceInfo.element.nativeView;
