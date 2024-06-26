@@ -1,8 +1,14 @@
 # Changelog
-All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [1.0.23](https://github.com/halfnelson/svelte-native/compare/v1.0.21...v1.0.23) (2024-06-26)
+
+
+### Bug Fixes
+
+* dont crash on exit if no root page instance ([7065006](https://github.com/halfnelson/svelte-native/commit/7065006c05ec9141f0e78fcb9608bce4bb503174))
+* update peer deps ([0f23241](https://github.com/halfnelson/svelte-native/commit/0f23241888c6ca3fc9a1a802baff367b5c0e4ea0))
 
 ## [1.0.22]
   - fix: dont crash on exit if no root page instance
