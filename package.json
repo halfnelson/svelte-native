@@ -23,8 +23,8 @@
   "author": "David Pershouse",
   "license": "MIT",
   "peerDependencies": {
-    "@nativescript/core": "~8.5.9",
-    "svelte": "~4.2.8"
+    "@nativescript/core": "^8.5.9",
+    "svelte": "^4.2.8"
   },
   "devDependencies": {
     "@nativescript/core": "8.6.1",
