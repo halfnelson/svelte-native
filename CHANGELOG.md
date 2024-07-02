@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.24](https://github.com/halfnelson/svelte-native/compare/v1.0.23...v1.0.24) (2024-07-02)
+
+
+### Bug Fixes
+
+* allow `backStackEntry` to be passed directly to `goBack` ([8e59028](https://github.com/halfnelson/svelte-native/commit/8e590280832934aaf4ff703e865fb9fbc3d94455))
+
 ### [1.0.23](https://github.com/halfnelson/svelte-native/compare/v1.0.21...v1.0.23) (2024-06-26)
 
 
