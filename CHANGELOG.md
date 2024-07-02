@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.26](https://github.com/halfnelson/svelte-native/compare/v1.0.25...v1.0.26) (2024-07-02)
+
+
+### Bug Fixes
+
+* missing exports (sorry for the 3 releases back to back ...) ([8269bbd](https://github.com/halfnelson/svelte-native/commit/8269bbd0be853f011a72bf90664ea29d682a4031))
+
 ### [1.0.25](https://github.com/halfnelson/svelte-native/compare/v1.0.24...v1.0.25) (2024-07-02)
 
 
