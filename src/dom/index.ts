@@ -24,25 +24,8 @@ export {
 } from "./native/NativeViewElementNode";
 
 export * from "./nativescript-elements";
-
-export {
-    registerElement,
-    createElement,
-    ViewNode,
-    ElementNode,
-    logger,
-    LogLevel,
-} from "./basicdom";
-export {
-    navigate,
-    goBack,
-    showModal,
-    closeModal,
-    isModalOpened,
-    ShowModalOptions,
-    NavigationOptions,
-    BackNavigationOptions,
-} from "./navigation";
+export * from "./basicdom";
+export * from "./navigation";
 
 function installGlobalShims(): SvelteNativeDocument {
     //expose our fake dom as global document for svelte components

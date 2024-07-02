@@ -40,7 +40,7 @@ export function resolveTarget(viewSpec: ViewSpec): View {
     return viewSpec?.nativeView;
 }
 
-interface ComponentInstanceInfo<T = any> { element: NativeViewElementNode<View>, pageInstance: SvelteComponent<T> }
+export interface ComponentInstanceInfo<T = any> { element: NativeViewElementNode<View>, pageInstance: SvelteComponent<T> }
 
 export function resolveComponentElement<T>(pageSpec: PageSpec<T>, props?: T): ComponentInstanceInfo<T> {
     let dummy = createElement('fragment', window.document as unknown as DocumentNode);
