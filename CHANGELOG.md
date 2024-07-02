@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.25](https://github.com/halfnelson/svelte-native/compare/v1.0.24...v1.0.25) (2024-07-02)
+
+
+### Bug Fixes
+
+* export navigation util methods like `resolveFrame` and `resolveComponentElement` ([019a835](https://github.com/halfnelson/svelte-native/commit/019a835617f15e21415b19737e9107963c93c6dc))
+
 ### [1.0.24](https://github.com/halfnelson/svelte-native/compare/v1.0.23...v1.0.24) (2024-07-02)
 
 
