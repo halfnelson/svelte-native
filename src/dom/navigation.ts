@@ -96,6 +96,7 @@ export function navigate<T>(options: NavigationOptions<T>): SvelteComponent<T> {
 export interface BackNavigationOptions {
     frame?: FrameSpec;
     to?: PageElement;
+    backStackEntry?: BackstackEntry;
 
     // only in Akylas fork for now
     transition?: NavigationTransition;
@@ -108,17 +109,19 @@ export function goBack(options: BackNavigationOptions = {}) {
     if (!targetFrame) {
         throw new Error("goback requires frame option to be a native Frame, a FrameElement, a frame Id, or null")
     }
-    let backStackEntry: BackstackEntry = null;
-    if (options.to) {
-        backStackEntry = targetFrame.backStack.find(e => e.resolvedPage === options.to.nativeView);
-        if (!backStackEntry) {
-            throw new Error("Couldn't find the destination page in the frames backstack")
+    let backStackEntry: BackstackEntry = options.backStackEntry;
+    if (!backStackEntry) {
+        if (options.to) {
+            backStackEntry = targetFrame.backStack.find(e => e.resolvedPage === options.to.nativeView);
+            if (!backStackEntry) {
+                throw new Error("Couldn't find the destination page in the frames backstack")
+            }
+            delete options.to;
+            Object.assign(backStackEntry, options)
+        } else {
+            backStackEntry = targetFrame.backStack[targetFrame.backStack.length - 1];
+            Object.assign(backStackEntry, options)
         }
-        delete options.to;
-        Object.assign(backStackEntry, options)
-    } else {
-        backStackEntry = targetFrame.backStack[targetFrame.backStack.length - 1];
-        Object.assign(backStackEntry, options)
     }
     return targetFrame.goBack(backStackEntry);
 }
