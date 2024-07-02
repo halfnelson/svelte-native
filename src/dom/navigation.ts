@@ -1,9 +1,8 @@
-import { ViewBase, View, NavigatedData, NavigationTransition, Frame, BackstackEntry } from "@nativescript/core";
+import { ViewBase, View, NavigatedData, NavigationTransition, Frame, BackstackEntry, Application } from "@nativescript/core";
 import FrameElement from "./native/FrameElement";
 import { createElement, DocumentNode, logger as log } from "./basicdom";
 import PageElement from "./native/PageElement";
 import NativeViewElementNode from "./native/NativeViewElementNode";
-import { getRootView } from "@nativescript/core/application";
 import { _rootModalViews } from "@nativescript/core/ui/core/view";
 
 export type ViewSpec = View | NativeViewElementNode<View>
@@ -22,7 +21,7 @@ export interface NavigationOptions<T> {
     transitioniOS?: NavigationTransition;
 }
 
-function resolveFrame(frameSpec: FrameSpec): Frame {
+export function resolveFrame(frameSpec: FrameSpec): Frame {
     let targetFrame: Frame;
     if (!frameSpec) targetFrame = Frame.topmost();
     if (frameSpec instanceof FrameElement) targetFrame = frameSpec.nativeView as Frame;
@@ -34,7 +33,7 @@ function resolveFrame(frameSpec: FrameSpec): Frame {
     return targetFrame;
 }
 
-function resolveTarget(viewSpec: ViewSpec): View {
+export function resolveTarget(viewSpec: ViewSpec): View {
     if (viewSpec instanceof View)  {
         return viewSpec;
     }
@@ -43,7 +42,7 @@ function resolveTarget(viewSpec: ViewSpec): View {
 
 interface ComponentInstanceInfo<T = any> { element: NativeViewElementNode<View>, pageInstance: SvelteComponent<T> }
 
-function resolveComponentElement<T>(pageSpec: PageSpec<T>, props?: T): ComponentInstanceInfo<T> {
+export function resolveComponentElement<T>(pageSpec: PageSpec<T>, props?: T): ComponentInstanceInfo<T> {
     let dummy = createElement('fragment', window.document as unknown as DocumentNode);
     let pageInstance = new pageSpec({ target: dummy, props: props });
     let element = dummy.firstElement() as NativeViewElementNode<View>;
@@ -140,7 +139,7 @@ export interface ShowModalOptions<T> {
 export function showModal<T, U>(modalOptions: ShowModalOptions<U>): Promise<T> {
     let { page, props = {}, target, ...options } = modalOptions;
 
-    let modalLauncher = resolveTarget(target) || getRootView();
+    let modalLauncher = resolveTarget(target) || Application.getRootView();
 
     let componentInstanceInfo = resolveComponentElement(page, props);
     let modalView: ViewBase = componentInstanceInfo.element.nativeView;
