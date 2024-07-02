@@ -1,4 +1,4 @@
-import { ViewBase, View, NavigatedData, NavigationTransition, Frame, BackstackEntry, Application } from "@nativescript/core";
+import { ViewBase, View, NavigatedData, NavigationTransition, Frame, BackstackEntry, Application, Page } from "@nativescript/core";
 import FrameElement from "./native/FrameElement";
 import { createElement, DocumentNode, logger as log } from "./basicdom";
 import PageElement from "./native/PageElement";
@@ -39,18 +39,28 @@ export function resolveTarget(viewSpec: ViewSpec): View {
     }
     return viewSpec?.nativeView;
 }
+// interface ComponentInstanceInfo<T = any> { element: NativeViewElementNode<View>, pageInstance: SvelteComponent<T> }
 
-export interface ComponentInstanceInfo<T = any> { element: NativeViewElementNode<View>, pageInstance: SvelteComponent<T> }
-
-export function resolveComponentElement<T>(pageSpec: PageSpec<T>, props?: T): ComponentInstanceInfo<T> {
-    let dummy = createElement('fragment', window.document as unknown as DocumentNode);
-    let pageInstance = new pageSpec({ target: dummy, props: props });
-    let element = dummy.firstElement() as NativeViewElementNode<View>;
-    return { element, pageInstance }
+export interface ComponentInstanceInfo<T extends ViewBase = View, U = SvelteComponent> {
+    element: NativeViewElementNode<T>;
+    viewInstance: U;
 }
 
+export function resolveComponentElement<T, U extends ViewBase = View>(viewSpec: typeof SvelteComponent<T>, props?: T): ComponentInstanceInfo<U, SvelteComponent<T>> {
+    const dummy = createElement('fragment', window.document as any);
+    const viewInstance = new viewSpec({ target: dummy, props });
+    const element = dummy.firstElement() as NativeViewElementNode<U>;
+    return { element, viewInstance };
+}
+// export function resolveComponentElement<T>(pageSpec: PageSpec<T>, props?: T): ComponentInstanceInfo<T> {
+//     let dummy = createElement('fragment', window.document as unknown as DocumentNode);
+//     let pageInstance = new pageSpec({ target: dummy, props });
+//     let element = dummy.firstElement() as NativeViewElementNode<View>;
+//     return { element, pageInstance }
+// }
+
 export function navigate<T>(options: NavigationOptions<T>): SvelteComponent<T> {
-    let { frame, page, props = {}, ...navOptions } = options;
+    let { frame, page, props, ...navOptions } = options;
 
     let targetFrame = resolveFrame(frame);
 
@@ -61,7 +71,7 @@ export function navigate<T>(options: NavigationOptions<T>): SvelteComponent<T> {
         throw new Error("navigate requires page to be set to the svelte component class that implements the page or reference to a page element");
     }
 
-    let { element, pageInstance } = resolveComponentElement(page, props);
+    let { element, viewInstance } = resolveComponentElement<T, Page>(page, props);
 
     if (!(element instanceof PageElement))
         throw new Error("navigate requires a svelte component with a page element at the root");
@@ -74,7 +84,7 @@ export function navigate<T>(options: NavigationOptions<T>): SvelteComponent<T> {
             // will remove all set `navigatedFrom` while we are enumerating to actually send them
             setTimeout(() => {
                 nativePage.off('navigatedFrom', handler);
-                pageInstance?.$destroy();
+                viewInstance?.$destroy();
             }, 0);
         }
     };
@@ -89,7 +99,7 @@ export function navigate<T>(options: NavigationOptions<T>): SvelteComponent<T> {
         create: () => nativePage
     });
 
-    return pageInstance;
+    return viewInstance;
 }
 
 export interface BackNavigationOptions {
@@ -151,7 +161,7 @@ export function showModal<T, U>(modalOptions: ShowModalOptions<U>): Promise<T> {
             if (resolved) return;
             resolved = true;
             try {
-                componentInstanceInfo.pageInstance.$destroy(); //don't let an exception in destroy kill the promise callback
+                componentInstanceInfo.viewInstance.$destroy(); //don't let an exception in destroy kill the promise callback
             } finally {
                 resolve(result);
             }
