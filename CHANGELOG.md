@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.27](https://github.com/halfnelson/svelte-native/compare/v1.0.26...v1.0.27) (2024-07-04)
+
+
+### Bug Fixes
+
+* agnostic `resolveComponentElement` and typings to fit all cases ([e642093](https://github.com/halfnelson/svelte-native/commit/e6420938d2f56c4c70b5b8e13261edfd172796bd))
+* call `initializeDom` in dom file because some users might not use top level index ([baa0361](https://github.com/halfnelson/svelte-native/commit/baa036136a53dcbf088bd04dc93569559f5a4522))
+* use window.document in all cases ([184475d](https://github.com/halfnelson/svelte-native/commit/184475d827bcb20bd7be06be1f7ec38bd5c595b3))
+
 ### [1.0.26](https://github.com/halfnelson/svelte-native/compare/v1.0.25...v1.0.26) (2024-07-02)
 
 
