@@ -87,7 +87,12 @@ function initializeLogger() {
     });
 }
 
+let initializedDom = false;
 export function initializeDom() {
+    if ( initializedDom) {
+        return;
+    }
+    initializedDom = true;
     initializeLogger();
     if (typeof __UI_USE_EXTERNAL_RENDERER__ != "undefined" &&  __UI_USE_EXTERNAL_RENDERER__) {
     } else {
@@ -96,3 +101,4 @@ export function initializeDom() {
     registerSvelteElements();
     return installGlobalShims();
 }
+initializeDom();
