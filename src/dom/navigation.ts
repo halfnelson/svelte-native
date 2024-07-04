@@ -5,7 +5,7 @@ import PageElement from "./native/PageElement";
 import NativeViewElementNode from "./native/NativeViewElementNode";
 import { _rootModalViews } from "@nativescript/core/ui/core/view";
 
-export type ViewSpec = View | NativeViewElementNode<View>
+export type ViewSpec<T extends ViewBase = View> = T | NativeViewElementNode<T>
 export type FrameSpec = Frame | FrameElement | string
 export type PageSpec<T> = typeof SvelteComponent<T>;
 export interface NavigationOptions<T> {
@@ -33,7 +33,7 @@ export function resolveFrame(frameSpec: FrameSpec): Frame {
     return targetFrame;
 }
 
-export function resolveTarget(viewSpec: ViewSpec): View {
+export function resolveTarget<T extends ViewBase = View>(viewSpec: ViewSpec<T>): T {
     if (viewSpec instanceof View)  {
         return viewSpec;
     }
@@ -47,7 +47,7 @@ export interface ComponentInstanceInfo<T extends ViewBase = View, U = SvelteComp
 }
 
 export function resolveComponentElement<T, U extends ViewBase = View>(viewSpec: typeof SvelteComponent<T>, props?: T): ComponentInstanceInfo<U, SvelteComponent<T>> {
-    const dummy = createElement('fragment', window.document as any);
+    const dummy = createElement('fragment', window.document as unknown as DocumentNode);
     const viewInstance = new viewSpec({ target: dummy, props });
     const element = dummy.firstElement() as NativeViewElementNode<U>;
     return { element, viewInstance };
