@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.28](https://github.com/halfnelson/svelte-native/compare/v1.0.27...v1.0.28) (2024-10-16)
+
+
+### Bug Fixes
+
+* allow to extend `IntrinsicElements` ([45978dd](https://github.com/halfnelson/svelte-native/commit/45978ddfc0d0072081cbbc8f40c9e9e00073dac9))
+* expose `AsComponent` for custom Template classes ([c72688c](https://github.com/halfnelson/svelte-native/commit/c72688cf0130f8ba5c05e0a175ec53f78f927517))
+* expose ios / android components (wrapping #if __ANDROID__/__IOS__) ([acc7289](https://github.com/halfnelson/svelte-native/commit/acc72899471ad3760c05e4bb98138e678ebc971a))
+
 ### [1.0.27](https://github.com/halfnelson/svelte-native/compare/v1.0.26...v1.0.27) (2024-07-04)
 
 
