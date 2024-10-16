@@ -1044,7 +1044,7 @@ type TWrapLayoutAttributes = Override<LayoutBaseAttributes, {
 interface WrapLayoutAttributes extends TWrapLayoutAttributes {}
 
 
-interface IntrinsicElements {
+interface TIntrinsicElements {
         absoluteLayout: AbsoluteLayoutAttributes;
         actionBar: ActionBarAttributes;
         actionItem: ActionItemAttributes;
@@ -1088,7 +1088,7 @@ interface IntrinsicElements {
         webView: WebViewAttributes;
         wrapLayout: WrapLayoutAttributes; 
 }
-
+interface IntrinsicElements extends TIntrinsicElements{}
 
 }
 }
