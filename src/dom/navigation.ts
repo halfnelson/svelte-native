@@ -129,7 +129,9 @@ export function goBack(options: BackNavigationOptions = {}) {
             Object.assign(backStackEntry, options)
         } else {
             backStackEntry = targetFrame.backStack[targetFrame.backStack.length - 1];
-            Object.assign(backStackEntry, options)
+            if (backStackEntry) {
+                Object.assign(backStackEntry, options)
+            }
         }
     }
     return targetFrame.goBack(backStackEntry);
