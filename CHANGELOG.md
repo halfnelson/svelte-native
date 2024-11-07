@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.29](https://github.com/halfnelson/svelte-native/compare/v1.0.28...v1.0.29) (2024-11-07)
+
+
+### Bug Fixes
+
+* potential error while using `goBack` ([33eebc8](https://github.com/halfnelson/svelte-native/commit/33eebc8b0d2c699c5b7ad5acf69eec3cbf7fb697))
+
 ### [1.0.28](https://github.com/halfnelson/svelte-native/compare/v1.0.27...v1.0.28) (2024-10-16)
 
 
